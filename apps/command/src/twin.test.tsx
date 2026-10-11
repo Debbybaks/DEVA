@@ -109,3 +109,18 @@ it("replays stored cascade events and reveals real agent stopping and bounded pr
   await user.click(screen.getByRole("button", { name: "Next" }));
   expect(screen.getByText("02 / Reveal model mismatch")).toBeVisible();
 });
+
+it("inspects frozen failed states without implying a physical time trajectory", async () => {
+  render(<TwinWorkspace onBack={() => {}} />);
+  await screen.findByText("Make the model answer to evidence.");
+  const user = userEvent.setup();
+  await user.selectOptions(screen.getByLabelText("Twin sequence"), "failures");
+  expect(
+    screen.getByRole("button", { name: "Play" }),
+  ).toBeDisabled();
+  expect(screen.getByText(/not a temporal trajectory/)).toBeVisible();
+  expect(raw.failed_cases).toHaveLength(4);
+  const bad = structuredClone(raw);
+  bad.failed_cases[0].gpu[0].signed_velocity_ms += 1;
+  expect(() => twinViewSchema.parse(bad)).toThrow();
+});

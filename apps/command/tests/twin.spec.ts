@@ -65,14 +65,28 @@ test("synthetic observations → held-out calibration → emergent cascade → b
   await expect(
     page.getByText("Pressure head: UNKNOWN m", { exact: true }),
   ).toBeVisible();
-  await expect(
-    page.locator(".twin-state-label").first(),
-  ).toContainText("SIMULATED / FORMAL COUNTEREXAMPLE");
+  await expect(page.locator(".twin-state-label").first()).toContainText(
+    "SIMULATED / FORMAL COUNTEREXAMPLE",
+  );
   await page.getByLabel("Twin sequence").selectOption("agent");
   await page.getByLabel("Agent candidate").selectOption("agent:c000");
+  await expect(page.locator(".twin-state-label").first()).toContainText(
+    "SIMULATED / AGENT CANDIDATE",
+  );
+  await page.getByLabel("Twin sequence").selectOption("failures");
+  await expect(page.locator(".twin-state-label").first()).toContainText(
+    "SIMULATED / HELD-OUT FAILURE",
+  );
   await expect(
-    page.locator(".twin-state-label").first(),
-  ).toContainText("SIMULATED / AGENT CANDIDATE");
+    page.getByRole("button", { name: "Play", exact: true }),
+  ).toBeDisabled();
+  await expect(
+    page.getByText("Independent failed case 1/4", { exact: false }),
+  ).toBeVisible();
+  await page.getByLabel("Twin timeline").fill("3");
+  await expect(page.locator(".twin-state-label").first()).toContainText(
+    "Independent scenario 36",
+  );
   await page.getByRole("button", { name: "Demonstration 2.0" }).click();
   for (let n = 0; n < 9; n++)
     await page.getByRole("button", { name: "Next", exact: true }).click();

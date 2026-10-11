@@ -121,6 +121,44 @@ def project(record):
                 gpu=gpu(r["result"]),
                 scope=proof["scope"],
             )
+    selected = next(
+        (
+            c
+            for c in agent["outputs"].get("simulate_training", {}).get("candidates", [])
+            if c["id"] == agent["selection"]
+        ),
+        None,
+    )
+    failed_cases, unknown_cases = [], []
+    for i, row in enumerate(
+        agent["outputs"].get("validate_selected", {}).get("records", [])
+    ):
+        if row["component_passes"]:
+            continue
+        if not row.get("result") or selected is None:
+            unknown_cases.append(
+                dict(
+                    index=i,
+                    scenario=row["scenario"],
+                    reason=row.get("unknown_solver_state", "Unknown state"),
+                )
+            )
+            continue
+        failed_cases.append(
+            dict(
+                index=i,
+                scenario=row["scenario"],
+                component_service=row["component_service"],
+                component_pressure_m=row["component_pressure_m"],
+                state=state(
+                    agent["effective_configuration"],
+                    selected["diameters_m"],
+                    row["scenario"],
+                    row["result"],
+                ),
+                gpu=gpu(row["result"]),
+            )
+        )
     return dict(
         experiment_id=record["experiment_id"],
         scientific_sha256=record["scientific_sha256"],
@@ -164,6 +202,8 @@ def project(record):
         verification=proof,
         counterexample=counterexample,
         agent_candidates=agent_candidates,
+        failed_cases=failed_cases,
+        unknown_cases=unknown_cases,
         knowledge_states=s["digital_twin"]["states"],
         limitations=s["limitations"],
         code=s["code"],

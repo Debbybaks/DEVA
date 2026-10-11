@@ -294,6 +294,23 @@ export const twinViewSchema = z
         gpu: gpu.nullable(),
       }),
     ),
+    failed_cases: z.array(
+      z.object({
+        index: z.number().int().nonnegative(),
+        scenario: z.record(z.string(), z.unknown()),
+        component_service: finite,
+        component_pressure_m: finite.nullable(),
+        state: hydraulicStateSchema,
+        gpu,
+      }),
+    ),
+    unknown_cases: z.array(
+      z.object({
+        index: z.number().int().nonnegative(),
+        scenario: z.record(z.string(), z.unknown()),
+        reason: z.string(),
+      }),
+    ),
     verification: z.object({
       objects: z.array(proof),
       counterexample_scenario: z.record(z.string(), z.unknown()).nullable(),
@@ -326,6 +343,7 @@ export const twinViewSchema = z
       ...v.frames.map((f) => ({ state: f.estimated, gpu: f.estimated_gpu })),
       ...v.frames.map((f) => ({ state: f.baseline, gpu: f.baseline_gpu })),
       ...v.cascade,
+      ...v.failed_cases,
     ])
       if (
         f.gpu.length !== v.problem.edges.length ||

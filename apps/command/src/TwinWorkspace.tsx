@@ -53,7 +53,7 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
     [error, setError] = useState(""),
     [url, setUrl] = useState("/api/twin/view");
   const [mode, setMode] = useState<
-      "observations" | "cascade" | "agent" | "counterexample"
+      "observations" | "cascade" | "agent" | "counterexample" | "failures"
     >("observations"),
     [index, setIndex] = useState(0),
     [layer, setLayer] = useState<Layer>("observations");
@@ -115,11 +115,13 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
     return () => stream.close();
   }, [job]);
   const count =
-    mode === "cascade"
-      ? (view?.cascade.length ?? 0)
-      : mode === "observations"
-        ? (view?.frames.length ?? 0)
-        : 1;
+    mode === "failures"
+      ? (view?.failed_cases.length ?? 0)
+      : mode === "cascade"
+        ? (view?.cascade.length ?? 0)
+        : mode === "observations"
+          ? (view?.frames.length ?? 0)
+          : 1;
   useEffect(() => {
     if (!playing || !count) return;
     const timer = setInterval(() => {
@@ -139,26 +141,32 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
   const agentState = view?.agent_candidates.find(
     (c) => c.id === (agentCandidate || view.engineering_agent.selection),
   );
+  const failedCase =
+    view?.failed_cases[Math.min(index, (view?.failed_cases.length ?? 1) - 1)];
   const state =
-    mode === "cascade"
-      ? cascadeFrame?.state
-      : mode === "agent"
-        ? agentState?.state
-        : mode === "counterexample"
-          ? view?.counterexample?.state
-          : fitted
-            ? frame?.estimated
-            : frame?.baseline;
+    mode === "failures"
+      ? failedCase?.state
+      : mode === "cascade"
+        ? cascadeFrame?.state
+        : mode === "agent"
+          ? agentState?.state
+          : mode === "counterexample"
+            ? view?.counterexample?.state
+            : fitted
+              ? frame?.estimated
+              : frame?.baseline;
   const gpu =
-    mode === "cascade"
-      ? cascadeFrame?.gpu
-      : mode === "agent"
-        ? agentState?.gpu
-        : mode === "counterexample"
-          ? view?.counterexample?.gpu
-          : fitted
-            ? frame?.estimated_gpu
-            : frame?.baseline_gpu;
+    mode === "failures"
+      ? failedCase?.gpu
+      : mode === "cascade"
+        ? cascadeFrame?.gpu
+        : mode === "agent"
+          ? agentState?.gpu
+          : mode === "counterexample"
+            ? view?.counterexample?.gpu
+            : fitted
+              ? frame?.estimated_gpu
+              : frame?.baseline_gpu;
   const measurements = useMemo(
     () =>
       Object.fromEntries(
@@ -294,7 +302,10 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
     );
   const annotation = measurements[selection ?? ""];
   const selectedPipe = view.problem.edges.findIndex((p) => p.id === selection);
-  const hazard = selection ? cascadeFrame.hazards[selection] : undefined;
+  const hazard =
+    mode === "cascade" && selection
+      ? cascadeFrame.hazards[selection]
+      : undefined;
   function world(estimated = false) {
     if (!view || !state || !frame || !gpu || !cascadeFrame) return null;
     const current = estimated ? frame.estimated : state,
@@ -475,23 +486,27 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
         </div>
         <div className="twin-scene">
           <div className="twin-state-label">
-            {mode === "cascade"
-              ? "SIMULATED / RESEARCH HAZARD"
-              : mode === "agent"
-                ? "SIMULATED / AGENT CANDIDATE"
-                : mode === "counterexample"
-                  ? "SIMULATED / FORMAL COUNTEREXAMPLE"
-                  : fitted
-                    ? "ESTIMATED / BENCHMARK CALIBRATION"
-                    : "SIMULATED / INITIAL MODEL"}
-            <small>
-              {mode === "cascade"
-                ? `${cascadeFrame.time_seconds.toFixed(0)} s · ${cascadeFrame.events.length} events`
+            {mode === "failures"
+              ? "SIMULATED / HELD-OUT FAILURE"
+              : mode === "cascade"
+                ? "SIMULATED / RESEARCH HAZARD"
                 : mode === "agent"
-                  ? `${agentState?.id} · synthetic cost ${agentState?.cost.toFixed(3)} · ${agentState?.rejection_reason ?? "Within requested budget"}`
+                  ? "SIMULATED / AGENT CANDIDATE"
                   : mode === "counterexample"
-                    ? "Bounded graph counterexample → actual hydraulic evaluation"
-                    : `${frame.split.toUpperCase()} · ${frame.timestamp}`}
+                    ? "SIMULATED / FORMAL COUNTEREXAMPLE"
+                    : fitted
+                      ? "ESTIMATED / BENCHMARK CALIBRATION"
+                      : "SIMULATED / INITIAL MODEL"}
+            <small>
+              {mode === "failures"
+                ? `Independent scenario ${failedCase?.index}: ${String(failedCase?.scenario.id)} · not a temporal trajectory`
+                : mode === "cascade"
+                  ? `${cascadeFrame.time_seconds.toFixed(0)} s · ${cascadeFrame.events.length} events`
+                  : mode === "agent"
+                    ? `${agentState?.id} · synthetic cost ${agentState?.cost.toFixed(3)} · ${agentState?.rejection_reason ?? "Within requested budget"}`
+                    : mode === "counterexample"
+                      ? "Bounded graph counterexample → actual hydraulic evaluation"
+                      : `${frame.split.toUpperCase()} · ${frame.timestamp}`}
             </small>
           </div>
           {world()}
@@ -533,6 +548,9 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
             </option>
             <option value="cascade">Computed research cascade</option>
             <option value="agent">Agent candidate mutations</option>
+            <option value="failures" disabled={!view.failed_cases.length}>
+              Frozen held-out failures
+            </option>
             <option value="counterexample" disabled={!view.counterexample}>
               Formal counterexample simulation
             </option>
@@ -579,7 +597,10 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
         <button disabled={index === 0} onClick={() => setIndex((i) => i - 1)}>
           Step back
         </button>
-        <button onClick={() => setPlaying(!playing)}>
+        <button
+          disabled={mode === "failures"}
+          onClick={() => setPlaying(!playing)}
+        >
           {playing ? "Pause" : "Play"}
         </button>
         <button
@@ -603,7 +624,8 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
           </select>
         </label>
         <label className="twin-scrub">
-          Stored frame {index + 1}/{count}
+          {mode === "failures" ? "Independent failed case" : "Stored frame"}{" "}
+          {index + 1}/{count}
           <input
             type="range"
             aria-label="Twin timeline"
@@ -952,6 +974,25 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
               Engineering Agent / plan, stopping and self-critique
             </summary>
             <p>{view.engineering_agent.stopping_reason}</p>
+            <button
+              disabled={!view.failed_cases.length}
+              onClick={() => {
+                setMode("failures");
+                setIndex(0);
+                setPlaying(false);
+                setCompare(false);
+                setLayer("pressure");
+                focus("hospital");
+              }}
+            >
+              Inspect frozen held-out failures
+            </button>
+            {view.unknown_cases.length > 0 && (
+              <p>
+                {view.unknown_cases.length} unknown solver states retained
+                separately; see full evidence.
+              </p>
+            )}
             <pre>{JSON.stringify(view.engineering_agent.plan, null, 2)}</pre>
             {view.engineering_agent.research_narrative.map((n, i) => (
               <p key={i}>

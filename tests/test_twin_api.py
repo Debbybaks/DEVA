@@ -27,6 +27,11 @@ class TwinIntegrationTests(unittest.TestCase):
         )
         self.assertFalse(s["engineering_agent"]["science"]["target_achieved"])
         p = project(a)
+        self.assertEqual(len(p["failed_cases"]), 4)
+        self.assertEqual(p["unknown_cases"], [])
+        for case in p["failed_cases"]:
+            self.assertLess(case["component_pressure_m"], 15)
+            self.assertFalse(case["state"]["result"]["passes"])
         self.assertEqual(len(p["frames"]), 9)
         self.assertFalse(p["counterexample"]["state"]["result"]["passes"])
         self.assertIsNone(
