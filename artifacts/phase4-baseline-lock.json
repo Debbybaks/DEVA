@@ -1,0 +1,15 @@
+{
+  "baseline_commit": "66ca1e3",
+  "python_tests": 67,
+  "frontend_tests": 8,
+  "production_build": "PASS",
+  "exact_replays": [
+    "deva-9a473107d6fcb70f",
+    "deva-evolution-415e051c31e3bded",
+    "deva-hydraulic-065f46bd63838ed5"
+  ],
+  "original_artifact_sha256": "14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e",
+  "historical_reproduction_route": "scripts/replay_history.py uses isolated recorded source revision, retaining the scientific fingerprint",
+  "browser_tests": 4,
+  "bounded_formal_scope": "Z3 unsat for all declared single-edge outages; sat counterexample for two outages. No hydraulic proof."
+}
