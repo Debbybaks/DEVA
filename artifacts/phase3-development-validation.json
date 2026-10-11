@@ -1,0 +1,25 @@
+{
+  "historical_artifacts_unchanged": true,
+  "development_events": [
+    {
+      "event": "Initial historical browser rerun",
+      "result": "one passed, two startup timeouts while competing with scientific replay; isolated rerun passed all three"
+    },
+    {
+      "event": "Dry zero-head hydraulic solve",
+      "result": "continuity 1.0432654090425863e-11 m3/s; energy 1.3626981822918861e-6 m exceeded tolerance; corrected exact dry-state initialization with unchanged tolerances"
+    },
+    {
+      "event": "New frontend inspector query",
+      "result": "Ambiguous pressure-legend selector and two property-scope labels corrected to exact intended evidence; original tests unchanged"
+    },
+    {
+      "event": "New renderer mode-switch browser flow",
+      "result": "DOM removeChild error retained in development validation; dedicated label portal fixed lifecycle; zero-page-errors assertion passes"
+    },
+    {
+      "event": "New demonstration event navigation",
+      "result": "Automatic index reset overrode chosen event frames; reset moved to manual sequence-change handler"
+    }
+  ]
+}

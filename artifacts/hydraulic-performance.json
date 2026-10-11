@@ -1,0 +1,17 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "experiment": "deva-hydraulic-065f46bd63838ed5",
+  "seed": 20261024,
+  "samples": 100,
+  "median_seconds": 0.006025127000157227,
+  "p95_seconds": 0.03177718094998454,
+  "scenarios_per_second": 102.39579234170951,
+  "maximum_solver_evaluations": 7,
+  "solver_failures": [],
+  "peak_rss_mib": 80.68359375,
+  "caveat": "Warm six-node fixed-friction local nonlinear benchmark, not hardware/field-scale validation"
+}

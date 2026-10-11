@@ -1,0 +1,7 @@
+# Hydraulic adversarial discovery
+
+The coupled Failure Lab begins with deterministic graph probes through all zero-, one- and two-pipe outage combinations. Each probe invokes the nonlinear pressure-dependent model. It then chooses a vulnerable tested single-pipe state and adaptively explores demand factor, reservoir-head reduction and friction uncertainty using seeded SciPy differential evolution, with bounded population and iteration budget. This searches for unknown mixed weaknesses; it does not estimate their probability or guarantee the global worst case.
+
+All probes and outcomes remain in `science.adversarial`; the continuous worst scenario can be replayed through the API. A discovered failure is minimized by removing individual outages and recomputing. Final one-element removal checks establish whether the resulting outage set is one-minimal **conditional on the fixed continuous disturbance**. The result is not labelled globally smallest, cheapest, most plausible or a uniquely causal set. Hydraulic monotonicity under valve removal is not assumed.
+
+Source availability, pressure-dependent demand, pipe connectivity and friction/head epistemic sensitivity enter the same physical solver. Operational valve-isolation rounds are separately labelled in CASCADE_MODEL.md. Biased adaptive probes never enter a Wilson failure-probability estimate or the recommendation's independent held-out stream. Importance sampling/rare-event estimation and adaptive topology mutation remain future work.

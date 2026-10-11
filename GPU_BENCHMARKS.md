@@ -1,0 +1,11 @@
+# GPU and rendering evaluation
+
+`benchmarks/render_modes.py` samples 60 requestAnimationFrame intervals in each of standard WebGL, high-resolution WebGL and numerical SVG modes, at the same stored hydraulic state and 1600×1000 viewport. It also probes WebGPU adapter availability. Results are in `artifacts/render-mode-performance.json`. Do not run it concurrently with browser tests or solver benchmarks.
+
+This environment requests Chromium ANGLE/SwiftShader software rendering. Prior poor software results remain in the Phase-2 artifacts. These measurements are not hardware GPU timings, draw-call microbenchmarks or a validated large-network workload. Higher resolution can cost more with no scientific benefit on this six-pipe graph; all modes retain the same pressure and flow values. Worker submission switches to numerical 2D. Hardware benchmarks remain necessary before claiming premium frame performance.
+
+WebGPU adapter availability is only a capability check. No WGSL compute kernel has been introduced, so there is no honest before/after WebGPU speedup to report. Current overhead involves software rasterisation and browser/DOM lifecycle, while hydraulic scientific work uses separately profiled Python. There is no evidence that porting a six-pipe solver to Rust/WASM or adding a WebGPU pipeline would improve scientific value enough to justify the additional validation burden. Re-evaluate for large calibrated graphs, measured field rendering or high-volume particles.
+
+The advanced renderer uses signed solver velocity in GLSL, diameter geometry and pressure-head node halos. It does not use particles to manufacture motion or a field shader to invent spatial pressure. A dedicated HTML-label portal isolates scientific labels from Canvas lifecycle ownership; a live-browser regression catches DOM removal errors when switching WebGL to SVG.
+
+Observed software measurements: standard median/p95 116.75/217.53 ms, high-resolution 116.65/183.30 ms, 2D 16.70/33.40 ms. Standard drew 1156×508 internal pixels for a 1542×678 CSS viewport; high drew 1542×678. The WebGPU probe returned no adapter. These are small samples with warm-up/host variation; they do not establish high resolution as faster or a WebGPU limitation on other hardware.

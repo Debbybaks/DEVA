@@ -1,0 +1,11 @@
+# Resilience frontier
+
+The hydraulic experiment stores two distinct frontiers: the training frontier used for parent competition and the descriptive held-out frontier opened after the recommendation is frozen. Objectives are construction cost, failure rate across all five operating requirements, and mean minimum-demand service. Candidates exceeding budget remain evidence but cannot become parents. All children retain parents and diameter mutations; diameter growth is not presumed monotonically safer.
+
+The recommendation policy selects the cheapest candidate with at most 10% training failures and zero declared failures; otherwise it selects minimum training failure then cost. This is an explicit research operating policy, not an instruction to chase zero observed risk at any cost. The catalogue/generation budget is the stopping rule, with no global optimality claim.
+
+`science.resilience_frontier` stores non-dominated held-out designs, observed marginal cost per percentage-point reliability improvement, and requested levels 90%, 95%, 97.5%, 99%, 99.5%, 100%. Unavailable levels are labelled **not demonstrated**, never extrapolated. Values use paired identical held-out scenarios, but remain descriptive finite-sample results. Wilson intervals expose estimation uncertainty; no cost/reliability slope is presented as a field causal effect.
+
+This network's topology is fixed across candidates. Geometric pipe volume and diameter are not renamed redundancy. New topology/catalogue construction, lifecycle emissions, repair cost and actual material prices remain missing. Historical capacity cost and new hydraulic construction cost use different synthetic assumptions and cannot be compared as like-for-like engineering prices.
+
+The committed seed-20261020 experiment retains 18 candidates. Training selects `h1-c008`, cost 395.3257055564662, with 0/24 training, 2/24 validation and 10/100 held-out failures. The uniform 150 mm candidate costs 484.99896907106915 and fails 4/100 of the same hydraulic test scenarios: 22.68% more illustrative cost and 60% fewer observed failures. This is a descriptive opened-test comparison; it does not change the training-selected recommendation or establish future risk reduction. Its observed reliability is 96%, not a certified 95% target. No retained candidate demonstrates 97.5% or higher empirical reliability.

@@ -1,0 +1,50 @@
+{
+  "viewport": [
+    1600,
+    1000
+  ],
+  "renderer": "Chromium requested ANGLE SwiftShader software rendering",
+  "webgpu_capability": {
+    "available": false,
+    "info": null
+  },
+  "mode_samples": [
+    {
+      "render_resolution": {
+        "width": 1156,
+        "height": 508,
+        "css_width": 1542,
+        "css_height": 678,
+        "device_pixel_ratio": 1
+      },
+      "mode": "standard",
+      "samples": 60,
+      "median_frame_ms": 116.75000000000045,
+      "p95_frame_ms": 217.5349999999989,
+      "mean_frame_ms": 133.1099999999969
+    },
+    {
+      "render_resolution": {
+        "width": 1542,
+        "height": 678,
+        "css_width": 1542,
+        "css_height": 678,
+        "device_pixel_ratio": 1
+      },
+      "mode": "high",
+      "samples": 60,
+      "median_frame_ms": 116.64999999999964,
+      "p95_frame_ms": 183.29999999999927,
+      "mean_frame_ms": 118.22999999999381
+    },
+    {
+      "render_resolution": null,
+      "mode": "2d",
+      "samples": 60,
+      "median_frame_ms": 16.69999999999709,
+      "p95_frame_ms": 33.399999999998,
+      "mean_frame_ms": 20.50166666666355
+    }
+  ],
+  "scope": "Same stored hydraulic state and values. Capability probe is not a WebGPU implementation benchmark. No claimed WebGPU/Rust speedup. Software-only frame measurements."
+}

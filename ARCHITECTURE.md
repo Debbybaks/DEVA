@@ -30,3 +30,8 @@ Progress streams report real stages and candidate completions, not partial unval
 ## Security and extensibility
 
 Input is bounded structured JSON; there is no arbitrary generated code execution. Local API caps graphs, scenario counts, generations and queued evolution jobs. It is not authenticated, hardened multi-tenant infrastructure or a denial-of-service guarantee. Domain adapters must bring their own units, equations and validation; only transport evolution and the independent passive hydraulic research module exist. Natural-language interpretation, durable multi-domain projects, calibrated hydraulic evolution and internet hosting are not claimed.
+
+
+## Phase-3 update
+
+Phase 3 adds a schema-3.0 pressure-dependent hydraulic engine, explicit unit boundary, source fingerprint, bounded Z3 proof objects and the same durable workers. `hydraulic_view` projects SI truth for the extended scene; historical schemas and payloads are unchanged.

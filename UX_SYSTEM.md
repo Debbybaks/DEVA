@@ -13,3 +13,8 @@ Accessibility: keyboard selectable nodes/edges, equivalent textual evidence, col
 ## Phase-2 implementation status
 
 The command environment is implemented in apps/command. It includes the network canvas, layers, matched-scenario comparisons, camera focus, candidate ancestry, interactive outage/source/degradation controls, equations and Evidence Mode. Scenario index is explicitly not physical time. Low-load 2D view retains flows and inspection; physical recovery, temporal cascades and sensor layers remain unavailable.
+
+
+## Phase-3 update
+
+Hydraulic V2 extends the same central world with pressure, velocity, real tank frames, operational isolation rounds, component equations and guided stored evidence. The transport archive remains accessible.

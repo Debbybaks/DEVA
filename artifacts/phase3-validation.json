@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-10-11T17:20:44.478887+00:00",
+  "python_tests": 67,
+  "frontend_tests": 8,
+  "live_browser_tests": 4,
+  "original_assertions_preserved": true,
+  "strict_typescript_build": "passed",
+  "replays": [
+    {
+      "experiment_id": "deva-9a473107d6fcb70f",
+      "scientific_sha256": "9a473107d6fcb70fc45a4b1a756e09ed4db5f3a64a5462513711a07323b82eaf"
+    },
+    {
+      "experiment_id": "deva-evolution-415e051c31e3bded",
+      "scientific_sha256": "415e051c31e3bded21d803ebcd5d59da88c5d7aa891f5b26f8f0deb24c793685"
+    },
+    {
+      "experiment_id": "deva-hydraulic-065f46bd63838ed5",
+      "scientific_sha256": "065f46bd63838ed50800731957c833195d1900c0d52f44f544c64869bef3c640"
+    }
+  ],
+  "historical_artifact_sha256": {
+    "emergency-water-evidence.json": "14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e",
+    "evolution-evidence.json": "f8c54a3a240b9071ec12e444713cb1228e39cbe6c8fb1ca40742965203514bc1"
+  },
+  "hydraulic_source": {
+    "git_revision": "118b7128d19805bcfe5b7c0da61cb76d90bd55ae",
+    "working_tree_dirty": false,
+    "scientific_source_sha256": "d64e4d01908d1ce2a176b25f78e94c8063ea56f37b95cd9d4f294978f76732ec"
+  },
+  "formal_scope": "Bounded single-pipe outage connectivity only, with proof; two-outage counterexample retained",
+  "limits": [
+    "No field calibration or independent EPANET full-network reference",
+    "No Reynolds-dependent friction, pump regulation, mechanical rupture or water hammer",
+    "Operational isolation cascade uses explicit synthetic protective setpoints",
+    "No hardware GPU performance guarantee or WGSL/Rust speedup"
+  ]
+}

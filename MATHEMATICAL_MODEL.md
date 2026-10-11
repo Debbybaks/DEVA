@@ -15,3 +15,8 @@ Exclusions: pressure, friction, elevation, pumps, storage, transients, contamina
 ## Phase-2 implementation status
 
 The original equations and solver are unchanged. Phase-2 adds constrained empirical Pareto evolution, IID split audits, independent primal checks and unit-edge topological min cuts. See DESIGN_EVOLUTION.md, OPTIMISATION.md, HYDRAULIC_MODEL.md and UNCERTAINTY_MODEL.md. No physical time or formal certificate has been added.
+
+
+## Phase-3 update
+
+The hydraulic V2 governing equations, units, source operating constraints and storage integration are specified in HYDRAULIC_MODEL_V2.md. Historical capacity mathematics is unchanged; the models do not share a calibrated cost scale.

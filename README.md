@@ -13,7 +13,7 @@ DEVA is a local engineering research workbench with a Python scientific engine a
 - Independent training, validation and held-out streams; recommendation frozen before audit data is generated.
 - Adversarial outage search, unit-edge minimum cuts and demand-threshold bracketing.
 - Independent numerical evidence audits and a requirement-to-conclusion provenance graph.
-- Passive Darcy–Weisbach hydraulic research solver, separately validated against analytical cases. It is **not** coupled to capacity optimisation or calibrated field data.
+- Legacy passive Darcy–Weisbach research adapter (`deva.hydraulics`), alongside the now-coupled pressure-dependent Hydraulic V2 engine described below. Neither has field calibration.
 - FastAPI/process workers, SQLite job/event persistence, resumable SSE progress, caching, cooperative cancellation and recorded interactive Failure Lab evidence.
 - React/Three.js command canvas, meaningful GLSL flux/uncertainty encoding, scientific layers, matched-scenario design comparison, camera synchronisation, component equations, ancestry and Evidence Mode.
 - JSON evidence and a portable Markdown report export; computational and browser benchmark tools.
@@ -72,6 +72,28 @@ Playwright uses `/usr/bin/chromium` by default; set `DEVA_CHROMIUM_PATH` for ano
 
 ## Scientific boundaries
 
-Capacity-network results do not establish hydraulic pressure, potable-water delivery, construction feasibility or certified infrastructure safety. Particle motion encodes relative volumetric flux; it is not velocity or travel time. The model is steady-state, so scenario indices are not timestamps and no physical cascade/recovery timeline is shown. Mathematical/formal verification, physical transients, sensor inference, discrete construction catalogues, calibration and LLM problem interpretation remain incomplete. WebGPU, Rust and WASM have not been added without measured justification.
+Capacity-network results do not establish hydraulic pressure, potable-water delivery, construction feasibility or certified infrastructure safety. Particle motion encodes relative volumetric flux; it is not velocity or travel time. The model is steady-state, so scenario indices are not timestamps and no physical cascade/recovery timeline is shown. Full-design mathematical/formal verification, physical transients, sensor inference, discrete construction catalogues, calibration and LLM problem interpretation remain incomplete. WebGPU, Rust and WASM have not been added without measured justification.
 
 Start with [MATHEMATICAL_MODEL.md](MATHEMATICAL_MODEL.md), [ARCHITECTURE.md](ARCHITECTURE.md), [DESIGN_EVOLUTION.md](DESIGN_EVOLUTION.md), [OPTIMISATION.md](OPTIMISATION.md), [HYDRAULIC_MODEL.md](HYDRAULIC_MODEL.md), [SCIENTIFIC_LIMITATIONS.md](SCIENTIFIC_LIMITATIONS.md) and [ROADMAP.md](ROADMAP.md).
+
+## Phase 3 — coupled hydraulic research
+
+Select **Hydraulic V2**, or open `http://localhost:5173/?model=hydraulic`. This is the primary new scientific demonstration, with explicit synthetic geometry and construction-cost assumptions. The transport archive and both historical experiments remain intact.
+
+Install the formal extra for coupled experiments: `.venv/bin/python -m pip install -e '.[api,test,formal]'`. Run:
+
+```bash
+.venv/bin/python -m deva.hydraulic_experiment examples/emergency_water_hydraulic.json --seed 20261020 --output /tmp/hydraulic.json
+.venv/bin/python -m deva.remaining artifacts/evolution-evidence.json --output /tmp/remaining.json
+.venv/bin/python benchmarks/hydraulic.py
+# With local servers running; run browser benchmarks without concurrent work:
+.venv/bin/python benchmarks/render_modes.py
+```
+
+The new model couples pressure-dependent demand, Darcy–Weisbach losses, signed flow, source operating bounds, diameter evolution, adaptive adversaries, uncertainty envelopes, computed tank states, and independent numerical audits. The optional excess-flow valve-isolation cascade is an explicit synthetic policy, not a calibrated rupture model. Demonstration Mode guides actual stored evidence; Researcher Mode preserves controls. Pressure, velocity, timeline and property-specific proof objects are inspectable.
+
+Z3 verifies bounded connectivity after any single pipe outage and provides a two-outage counterexample. This formal status is attached **only to the topology proposition**, not hydraulic service or the full design. See [HYDRAULIC_MODEL_V2.md](HYDRAULIC_MODEL_V2.md), [HYDRAULIC_VALIDATION.md](HYDRAULIC_VALIDATION.md), [FORMAL_METHODS.md](FORMAL_METHODS.md), [RESILIENCE_FRONTIER.md](RESILIENCE_FRONTIER.md), [REMAINING_FAILURE_ANALYSIS.md](REMAINING_FAILURE_ANALYSIS.md) and [CLAIM_LEDGER.md](CLAIM_LEDGER.md).
+
+Geometry, reservoir heads, Darcy factors and prices remain uncalibrated. The new costs and seeds differ from the old capacity experiment; no cross-model universal improvement is claimed. The pipeline retains failures and labels missing reliability levels rather than inventing a 100% design.
+
+Phase-3 validation: **67 Python tests, eight frontend tests, four real-browser flows**, passing strict production build and exact replay of all three scientific payloads. Review [artifacts/hydraulic-report.md](artifacts/hydraulic-report.md), [artifacts/hydraulic-world.png](artifacts/hydraulic-world.png) and [artifacts/hydraulic-evidence.json](artifacts/hydraulic-evidence.json). The selected hydraulic design has 10/100 held-out failures; a higher-cost catalogue design has 4/100 on that same split. This descriptive tradeoff does not change the frozen recommendation or imply superiority to the older capacity experiment.

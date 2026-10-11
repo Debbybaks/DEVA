@@ -15,3 +15,9 @@
 - GET `/api/provenance/evolution?node=...`: backwards evidence ancestry for the committed evolution package.
 
 Limits: 30 API nodes, 60 pipes, four generations, 120 training/validation samples, 300 held-out samples, four outstanding evolution jobs. Independent CLI limits differ and are documented in code. Native LP work cannot be instantly cancelled. WebSocket/partial-field streaming is not implemented; SSE streams real orchestration progress. No authentication or external publication is configured.
+
+## Coupled hydraulic routes
+
+GET `/api/hydraulic/evidence` and `/api/hydraulic/view` expose the stored schema-3.0 experiment and explicit display projection. POST `/api/hydraulic/jobs` accepts strict quantity-aware raw geometry, seed, bounded generations and three split sizes; it uses the same durable jobs, events, cache, cancellation and full-evidence routes. Completed job views dispatch by scientific schema. No-budget-feasible experiments retain candidates and full evidence rather than selecting a fake design.
+
+POST `/api/hydraulic/lab` accepts SI diameters, closed pipe IDs, demand multiplier, head offset in m, friction multiplier and source losses. It performs a real process-backed solve, independent audit and observed causal trace. GET `/api/hydraulic/lab/{experiment_id}` downloads the content-addressed intervention with configuration, source revision, solver versions and all results. Unit-incompatible inputs are rejected. Solver nonconvergence remains an explicit failed/unknown evaluation, never a substituted state.

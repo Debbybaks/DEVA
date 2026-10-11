@@ -11,3 +11,8 @@ Future prototype acceptance: locate an overloaded edge in ≤10 seconds, correct
 ## Phase-2 implementation status
 
 The implemented environment uses restrained graphite/teal/amber styling, self-hosted Manrope/IBM Plex Mono, Three.js geometry and GLSL flux/uncertainty encoding. SVG ancestry retains rejected branches. Software-renderer limitations and quantitative legends are visible; all data is supplied by Python rather than decorative simulation.
+
+
+## Phase-3 update
+
+Signed GLSL velocity and pressure-head node halos consume Python state. The dedicated label portal fixes mode-switch cleanup; SVG retains numerical values. No fabricated field or physical propagation time is shown.

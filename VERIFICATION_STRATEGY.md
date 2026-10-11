@@ -11,3 +11,8 @@ Success gates: analytical and invariant tests pass; nominal and scenario outputs
 ## Phase-2 implementation status
 
 Phase-2 independent audits recompute mass balance, bounds, demand identity and achieved service instead of trusting stored residual/pass flags. Provenance links required service, budgets, assumptions, candidates and declared results. MATHEMATICALLY VERIFIED and FORMALLY VERIFIED remain unavailable; the client rejects these unsupported labels. Held-out and adversarial failures are displayed alongside scoped declared-suite status.
+
+
+## Phase-3 update
+
+Phase 3 earns one property-specific formal connectivity result with Z3, and retains a two-outage counterexample. Numerical hydraulic requirements stay separate. See VERIFICATION_ARCHITECTURE.md and FORMAL_METHODS.md.
