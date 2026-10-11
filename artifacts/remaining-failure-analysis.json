@@ -1,0 +1,903 @@
+{
+  "source_experiment": "deva-evolution-415e051c31e3bded",
+  "source_sha256": "415e051c31e3bded21d803ebcd5d59da88c5d7aa891f5b26f8f0deb24c793685",
+  "candidate": "g2-c012",
+  "cost": 532.5578984864775,
+  "diagnosis": {
+    "failures": 13,
+    "scenario_count": 200,
+    "records": [
+      {
+        "scenario_id": "test:heldout:00002",
+        "labels": [
+          "topological_disconnection"
+        ],
+        "failed_edges": [
+          "west-trunk",
+          "east-hospital"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [
+          "hospital"
+        ],
+        "saturated_edges": [
+          "east-shelter"
+        ],
+        "service_fraction": -0.0,
+        "demand_factor": 1.268400620500972,
+        "supply_factor": 0.7785296623875892,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "restore_supply": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00011",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "west-trunk",
+          "west-hospital",
+          "west-shelter"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [],
+        "service_fraction": 0.8399163922203344,
+        "demand_factor": 1.316972735753053,
+        "supply_factor": 0.7743028922063736,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 0.9016891297457121,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00021",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "west-hospital"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [
+          "east-hospital"
+        ],
+        "service_fraction": 0.9456721860977839,
+        "demand_factor": 1.2557205524887993,
+        "supply_factor": 0.8213194024166747,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 0.9456721860977839,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00031",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "west-trunk"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [],
+        "service_fraction": 0.9199030156486426,
+        "demand_factor": 1.2175914762986746,
+        "supply_factor": 0.7840462496126636,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 0.9752860652489544,
+            "passes": true
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00044",
+        "labels": [
+          "topological_disconnection"
+        ],
+        "failed_edges": [
+          "east-trunk",
+          "west-shelter"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [
+          "shelter"
+        ],
+        "saturated_edges": [],
+        "service_fraction": -0.0,
+        "demand_factor": 1.111218756942064,
+        "supply_factor": 0.778873392385736,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "restore_supply": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00058",
+        "labels": [
+          "topological_disconnection"
+        ],
+        "failed_edges": [
+          "west-trunk",
+          "west-hospital",
+          "west-shelter",
+          "east-hospital"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [
+          "hospital"
+        ],
+        "saturated_edges": [],
+        "service_fraction": -0.0,
+        "demand_factor": 1.1175553969238876,
+        "supply_factor": 0.9910332181415916,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "restore_supply": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00083",
+        "labels": [
+          "topological_disconnection"
+        ],
+        "failed_edges": [
+          "west-trunk",
+          "east-trunk",
+          "west-hospital",
+          "west-shelter"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [
+          "hospital",
+          "shelter"
+        ],
+        "saturated_edges": [],
+        "service_fraction": -0.0,
+        "demand_factor": 1.0256899608823578,
+        "supply_factor": 0.7761210344718701,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "restore_supply": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00086",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "west-hospital"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [
+          "east-hospital"
+        ],
+        "service_fraction": 0.9181039218522599,
+        "demand_factor": 1.2934265628712684,
+        "supply_factor": 0.986788556702108,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 0.9181039218522599,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00104",
+        "labels": [
+          "topological_disconnection"
+        ],
+        "failed_edges": [
+          "east-trunk",
+          "west-shelter"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [
+          "shelter"
+        ],
+        "saturated_edges": [],
+        "service_fraction": -0.0,
+        "demand_factor": 1.0919158539340315,
+        "supply_factor": 0.891330185684668,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "restore_supply": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00150",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "west-trunk",
+          "west-hospital",
+          "west-shelter"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [
+          "east-trunk",
+          "east-hospital",
+          "east-shelter"
+        ],
+        "service_fraction": 0.9499929320978976,
+        "demand_factor": 1.250009299940378,
+        "supply_factor": 0.9498077433175076,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 0.9499929320978976,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00169",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "east-trunk"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [],
+        "service_fraction": 0.941870577056032,
+        "demand_factor": 1.1712097539074795,
+        "supply_factor": 0.7721896047365437,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00173",
+        "labels": [
+          "topological_disconnection"
+        ],
+        "failed_edges": [
+          "west-trunk",
+          "west-hospital",
+          "west-shelter",
+          "east-hospital"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [
+          "hospital"
+        ],
+        "saturated_edges": [],
+        "service_fraction": -0.0,
+        "demand_factor": 0.9066148406253699,
+        "supply_factor": 0.7923042036240564,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "restore_supply": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "pipes_only": {
+            "service_fraction": -0.0,
+            "passes": false
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      },
+      {
+        "scenario_id": "test:heldout:00193",
+        "labels": [
+          "combined_disturbance_interaction",
+          "outage_demand_interaction"
+        ],
+        "failed_edges": [
+          "east-trunk",
+          "east-hospital",
+          "east-shelter"
+        ],
+        "degraded_edges": [],
+        "disconnected_demands": [],
+        "saturated_edges": [],
+        "service_fraction": 0.9291690770588222,
+        "demand_factor": 1.2219517596738445,
+        "supply_factor": 0.794779852122585,
+        "counterfactuals": {
+          "restore_pipes": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_demand": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "restore_supply": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "pipes_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "demand_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          },
+          "supply_only": {
+            "service_fraction": 1.0,
+            "passes": true
+          }
+        }
+      }
+    ],
+    "label_counts": {
+      "combined_disturbance_interaction": 7,
+      "outage_demand_interaction": 7,
+      "topological_disconnection": 6
+    },
+    "failed_edge_counts": {
+      "east-hospital": 4,
+      "east-shelter": 1,
+      "east-trunk": 5,
+      "west-hospital": 7,
+      "west-shelter": 7,
+      "west-trunk": 7
+    },
+    "outage_patterns": [
+      {
+        "edges": [
+          "east-trunk"
+        ],
+        "failures": 1
+      },
+      {
+        "edges": [
+          "east-trunk",
+          "east-hospital",
+          "east-shelter"
+        ],
+        "failures": 1
+      },
+      {
+        "edges": [
+          "east-trunk",
+          "west-shelter"
+        ],
+        "failures": 2
+      },
+      {
+        "edges": [
+          "west-hospital"
+        ],
+        "failures": 2
+      },
+      {
+        "edges": [
+          "west-trunk"
+        ],
+        "failures": 1
+      },
+      {
+        "edges": [
+          "west-trunk",
+          "east-hospital"
+        ],
+        "failures": 1
+      },
+      {
+        "edges": [
+          "west-trunk",
+          "east-trunk",
+          "west-hospital",
+          "west-shelter"
+        ],
+        "failures": 1
+      },
+      {
+        "edges": [
+          "west-trunk",
+          "west-hospital",
+          "west-shelter"
+        ],
+        "failures": 2
+      },
+      {
+        "edges": [
+          "west-trunk",
+          "west-hospital",
+          "west-shelter",
+          "east-hospital"
+        ],
+        "failures": 2
+      }
+    ],
+    "associations": {
+      "demand_factor": {
+        "pearson_with_failure": 0.12275153517064999,
+        "mean_in_failures": 1.1729444285186292,
+        "mean_in_passes": 1.110002413909392,
+        "interpretation": "Descriptive association; not causal or independent of other inputs"
+      },
+      "supply_factor": {
+        "pearson_with_failure": -0.11943690073980638,
+        "mean_in_failures": 0.8378019998315358,
+        "mean_in_passes": 0.8724947537298796,
+        "interpretation": "Descriptive association; not causal or independent of other inputs"
+      },
+      "unavailable_count": {
+        "pearson_with_failure": 0.47489965191836947,
+        "mean_in_failures": 2.3846153846153846,
+        "mean_in_passes": 0.42245989304812837,
+        "interpretation": "Descriptive association; not causal or independent of other inputs"
+      }
+    },
+    "cascade": "Not modelled: static transport cannot establish temporal cascading failure",
+    "trigger_attribution": "Availability patterns do not uniquely identify independent vs corridor-triggered events",
+    "demand_scope": "Global demand multipliers only; spatial demand patterns were not sampled"
+  },
+  "posthoc_repairs": [
+    {
+      "scenario_id": "test:heldout:00002",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00011",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00021",
+      "status": "numerically_feasible",
+      "additional_cost": 0.21738099457437698,
+      "capacities": [
+        94.39429949549249,
+        83.125,
+        53.939599711709995,
+        40.4546997837825,
+        47.71738099457438,
+        35.625
+      ],
+      "result": {
+        "scenario_id": "test:heldout:00021",
+        "service_fraction": 0.95,
+        "flow": [
+          37.67161657466398,
+          47.71738099457438,
+          0.0,
+          37.67161657466398,
+          47.71738099457438,
+          0.0
+        ],
+        "injection": [
+          37.67161657466398,
+          47.71738099457438,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "delivered": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          47.71738099457438,
+          37.67161657466398
+        ],
+        "demand": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          50.22882209955198,
+          37.67161657466398
+        ],
+        "max_residual": 0.0,
+        "passes": true
+      }
+    },
+    {
+      "scenario_id": "test:heldout:00031",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00044",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00058",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00083",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00086",
+      "status": "numerically_feasible",
+      "additional_cost": 1.6502093891081984,
+      "capacities": [
+        94.39429949549249,
+        83.125,
+        53.939599711709995,
+        40.4546997837825,
+        49.1502093891082,
+        35.625
+      ],
+      "result": {
+        "scenario_id": "test:heldout:00086",
+        "service_fraction": 0.9500000000000001,
+        "flow": [
+          38.802796886138054,
+          49.1502093891082,
+          0.0,
+          38.802796886138054,
+          49.1502093891082,
+          0.0
+        ],
+        "injection": [
+          38.802796886138054,
+          49.1502093891082,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "delivered": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          49.1502093891082,
+          38.802796886138054
+        ],
+        "demand": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          51.737062514850734,
+          38.802796886138054
+        ],
+        "max_residual": 0.0,
+        "passes": true
+      }
+    },
+    {
+      "scenario_id": "test:heldout:00104",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00150",
+      "status": "numerically_feasible",
+      "additional_cost": 0.0018553381054005058,
+      "capacities": [
+        94.39429949549249,
+        83.12561844603513,
+        53.939599711709995,
+        40.4546997837825,
+        47.50035339773436,
+        35.625265048300776
+      ],
+      "result": {
+        "scenario_id": "test:heldout:00150",
+        "service_fraction": 0.95,
+        "flow": [
+          0.0,
+          83.12561844603513,
+          0.0,
+          0.0,
+          47.500353435234636,
+          35.6252650108005
+        ],
+        "injection": [
+          0.0,
+          83.12561844603513,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "delivered": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          47.500353435234636,
+          35.6252650108005
+        ],
+        "demand": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          50.00037199761512,
+          37.50027899821134
+        ],
+        "max_residual": 3.750027843807402e-08,
+        "passes": true
+      }
+    },
+    {
+      "scenario_id": "test:heldout:00169",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00173",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    },
+    {
+      "scenario_id": "test:heldout:00193",
+      "status": "infeasible_within_existing_topology_bounds_and_budget",
+      "additional_cost": null
+    }
+  ],
+  "scope": "Sealed test set opened for diagnosis only. Repair cost is a one-case continuous capacity lower bound, not a generalising design recommendation. Topology changes are not priced. No calibrated event likelihood or hydraulic interpretation exists for historical capacities."
+}
