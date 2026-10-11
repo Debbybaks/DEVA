@@ -1,0 +1,13 @@
+# Architecture
+
+Scientific core: Python 3.11+, NumPy, SciPy/HiGHS. LP is defensible because conservation, capacities and continuous design cost are linear. No LLM, NetworkX, Bayesian optimiser or GPU is required for this core. A domain protocol separates interpretation, scenario construction, synthesis, simulation and evidence. Initial implementation is synchronous CLI; HTTP and worker adapters are planned, not present.
+
+Repository: src/deva contains schema validation, network model, scenarios, design synthesis, verification and experiment orchestration. examples holds versioned structured problems. tests holds analytical, property-style, regression and CLI tests. docs holds contracts and test strategy. artifacts holds reproducible demonstration evidence. apps/command is reserved for the spatial UI; contracts for versioned inter-process schemas; benchmarks for future measured baselines.
+
+Data entities: Project(id, objective, domain); Requirement(id, threshold, unit, evidence policy); Candidate(id, parent ids, capacities, generation, synthesis scenario ids); Scenario(id, multipliers, distribution/source); Experiment(id, config hash, seed, timestamp, model and solver versions); Simulation(candidate, scenario, service, flows, residuals); Verification(requirement, evidence ids, status, scope); Provenance(stage, inputs, outputs, rationale). JSON evidence implements these relationships initially. SQLite migrations precede server multi-user support; immutable experiments and explicit versioned records are required.
+
+Module contracts are currently Python dataclasses and JSON. A future DomainAdapter supplies validate_problem, generate_scenarios, synthesise, simulate, verify, and render_geometry. Hydraulic and energy models must bring their own validation suites and units; no implicit claims of support.
+
+Future runtime: FastAPI submits validated jobs to a process worker, streams typed progress events, and never blocks request threads with LP work. Persist immutable results before completion events. Cancellation, resource limits, cache keys including model/software/configuration, and deterministic seeds are required. React/TypeScript canvas consumes results, never silently substitutes synthetic values. SVG first for small graphs, WebGL only after measured need. No external deployment or account is configured.
+
+Security: allowlisted JSON fields, finite bounded numeric values, capped graph and sample sizes, no generated-code execution. Future authentication and tenancy must precede internet exposure. Evidence exports may contain user-sensitive objectives; remote sharing is opt-in.

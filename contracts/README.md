@@ -1,0 +1,2 @@
+# Evidence contract v1
+The JSON envelope has experiment_id, scientific_sha256, timestamp, and science. Hash the canonical science payload (sorted keys, compact separators, finite JSON numbers) with SHA-256. Science includes full input, software versions, seed, scenario arrays, candidate parentage, all results, negative evidence and limitations. An identical science payload has the same experiment identity; timestamps are fresh execution metadata. Python dataclasses currently enforce model contracts. Public JSON Schema and persistent job-event contracts are future work.

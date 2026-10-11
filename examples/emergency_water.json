@@ -1,0 +1,17 @@
+{
+  "id": "emergency-water-demo-v1",
+  "objective": "Deliver at least 95% of hospital and shelter demand despite each declared outage within a 700-unit capacity budget.",
+  "nodes": ["source-west", "source-east", "junction-west", "junction-east", "hospital", "shelter"],
+  "supply": {"source-west": 100, "source-east": 100},
+  "demand": {"hospital": 40, "shelter": 30},
+  "budget": 700,
+  "target": 0.95,
+  "edges": [
+    {"id": "west-trunk", "tail": "source-west", "head": "junction-west", "unit_cost": 2, "max_capacity": 100, "corridor": "west"},
+    {"id": "east-trunk", "tail": "source-east", "head": "junction-east", "unit_cost": 2, "max_capacity": 100, "corridor": "east"},
+    {"id": "west-hospital", "tail": "junction-west", "head": "hospital", "unit_cost": 1, "max_capacity": 60, "corridor": "west"},
+    {"id": "west-shelter", "tail": "junction-west", "head": "shelter", "unit_cost": 1, "max_capacity": 50, "corridor": "west"},
+    {"id": "east-hospital", "tail": "junction-east", "head": "hospital", "unit_cost": 1, "max_capacity": 60, "corridor": "east"},
+    {"id": "east-shelter", "tail": "junction-east", "head": "shelter", "unit_cost": 1, "max_capacity": 50, "corridor": "east"}
+  ]
+}

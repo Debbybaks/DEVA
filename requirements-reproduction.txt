@@ -1,0 +1,4 @@
+# Exact scientific dependency versions used for the committed experiment.
+# Python version and solver details are recorded in its evidence envelope.
+numpy==2.3.5
+scipy==1.17.0

@@ -1,0 +1,7 @@
+# Initial validation report
+
+Local execution on 2026-10-11: Python 3.11-compatible runtime, NumPy 2.3.5, SciPy 1.17.0; exact Python version is in the evidence package. Sixteen unittest tests pass. Scope: analytical chain bottleneck, parallel delivery, disconnected path, supply bound, analytical capacity cost, budget/outage infeasibility, 30 seeded monotonicity/conservation cases, malformed numeric and structural input, invalid scenario bounds, Wilson extremes, sample reproducibility, candidate regression, immutable scientific hashing, no-survivor outcome and CLI export/duplicate-key rejection.
+
+The example robust synthesis cost is 399, independently re-simulated in every declared scenario. Nominal design is rejected with negative evidence retained. Every operational result checks conservation and bound residuals at tolerance 1e-7. Each candidate receives the same held-out scenarios. The evidence records all 200 scenarios and outcomes rather than just successful results.
+
+This verifies software behaviour for tested cases. It is not independent scientific review, hydraulic calibration, physical validation, formal proof, cross-platform bitwise reproducibility or a frontend end-to-end test. Broad random graph coverage and performance benchmarks remain future work. Version ranges in pyproject.toml are installation bounds, not a portable exact lock; requirements-reproduction.txt records this demonstration environment.
