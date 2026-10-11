@@ -30,3 +30,5 @@ POST `/api/hydraulic/lab` accepts SI diameters, closed pipe IDs, demand multipli
 - Existing `/api/jobs/{id}`, `/events`, `/view`, `/evidence` and cancellation routes support twin jobs. Progress stages correspond to actual observations/calibration/cascade/agent/persistence work.
 
 Custom field ingestion, free-form agent code, arbitrary simulation plugins and authenticated multi-user operation are not exposed. Python APIs support explicit observation/parameter calibration separately; HTTP twin jobs currently use the reproducible synthetic benchmark, not uploaded field observations. Cooperative cancellation checkpoints occur between stages, not inside each nonlinear fit.
+
+Twin projections include `failed_cases` with stored validation indices, original scenarios, exact solved state and GPU values; `unknown_cases` remain separately identified. These independent scenarios are not a temporal trajectory. The frontend disables Play for this collection while allowing discrete inspection. No new hydraulic solver is introduced in the browser.

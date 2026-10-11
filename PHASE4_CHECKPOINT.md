@@ -10,7 +10,7 @@ Calibration observations, local identifiability, bounded multistart fitting, hel
 
 90 Python tests passed in 121.215 s. 11 frontend tests and strict production build passed; production frontend has not changed since those checks. Original four browser tests passed at baseline. Expanded browser run initially passed five and failed hydraulic startup; the unchanged five-second hydraulic assertion subsequently passed after caching/prewarming scientific projection and gzip compression. SSE explicitly bypasses compression. Latest two twin browser flows passed in targeted runs. A newly added exact-text locator failed because its element includes a nested annotation; corrected locator checks the same label without changing timeout. No existing test was weakened. A complete six-test browser run after the startup fix has not yet been performed.
 
-Three historical experiments were executed and replayed exactly before Phase-4 expansion; preserved replay payloads were rechecked afterwards. Original artifact byte SHA256: `14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e`. The wrapper scripts/replay_history.py has not itself been exercised yet. See artifacts/phase4-validation.json.
+Three historical experiments were executed and replayed exactly before Phase-4 expansion; preserved replay payloads were rechecked afterwards. Original artifact byte SHA256: `14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e`. The wrapper scripts/replay_history.py was subsequently exercised during resume; all three payloads and hashes matched exactly. See artifacts/phase4-validation.json.
 
 ## Scientific results
 
@@ -36,6 +36,7 @@ git status --short
 git log -6 --oneline
 .venv/bin/python -m unittest discover -s tests -q
 .venv/bin/python scripts/replay_history.py
+.venv/bin/python scripts/replay_twin.py
 .venv/bin/python scripts/twin_report.py artifacts/digital-twin-evidence.json --output /tmp/twin-report.md
 cd apps/command
 npm test
@@ -48,3 +49,15 @@ Run targeted tests after changes; avoid repeating the 90-test suite immediately 
 ## Resumed milestone
 
 Checkpoint preparation completed in commit `2b6b861`. The unchanged hydraulic browser flow passed again after resume (7.7 s); both expanded twin flows passed across targeted runs. Three new diagnosis tests passed. Frozen 4/40 failures are now diagnosed in AGENT_REMAINING_FAILURE_ANALYSIS.md and a hash-linked machine-readable artifact. All share east-trunk loss and connected pressure/service deficit. Diagnostic west-trunk 175 mm upgrade resolves those stored cases but exceeds budget; no independent reliability claim is made. Next: propagate bounded calibration uncertainty into these cases, then use a fresh sealed split for any new design selection.
+
+Resumed local uncertainty study: see CALIBRATION_FAILURE_UNCERTAINTY.md and artifacts/calibration-failure-uncertainty.json. All four cases fail across all 64 shared parameter draws; structural discrepancy remains excluded. CPU/render benchmark scripts have now run; 2D meets measured frame targets, software 3D and agent p95 do not. No WebGPU adapter is available. The world now projects actual frozen failed states separately from time trajectories; final milestone validation is underway.
+
+## Current resumed validation / next step
+
+All six live-browser tests passed in a complete run, including the unchanged hydraulic five-second assertion, real worker jobs and frozen case inspection. All 12 frontend tests and production build passed. Complete Python milestone: 96 tests PASS (80.147 s); a subsequent provenance-only addition to calibration-risk output passed its three affected tests. No existing test was weakened. One new test used a Testing Library option unsupported by its TypeScript signature; the option was corrected and build passed.
+
+Latest scientific implementation revision: `026a39a418154f9458a4e1df575c1fa72c0fc785`. Derived covariance evidence was generated with clean scientific sources at this revision. Field calibration, structural model discrepancy, physical rupture validity, globally optimal cost/reliability and hardware GPU performance remain unestablished.
+
+Next exact implementation step: make the completed frozen-case diagnosis an explicit optional registered engineering tool, recording that reused validation cases become diagnostic/training evidence; only then extend bounded candidate competition with a freshly sealed independent validation seed. Preserve the original 4/40 package unchanged. Profile the long first agent invocation before choosing performance interventions. Do not restart calibration or recreate completed world layers.
+
+Pinned historical replay wrapper now passes all three exact scientific experiments at revision 118b712. The new scripts/replay_twin.py additionally replays the full immutable twin package at its recorded b780be4 source revision; it passed exact full-payload and hash replay, preserving 4/40 and target False. This protects calibration/agent/cascade identity across later source fingerprint changes.

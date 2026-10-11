@@ -41,3 +41,5 @@ Remaining gates: field/reference datasets and model discrepancy; global structur
 Next: diagnose the frozen agent's 4/40 held-out failures with controlled counterfactuals; retain this validation split as diagnostic evidence, never reuse it to claim independent improved reliability.
 
 Resumed milestone: COMPLETE — hash-checked frozen 4/40 diagnosis, exact failed-state replay, controlled demand/head/outage counterfactuals and negative single-pipe cost probes. PARTIAL — calibration uncertainty propagation into these cases and independent validation of diagnostic redesigns.
+
+Resumed uncertainty milestone: COMPLETE — local calibration covariance propagation through all four fixed failures, full retained 64-draw states and bounded input validation; all four fail in every draw. COMPLETE — measured CPU/renderer benchmark infrastructure execution. PARTIAL — agent latency budget (p95 20.292 s exceeds 10 s); software 3D remains slow. BLOCKED — WebGPU/WGSL comparative measurements: no adapter. Field/model-discrepancy uncertainty remains NOT STARTED. COMPLETE — failed-case world inspection passed frontend and live-browser milestone validation.

@@ -1,0 +1,118 @@
+{
+  "renderer": "Chromium requested software ANGLE SwiftShader",
+  "viewport": [
+    1600,
+    1000
+  ],
+  "webgpu": {
+    "available": false,
+    "reason": "No adapter returned",
+    "info": null
+  },
+  "workloads": [
+    {
+      "mode": "standard",
+      "layer": "pressure",
+      "particle_count": 0,
+      "particle_attribute_bytes": 0,
+      "mean_frame_ms": 106.66333333338301,
+      "p95_frame_ms": 150.0,
+      "samples": 60,
+      "javascript_heap_bytes": 33010215,
+      "render_resolution": {
+        "width": 1552,
+        "height": 658,
+        "css_width": 1552,
+        "css_height": 658
+      }
+    },
+    {
+      "mode": "standard",
+      "layer": "flow",
+      "particle_count": 1349,
+      "particle_attribute_bytes": 32376,
+      "mean_frame_ms": 100.68333333333334,
+      "p95_frame_ms": 150.0,
+      "samples": 60,
+      "javascript_heap_bytes": 29720751,
+      "render_resolution": {
+        "width": 1552,
+        "height": 658,
+        "css_width": 1552,
+        "css_height": 658
+      }
+    },
+    {
+      "mode": "high",
+      "layer": "pressure",
+      "particle_count": 0,
+      "particle_attribute_bytes": 0,
+      "mean_frame_ms": 104.15333333337057,
+      "p95_frame_ms": 166.60499999999865,
+      "samples": 60,
+      "javascript_heap_bytes": 35618607,
+      "render_resolution": {
+        "width": 1552,
+        "height": 658,
+        "css_width": 1552,
+        "css_height": 658
+      }
+    },
+    {
+      "mode": "high",
+      "layer": "flow",
+      "particle_count": 2694,
+      "particle_attribute_bytes": 64656,
+      "mean_frame_ms": 99.84833333333336,
+      "p95_frame_ms": 150.0,
+      "samples": 60,
+      "javascript_heap_bytes": 29617872,
+      "render_resolution": {
+        "width": 1552,
+        "height": 658,
+        "css_width": 1552,
+        "css_height": 658
+      }
+    },
+    {
+      "mode": "2d",
+      "layer": "pressure",
+      "particle_count": 0,
+      "particle_attribute_bytes": 0,
+      "mean_frame_ms": 16.13333333337056,
+      "p95_frame_ms": 16.705000000003928,
+      "samples": 60,
+      "javascript_heap_bytes": 30535885,
+      "render_resolution": null
+    },
+    {
+      "mode": "2d",
+      "layer": "flow",
+      "particle_count": 0,
+      "particle_attribute_bytes": 0,
+      "mean_frame_ms": 16.20666666667906,
+      "p95_frame_ms": 16.80000000000291,
+      "samples": 60,
+      "javascript_heap_bytes": 30664837,
+      "render_resolution": null
+    }
+  ],
+  "api_latency_ms": {
+    "mean": 45.44000000022352,
+    "p95": 57.609999999590215,
+    "samples": [
+      57.5,
+      57.5,
+      57.69999999925494,
+      34.5,
+      33.70000000298023,
+      40,
+      36.600000001490116,
+      45.5,
+      43.69999999925494,
+      47.69999999925494
+    ]
+  },
+  "page_errors": [],
+  "scope": "Same stored initial model state. Frame timing is browser rAF, not GPU kernel timing. Attribute bytes exclude driver overhead; JS heap is not GPU memory. No WGSL before/after benchmark without an available WebGPU adapter; no claimed GPU-compute acceleration."
+}

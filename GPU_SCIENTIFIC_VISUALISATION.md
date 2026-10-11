@@ -8,4 +8,4 @@ Pressure uses exact computed node heads rather than an invented continuous groun
 
 Adaptive default rendering samples 60 frames and switches to numerical 2D if measured p95 exceeds 80 ms. Users can explicitly choose a fidelity mode. This changes rendering only; no scientific values are downgraded. Target interactive budgets are mean ≤20 ms / p95 ≤33.4 ms for supported 2D, and hardware-3D mean ≤16.7 ms / p95 ≤33.4 ms. Hardware-3D targets are not validated by software ANGLE results. Standalone 2D remains the supported low-load research mode.
 
-Checkpoint status: Phase-4 benchmark infrastructure is unexecuted. No new WebGPU comparison, frame-budget achievement or GPU speedup has been established.
+Resumed measurement: `artifacts/twin-render-performance.json` records actual software WebGL and 2D workloads. 2D met the tested frame budgets; software 3D did not. No WebGPU adapter returned, so comparative WGSL measurement is BLOCKED and no GPU speedup is established. See PERFORMANCE.md for figures and scope.

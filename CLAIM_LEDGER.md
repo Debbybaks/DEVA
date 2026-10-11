@@ -11,3 +11,11 @@ Claims from old capacity experiments remain unchanged and scoped to their old mo
 ## Phase-4 claim objects
 
 The separate digital-twin package records claims C-CALIBRATION (held-out synthetic pressure error), C-IDENTIFIABILITY (local sensitivity rank) and C-CASCADE (recorded research-hazard events). Every claim carries an evidence path, status, assumptions, limitations and reproduction route. The autonomous investigation separately records finite-sample component-service claims, structured critique and exact tool-output hashes. The world exposes these via a claim/data/model/validation evidence graph. No calibration or cascade claim inherits bounded topology verification status.
+
+## Resumed Phase-4 derived claims
+
+The frozen investigation remains 4/40, with the requested 2% target unestablished. `artifacts/agent-remaining-failure-diagnosis.json` links to the source experiment by full hash and retains exact replay, conditional counterfactuals and unsuccessful diagnostic upgrades. The statement that removing outages resolves the four cases is numerically audited under fixed PDD assumptions; it is not a formal causal guarantee. The west-trunk cost result applies to those reused cases, not independent population reliability.
+
+`artifacts/calibration-failure-uncertainty.json` retains all parameter draws and state results. Its claim is that all four fixed cases fail under every draw in the specified local covariance ensemble. This is a finite conditional uncertainty experiment, not posterior probability, field validation or structural-model robustness. Reproduce with `python -m deva.calibration_risk` and the recorded seed/sample count. Model version, scientific source revision/fingerprint and calibration-source hash identify the computation.
+
+Renderer and CPU claims refer directly to the full samples in `artifacts/twin-render-performance.json` and `artifacts/twin-science-performance.json`. Software rendering and first-use variation remain explicit. No hardware WebGPU acceleration or universal service-latency claim has been earned.

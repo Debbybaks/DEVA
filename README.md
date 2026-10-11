@@ -115,3 +115,7 @@ The new cascade uses a state-dependent, explicitly **uncalibrated research hazar
 The bounded Engineering Agent invokes registered scientific tools with a stored plan, separate scenario streams, candidate/cost limits, stopping conditions and self-critique. It does not execute generated code. A 2% failure-probability objective requires statistical evidence, not a zero-looking count. See [AUTONOMOUS_ENGINEER.md](AUTONOMOUS_ENGINEER.md).
 
 Historical exact replay uses an isolated recorded scientific revision because current source fingerprints legitimately change when new modules are added. `scripts/replay_history.py` never overwrites historical artifacts. The new JSON/Markdown package is separate at `artifacts/digital-twin-evidence.json` and `artifacts/digital-twin-report.md`.
+
+### Resumed Phase-4 evidence
+
+[Checkpoint](PHASE4_CHECKPOINT.md) records current scopes and continuation. The frozen agent still fails 4/40 hospital scenarios; its 2% target is unestablished. [Failure diagnosis](AGENT_REMAINING_FAILURE_ANALYSIS.md) and [calibration uncertainty](CALIBRATION_FAILURE_UNCERTAINTY.md) expose computed mechanisms and diagnostic costs. `python scripts/replay_twin.py` replays the complete stored synthetic package at its recorded source revision. Failure-world inspection uses actual held-out states, not fabricated animation.

@@ -14,5 +14,5 @@ for name,fn in functions.items():
     for _ in range(5):
         t=time.perf_counter();fn();times.append(time.perf_counter()-t)
     measurements[name]=dict(samples_seconds=times,mean_seconds=float(np.mean(times)),p95_seconds=float(np.quantile(times,.95)))
-report=dict(environment=dict(python=platform.python_version(),numpy=np.__version__,scipy=scipy.__version__),measurements=measurements,peak_rss_mib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024,scope='Local six-node synthetic warm benchmark; five repeats, host-specific wall clock. Agent benchmark omits optional calibration tools. No Rust/WASM or surrogate justified by these workload sizes.')
+report=dict(environment=dict(python=platform.python_version(),numpy=np.__version__,scipy=scipy.__version__),measurements=measurements,peak_rss_mib=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024,scope='Local six-node synthetic benchmark; five sequential repetitions including first-use effects and host variation. Agent benchmark omits optional calibration tools. No isolated kernel bottleneck established to justify Rust/WASM or surrogates.')
 Path('artifacts/twin-science-performance.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))

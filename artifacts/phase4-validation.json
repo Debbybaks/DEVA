@@ -40,5 +40,45 @@
     "Synthetic same-model calibration; no field validation",
     "Uncalibrated research rupture hazard",
     "Bounded Z3 topology proof does not prove hydraulic reality"
-  ]
+  ],
+  "resumed_milestone": {
+    "scientific_source_revision": "026a39a418154f9458a4e1df575c1fa72c0fc785",
+    "python": {
+      "tests": 96,
+      "result": "PASS",
+      "seconds": 80.147,
+      "subsequent_metadata_only_change": "3 affected calibration-risk tests PASS"
+    },
+    "frontend": {
+      "tests": 12,
+      "result": "PASS",
+      "seconds": 12.97
+    },
+    "browser": {
+      "tests": 6,
+      "result": "PASS",
+      "duration": "1.6 minutes",
+      "hydraulic_assertion": "unchanged 5-second assertion; PASS"
+    },
+    "build": "PASS; initial new test had unsupported Testing Library exact option; corrected type usage, no assertion removed",
+    "historical_replay_wrapper": "PASS: all three scientific payloads and hashes EXACT at pinned revision 118b712",
+    "benchmarks": [
+      "artifacts/twin-science-performance.json",
+      "artifacts/twin-render-performance.json"
+    ],
+    "scientific_results": {
+      "hospital_failures": "4/40; 2% target NOT established",
+      "conditional_covariance": "4 fixed cases fail in all 64 parameter draws; structural discrepancy excluded"
+    },
+    "retained_development_failures": [
+      "New Testing Library test used an unsupported TypeScript exact option; corrected signature, same assertion.",
+      "Initial pinned twin replay helper read configuration at envelope root; corrected science path; first attempt failed before any scientific computation."
+    ],
+    "twin_pinned_replay": {
+      "result": "EXACT",
+      "experiment_id": "deva-twin-882834fc7dd2ec29",
+      "revision": "b780be432e9f8275125c5ecfefb9d77a00863ba6",
+      "scope": "Full calibration, autonomous investigation and cascade science payload/hash; timestamp/runtime excluded"
+    }
+  }
 }

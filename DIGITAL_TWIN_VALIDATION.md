@@ -9,3 +9,5 @@ Frontend and live-browser tests use actual Python projections. They inspect meas
 The synthetic truth and estimator use the same equations. This validates controlled parameter inference but cannot establish external physical fidelity. Existing analytical hydraulic validation remains necessary and does not become field validation because calibration residuals are low. Local covariance/prediction intervals exclude model discrepancy. Research hazard coefficients remain uncalibrated.
 
 See `artifacts/phase4-validation.json` for final counts, replay identities, validation scope and retained development failures. No existing test assertion or timeout was weakened.
+
+Resumed milestone: 96 complete Python tests, 12 frontend tests, six complete browser tests and production build pass. Provenance-only calibration-risk output metadata was subsequently checked with its three targeted tests. Both pinned replay helpers now pass: three historical payloads plus the complete immutable twin package. Original 38/200 artifact bytes remain unchanged. The diagnosis and local covariance ensemble add conditional evidence, not a new reliability target claim.
