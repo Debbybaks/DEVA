@@ -56,6 +56,13 @@ class HydraulicRequest(BaseModel):
     test_count: int = Field(default=100, ge=2, le=200)
 
 
+class TwinRequest(BaseModel):
+    model_config=ConfigDict(extra="forbid",strict=True)
+    raw: dict
+    diameters: list[float]=Field(min_length=1,max_length=60)
+    seed: int=Field(default=20261030,ge=0,lt=2**32-21)
+
+
 class HydraulicLabRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     raw: dict
@@ -224,6 +231,9 @@ def create_app(directory=None):
         if row["status"] != "completed":
             raise HTTPException(409, "Evidence not completed")
         record = json.loads((app.state.jobs.directory / f"{jid}.json").read_text())
+        if record["science"]["schema_version"] == "4.0":
+            from .twin_view import project as twin_project
+            return JSONResponse(twin_project(record))
         if record["science"]["schema_version"] == "3.0":
             if record["science"]["recommendation"] is None:
                 raise HTTPException(
@@ -421,6 +431,30 @@ def create_app(directory=None):
         if not path.exists():
             raise HTTPException(404, "Unknown hydraulic evidence")
         return FileResponse(path, media_type="application/json")
+
+    @app.get("/api/twin/{kind}")
+    def twin_artifact(kind: str):
+        from .twin_view import project as twin_project
+        if kind not in ("view","evidence"): raise HTTPException(404,"Unknown twin artifact")
+        path=ROOT/"artifacts/digital-twin-evidence.json"
+        if not path.exists(): raise HTTPException(404,"Synthetic twin benchmark not generated")
+        record=json.loads(path.read_text())
+        return JSONResponse(twin_project(record) if kind=="view" else record)
+
+    @app.post("/api/twin/jobs",status_code=202)
+    def twin_job(request: TwinRequest):
+        from .hydraulic_v2 import parse
+        import math
+        try:
+            model=parse(request.raw)
+            if len(request.diameters)!=len(model['pipes']) or any(not math.isfinite(d) or d<=0 or d>1 for d in request.diameters): raise ValueError("Explicit positive SI diameters required for every pipe")
+            # The benchmark has explicit component names and corridor ownership.
+            from .digital_twin import benchmark_data
+            benchmark_data(request.raw,request.diameters,request.seed,noise=False)
+            record,cached=app.state.jobs.submit(dict(engine="twin",**request.model_dump()))
+            return dict(job_id=record['id'],cached=cached)
+        except ValueError as error: raise HTTPException(422,str(error))
+        except RuntimeError as error: raise HTTPException(429,str(error))
 
     return app
 
