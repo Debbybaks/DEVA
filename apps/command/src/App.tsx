@@ -8,6 +8,7 @@ import {
 } from "react";
 import { z } from "zod";
 import { overview, positions, type Pose } from "./geometry";
+const TwinWorkspace = lazy(() => import("./TwinWorkspace"));
 const HydraulicWorkspace = lazy(() => import("./HydraulicWorkspace"));
 const NetworkCanvas = lazy(() => import("./NetworkCanvas"));
 import EvolutionMap from "./EvolutionMap";
@@ -34,8 +35,12 @@ const progressSchema = z.object({
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
 
 export default function App() {
+  const [twin, setTwin] = useState(
+    new URLSearchParams(window.location.search).get("model") === "twin",
+  );
   const [physics, setPhysics] = useState(
-    new URLSearchParams(window.location.search).get("model") === "hydraulic",
+    new URLSearchParams(window.location.search).get("model") === "hydraulic" ||
+      new URLSearchParams(window.location.search).get("model") === "twin",
   );
   const [state, dispatch] = useCommandState();
   const [view, setView] = useState<View | null>(null);
@@ -310,6 +315,17 @@ export default function App() {
     : dataUrl.includes("baseline")
       ? "/api/evidence/baseline"
       : "/api/evidence/evolution";
+  if (twin)
+    return (
+      <Suspense fallback={<p>Loading digital-twin laboratory…</p>}>
+        <TwinWorkspace
+          onBack={() => {
+            setTwin(false);
+            setPhysics(true);
+          }}
+        />
+      </Suspense>
+    );
   if (physics)
     return (
       <Suspense
@@ -355,6 +371,7 @@ export default function App() {
         </a>
         <nav aria-label="Command modes">
           <button onClick={() => setPhysics(true)}>Hydraulic V2</button>
+          <a href="/?model=twin">Digital twin</a>
           {(["laboratory", "evolution", "evidence"] as const).map((mode) => (
             <button
               key={mode}

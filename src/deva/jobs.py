@@ -57,7 +57,11 @@ def execute(directory, job_id, configuration):
     try:
         if configuration.get("engine") == "twin":
             from .digital_twin import experiment
-            result=experiment(**{k:v for k,v in configuration.items() if k!="engine"}, progress=lambda stage,details:progress(dict(stage=stage,**details)))
+
+            result = experiment(
+                **{k: v for k, v in configuration.items() if k != "engine"},
+                progress=lambda stage, details: progress(dict(stage=stage, **details)),
+            )
         elif configuration.get("engine") == "hydraulic":
             from .hydraulic_experiment import experiment
 

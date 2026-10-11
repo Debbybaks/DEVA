@@ -1,6 +1,7 @@
 """Typed local research API. Scientific work runs in separate processes."""
 
 import asyncio
+from functools import lru_cache
 from contextlib import asynccontextmanager
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -24,6 +25,14 @@ from .experiment import canonical
 from . import MODEL_VERSION
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+@lru_cache(maxsize=8)
+def twin_projection(path, modified_ns, size):
+    """Immutable artifact projection; metadata changes invalidate bounded cache."""
+    from .twin_view import project as twin_project
+
+    return twin_project(json.loads(Path(path).read_text()))
 
 
 class EvolutionRequest(BaseModel):
@@ -57,10 +66,10 @@ class HydraulicRequest(BaseModel):
 
 
 class TwinRequest(BaseModel):
-    model_config=ConfigDict(extra="forbid",strict=True)
+    model_config = ConfigDict(extra="forbid", strict=True)
     raw: dict
-    diameters: list[float]=Field(min_length=1,max_length=60)
-    seed: int=Field(default=20261030,ge=0,lt=2**32-21)
+    diameters: list[float] = Field(min_length=1, max_length=60)
+    seed: int = Field(default=20261030, ge=0, lt=2**32 - 21)
 
 
 class HydraulicLabRequest(BaseModel):
@@ -183,7 +192,7 @@ def create_app(directory=None):
         yield
         app.state.jobs.close()
 
-    app = FastAPI(title="DEVA Scientific Engine", version="0.3.0", lifespan=lifespan)
+    app = FastAPI(title="DEVA Scientific Engine", version="0.4.0", lifespan=lifespan)
 
     def job(jid):
         try:
@@ -233,7 +242,12 @@ def create_app(directory=None):
         record = json.loads((app.state.jobs.directory / f"{jid}.json").read_text())
         if record["science"]["schema_version"] == "4.0":
             from .twin_view import project as twin_project
-            return JSONResponse(twin_project(record))
+
+            path = app.state.jobs.directory / f"{jid}.json"
+            metadata = path.stat()
+            return JSONResponse(
+                twin_projection(str(path), metadata.st_mtime_ns, metadata.st_size)
+            )
         if record["science"]["schema_version"] == "3.0":
             if record["science"]["recommendation"] is None:
                 raise HTTPException(
@@ -435,26 +449,45 @@ def create_app(directory=None):
     @app.get("/api/twin/{kind}")
     def twin_artifact(kind: str):
         from .twin_view import project as twin_project
-        if kind not in ("view","evidence"): raise HTTPException(404,"Unknown twin artifact")
-        path=ROOT/"artifacts/digital-twin-evidence.json"
-        if not path.exists(): raise HTTPException(404,"Synthetic twin benchmark not generated")
-        record=json.loads(path.read_text())
-        return JSONResponse(twin_project(record) if kind=="view" else record)
 
-    @app.post("/api/twin/jobs",status_code=202)
+        if kind not in ("view", "evidence"):
+            raise HTTPException(404, "Unknown twin artifact")
+        path = ROOT / "artifacts/digital-twin-evidence.json"
+        if not path.exists():
+            raise HTTPException(404, "Synthetic twin benchmark not generated")
+        record = json.loads(path.read_text())
+        metadata = path.stat()
+        return JSONResponse(
+            twin_projection(str(path), metadata.st_mtime_ns, metadata.st_size)
+            if kind == "view"
+            else record
+        )
+
+    @app.post("/api/twin/jobs", status_code=202)
     def twin_job(request: TwinRequest):
         from .hydraulic_v2 import parse
         import math
+
         try:
-            model=parse(request.raw)
-            if len(request.diameters)!=len(model['pipes']) or any(not math.isfinite(d) or d<=0 or d>1 for d in request.diameters): raise ValueError("Explicit positive SI diameters required for every pipe")
+            model = parse(request.raw)
+            if len(request.diameters) != len(model["pipes"]) or any(
+                not math.isfinite(d) or d <= 0 or d > 1 for d in request.diameters
+            ):
+                raise ValueError(
+                    "Explicit positive SI diameters required for every pipe"
+                )
             # The benchmark has explicit component names and corridor ownership.
             from .digital_twin import benchmark_data
-            benchmark_data(request.raw,request.diameters,request.seed,noise=False)
-            record,cached=app.state.jobs.submit(dict(engine="twin",**request.model_dump()))
-            return dict(job_id=record['id'],cached=cached)
-        except ValueError as error: raise HTTPException(422,str(error))
-        except RuntimeError as error: raise HTTPException(429,str(error))
+
+            benchmark_data(request.raw, request.diameters, request.seed, noise=False)
+            record, cached = app.state.jobs.submit(
+                dict(engine="twin", **request.model_dump())
+            )
+            return dict(job_id=record["id"], cached=cached)
+        except ValueError as error:
+            raise HTTPException(422, str(error))
+        except RuntimeError as error:
+            raise HTTPException(429, str(error))
 
     return app
 

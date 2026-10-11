@@ -240,6 +240,7 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
         <h1>DEVA · Hydraulic science</h1>
         <p>{error || "Loading computed hydraulic evidence…"}</p>
         <button onClick={onBack}>Transport archive</button>
+        <a href="/?model=twin">Digital twin</a>
         {error && (
           <a href={url.replace("/view", "/evidence")}>
             Inspect retained experiment evidence
@@ -259,6 +260,7 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
         </div>
         <nav>
           <button onClick={onBack}>Transport archive</button>
+          <a href="/?model=twin">Digital twin</a>
           <button
             onClick={() => {
               setDemo(null);

@@ -3,6 +3,7 @@ import type { ReactNode, RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import FlowParticles from "./FlowParticles";
 import type { OrbitControls as OrbitImpl } from "three-stdlib";
 import type { Problem, Candidate, Result, Scenario, Layer } from "./contracts";
 import { positions, overview, type Pose } from "./geometry";
@@ -27,6 +28,33 @@ export type NetworkProps = {
     velocity_ms: number[];
     minimum_pressure_m: number;
     showPressure: boolean;
+  };
+  twin?: {
+    layer:
+      | "observations"
+      | "residuals"
+      | "uncertainty"
+      | "hazard"
+      | "pressure"
+      | "flow";
+    measurements: Record<
+      string,
+      {
+        value: number;
+        prediction: number;
+        residual: number;
+        sigma: number;
+        unit: string;
+        standardized: number;
+        parameterRatio: number | null;
+      }
+    >;
+    hazards: Record<string, { probability: number; rate_per_second: number }>;
+    gpu: Array<{
+      particle_count: number;
+      signed_velocity_ms: number;
+      length_m: number;
+    }>;
   };
   quality?: "standard" | "high";
   // Drei's portal declaration predates nullable React 19 refs; its implementation handles null.
@@ -116,7 +144,12 @@ function PipeMesh({
       ? props.hydraulic.velocity_ms[index]
       : flow / 30;
     uniforms.uActive.value =
-      props.layer === "flow" && available > 0 && Math.abs(flow) > 1e-9 ? 1 : 0;
+      !props.twin &&
+      props.layer === "flow" &&
+      available > 0 &&
+      Math.abs(flow) > 1e-9
+        ? 1
+        : 0;
     uniforms.uUncertainty.value = THREE.MathUtils.lerp(
       uniforms.uUncertainty.value,
       props.layer === "uncertainty"
@@ -146,6 +179,29 @@ function PipeMesh({
           depthWrite={false}
         />
       </mesh>
+      {props.twin?.layer === "flow" &&
+        available > 0 &&
+        props.twin.gpu[index]?.particle_count > 0 && (
+          <FlowParticles
+            a={a}
+            b={b}
+            count={Math.ceil(
+              props.twin.gpu[index].particle_count *
+                (props.quality === "high" ? 1 : 0.5),
+            )}
+            velocity={props.twin.gpu[index].signed_velocity_ms}
+            length={props.twin.gpu[index].length_m}
+            animate={props.animate}
+            speed={props.speed}
+          />
+        )}
+      {props.twin && (
+        <TwinMarker
+          id={e.id}
+          position={[middle[0], 0.65, middle[2]]}
+          {...props}
+        />
+      )}
       {available === 0 && (
         <mesh position={middle} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.2, 0.022, 8, 24]} />
@@ -165,6 +221,67 @@ function PipeMesh({
           </span>
         </Html>
       )}
+    </group>
+  );
+}
+function TwinMarker({
+  id,
+  position,
+  ...props
+}: NetworkProps & { id: string; position: [number, number, number] }) {
+  const data = props.twin?.measurements[id],
+    hazard = props.twin?.hazards[id],
+    layer = props.twin?.layer;
+  if (!props.twin || (!data && !(layer === "hazard" && hazard))) return null;
+  if (layer === "flow" || layer === "pressure") return null;
+  const risk =
+    layer === "hazard"
+      ? (hazard?.probability ?? 0)
+      : Math.min(1, Math.abs(data?.standardized ?? 0) / 3);
+  const color =
+    layer === "observations"
+      ? "#88b8cc"
+      : layer === "uncertainty"
+        ? "#d1aa62"
+        : new THREE.Color("#66b8ac")
+            .lerp(new THREE.Color("#d37b6d"), risk)
+            .getStyle();
+  return (
+    <group position={position}>
+      <mesh
+        onClick={(e) => {
+          e.stopPropagation();
+          props.select(id);
+        }}
+      >
+        <ringGeometry args={[0.19, 0.24, 32]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={
+            layer === "uncertainty"
+              ? Math.min(0.95, 0.25 + (data?.parameterRatio ?? 1) * 0.4)
+              : 0.85
+          }
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <Html
+        portal={props.labelPortal as RefObject<HTMLElement> | undefined}
+        position={[0, 0.27, 0]}
+        center
+        className="twin-marker"
+      >
+        <button onClick={() => props.select(id)}>
+          {layer === "hazard"
+            ? `HAZARD ${((hazard?.probability ?? 0) * 100).toFixed(1)}% / interval`
+            : layer === "residuals"
+              ? `Δ ${data?.residual.toPrecision(3)} ${data?.unit}`
+              : layer === "uncertainty"
+                ? `PARAMETER σ / SENSOR σ ${data?.parameterRatio?.toFixed(2) ?? "UNKNOWN"}`
+                : `SYNTHETIC ${data?.value.toPrecision(4)} ${data?.unit}`}
+        </button>
+      </Html>
     </group>
   );
 }
@@ -215,6 +332,9 @@ function Scene(props: NetworkProps) {
         const lost = props.sourceLosses?.includes(n);
         return (
           <group key={n} position={p[n]}>
+            {props.twin && (
+              <TwinMarker id={n} position={[0, 1.35, 0]} {...props} />
+            )}
             <mesh
               position={[0, 0.2, 0]}
               onClick={(event) => {
@@ -365,6 +485,23 @@ function Diagram(props: NetworkProps) {
               markerStart={props.result.flow[i] < 0 ? "url(#arrow)" : undefined}
               markerEnd={props.result.flow[i] > 0 ? "url(#arrow)" : undefined}
             />
+            {props.twin?.measurements[e.id] && (
+              <text
+                x={(a[0] + b[0]) / 2}
+                y={(a[1] + b[1]) / 2 + 18}
+                onClick={() => props.select(e.id)}
+              >
+                SYNTHETIC {props.twin.measurements[e.id].value.toPrecision(3)}{" "}
+                {props.twin.measurements[e.id].unit} · Δ{" "}
+                {props.twin.measurements[e.id].residual.toPrecision(2)}
+              </text>
+            )}
+            {props.twin?.layer === "hazard" && props.twin.hazards[e.id] && (
+              <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 + 18}>
+                HAZARD {(props.twin.hazards[e.id].probability * 100).toFixed(1)}
+                % / interval
+              </text>
+            )}
             <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 - 7}>
               {props.result.flow[i].toFixed(1)} m³/h
             </text>
@@ -395,6 +532,18 @@ function Diagram(props: NetworkProps) {
                 {props.hydraulic.pressure_head_m[n] === null
                   ? "Unknown"
                   : `${props.hydraulic.pressure_head_m[n]!.toFixed(2)} m`}
+              </text>
+            )}
+            {props.twin?.measurements[n] && (
+              <text
+                x={x}
+                y={y + 45}
+                textAnchor="middle"
+                onClick={() => props.select(n)}
+              >
+                SYNTHETIC {props.twin.measurements[n].value.toPrecision(3)}{" "}
+                {props.twin.measurements[n].unit} · Δ{" "}
+                {props.twin.measurements[n].residual.toPrecision(2)}
               </text>
             )}
             <text x={x} y={y - 22} textAnchor="middle">
