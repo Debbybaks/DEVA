@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query, Header
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 from .schema import Problem
 from .model import Scenario, simulate
@@ -153,15 +153,17 @@ def create_app(directory=None):
         )
         if name not in files:
             raise HTTPException(404, "Unknown evidence")
-        return project(json.loads((ROOT / "artifacts" / files[name]).read_text()))
+        return JSONResponse(
+            project(json.loads((ROOT / "artifacts" / files[name]).read_text()))
+        )
 
     @app.get("/api/jobs/{jid}/view")
     def job_view(jid: str):
         row = job(jid)
         if row["status"] != "completed":
             raise HTTPException(409, "Evidence not completed")
-        return project(
-            json.loads((app.state.jobs.directory / f"{jid}.json").read_text())
+        return JSONResponse(
+            project(json.loads((app.state.jobs.directory / f"{jid}.json").read_text()))
         )
 
     @app.post("/api/jobs", status_code=202)

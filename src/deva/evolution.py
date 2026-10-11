@@ -402,13 +402,16 @@ def evolve(
         )
         emit("audit_complete", candidate_id=c["id"])
     chosen = next((c for c in archive if c["id"] == recommendation), None)
+    emit("adversarial_search", candidate_id=recommendation)
     attack = discover(p, chosen["capacities"]) if chosen else None
+    emit("failure_diagnosis", candidate_id=recommendation)
     diagnosis = (
         diagnose(p, chosen["capacities"], heldout, chosen["heldout"]["results"])
         if chosen
         else None
     )
     sensitivity_seed = int(np.random.SeedSequence([seed, 314159]).generate_state(1)[0])
+    emit("sensitivity_analysis", candidate_id=recommendation)
     sensitivity_result = (
         sensitivity(
             p,

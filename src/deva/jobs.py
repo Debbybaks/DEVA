@@ -139,6 +139,12 @@ class JobStore:
         future = self.pool.submit(execute, str(self.directory), jid, configuration)
 
         def handle_crash(done):
+            if done.cancelled():
+                update(
+                    self.directory, jid, "cancelled", "Cancelled before worker startup"
+                )
+                emit(self.directory, jid, dict(stage="cancelled"))
+                return
             error = done.exception()
             if error:
                 update(self.directory, jid, "failed", str(error))
