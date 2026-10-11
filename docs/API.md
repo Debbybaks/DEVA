@@ -21,3 +21,12 @@ Limits: 30 API nodes, 60 pipes, four generations, 120 training/validation sample
 GET `/api/hydraulic/evidence` and `/api/hydraulic/view` expose the stored schema-3.0 experiment and explicit display projection. POST `/api/hydraulic/jobs` accepts strict quantity-aware raw geometry, seed, bounded generations and three split sizes; it uses the same durable jobs, events, cache, cancellation and full-evidence routes. Completed job views dispatch by scientific schema. No-budget-feasible experiments retain candidates and full evidence rather than selecting a fake design.
 
 POST `/api/hydraulic/lab` accepts SI diameters, closed pipe IDs, demand multiplier, head offset in m, friction multiplier and source losses. It performs a real process-backed solve, independent audit and observed causal trace. GET `/api/hydraulic/lab/{experiment_id}` downloads the content-addressed intervention with configuration, source revision, solver versions and all results. Unit-incompatible inputs are rejected. Solver nonconvergence remains an explicit failed/unknown evaluation, never a substituted state.
+
+## Phase-4 synthetic twin
+
+- `GET /api/twin/view`: hash-validated projection, observation/model pairs, cascade frames, GPU quantities, sensor layouts, agent outputs, proof/counterexample state and limits.
+- `GET /api/twin/evidence`: complete schema-4.0 package.
+- `POST /api/twin/jobs`: strict `{raw, diameters, seed}`; diameters are explicit SI metres. Runs the bounded named-component synthetic benchmark through existing workers.
+- Existing `/api/jobs/{id}`, `/events`, `/view`, `/evidence` and cancellation routes support twin jobs. Progress stages correspond to actual observations/calibration/cascade/agent/persistence work.
+
+Custom field ingestion, free-form agent code, arbitrary simulation plugins and authenticated multi-user operation are not exposed. Python APIs support explicit observation/parameter calibration separately; HTTP twin jobs currently use the reproducible synthetic benchmark, not uploaded field observations. Cooperative cancellation checkpoints occur between stages, not inside each nonlinear fit.

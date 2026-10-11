@@ -97,3 +97,21 @@ Z3 verifies bounded connectivity after any single pipe outage and provides a two
 Geometry, reservoir heads, Darcy factors and prices remain uncalibrated. The new costs and seeds differ from the old capacity experiment; no cross-model universal improvement is claimed. The pipeline retains failures and labels missing reliability levels rather than inventing a 100% design.
 
 Phase-3 validation: **67 Python tests, eight frontend tests, four real-browser flows**, passing strict production build and exact replay of all three scientific payloads. Review [artifacts/hydraulic-report.md](artifacts/hydraulic-report.md), [artifacts/hydraulic-world.png](artifacts/hydraulic-world.png) and [artifacts/hydraulic-evidence.json](artifacts/hydraulic-evidence.json). The selected hydraulic design has 10/100 held-out failures; a higher-cost catalogue design has 4/100 on that same split. This descriptive tradeoff does not change the frozen recommendation or imply superiority to the older capacity experiment.
+
+## Phase 4: synthetic digital-twin laboratory
+
+Open `http://localhost:5173/?model=twin` after starting the same API and command application. The original transport and hydraulic worlds remain available. The new world attaches synthetic observation markers, residuals and local uncertainty directly to the network; shared-camera comparison shows initial versus fitted predictions. Stored stochastic cascade events, sensor layouts, agent mutations, bounded topology counterexamples and property-specific proof artifacts remain inspectable. Demonstration 2.0 guides ten real-data stages; it does not generate fake outcomes.
+
+```bash
+.venv/bin/python -m deva.digital_twin examples/emergency_water_hydraulic.json --seed 20261030 --output /tmp/twin-replay.json
+.venv/bin/python scripts/twin_report.py /tmp/twin-replay.json --output /tmp/twin-report.md
+.venv/bin/python scripts/replay_history.py
+```
+
+The calibration benchmark estimates west/east friction multipliers and a demand coefficient from synthetic pressure/flow observations. It checks local identifiability and disjoint held-out predictions. Accepted **BENCHMARK CALIBRATED** status does not mean field calibration. Rank-deficient problems withhold parameter covariance. See [CALIBRATION_ENGINE.md](CALIBRATION_ENGINE.md), [IDENTIFIABILITY.md](IDENTIFIABILITY.md) and [CALIBRATION_VALIDATION.md](CALIBRATION_VALIDATION.md).
+
+The new cascade uses a state-dependent, explicitly **uncalibrated research hazard**, seeded draws and audited hydraulic redistribution. Real-world material rupture, leakage before isolation and transient pressure waves remain unmodelled. See [RUPTURE_MODEL.md](RUPTURE_MODEL.md) and [CASCADE_ENGINE.md](CASCADE_ENGINE.md).
+
+The bounded Engineering Agent invokes registered scientific tools with a stored plan, separate scenario streams, candidate/cost limits, stopping conditions and self-critique. It does not execute generated code. A 2% failure-probability objective requires statistical evidence, not a zero-looking count. See [AUTONOMOUS_ENGINEER.md](AUTONOMOUS_ENGINEER.md).
+
+Historical exact replay uses an isolated recorded scientific revision because current source fingerprints legitimately change when new modules are added. `scripts/replay_history.py` never overwrites historical artifacts. The new JSON/Markdown package is separate at `artifacts/digital-twin-evidence.json` and `artifacts/digital-twin-report.md`.

@@ -60,6 +60,19 @@ test("synthetic observations → held-out calibration → emergent cascade → b
       exact: true,
     }),
   ).toBeVisible();
+  await page.getByLabel("Twin sequence").selectOption("counterexample");
+  await page.getByLabel("Twin inspect component").selectOption("hospital");
+  await expect(
+    page.getByText("Pressure head: UNKNOWN m", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.locator(".twin-state-label").first(),
+  ).toContainText("SIMULATED / FORMAL COUNTEREXAMPLE");
+  await page.getByLabel("Twin sequence").selectOption("agent");
+  await page.getByLabel("Agent candidate").selectOption("agent:c000");
+  await expect(
+    page.locator(".twin-state-label").first(),
+  ).toContainText("SIMULATED / AGENT CANDIDATE");
   await page.getByRole("button", { name: "Demonstration 2.0" }).click();
   for (let n = 0; n < 9; n++)
     await page.getByRole("button", { name: "Next", exact: true }).click();

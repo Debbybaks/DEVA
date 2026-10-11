@@ -35,3 +35,11 @@ Input is bounded structured JSON; there is no arbitrary generated code execution
 ## Phase-3 update
 
 Phase 3 adds a schema-3.0 pressure-dependent hydraulic engine, explicit unit boundary, source fingerprint, bounded Z3 proof objects and the same durable workers. `hydraulic_view` projects SI truth for the extended scene; historical schemas and payloads are unchanged.
+
+## Phase-4 digital-twin boundary
+
+`calibration.py` validates unit-safe observations and bounded parameters, estimates parameters, reports local identifiability/covariance and searches sensor layouts. `digital_twin.py` constructs independently seeded synthetic calibration/validation data, explicit knowledge categories, incremental prefix fits, ensemble evidence and a claim graph. `rupture.py` adds an uncalibrated stochastic hazard hypothesis with audited quasi-steady cascade frames. `engineering_agent.py` invokes a fixed registry of scientific tools, stores a plan and stops under explicit constraints.
+
+Schema 4.0 packages are separate from immutable historical schemas. `twin_view.py` projects stored results, observations and GPU-ready quantities; the browser never fits or simulates independently. The same process pool, durable jobs, SSE progress and download routes serve the twin. Read-only twin projections use a bounded file-metadata cache; atomic artifact replacement invalidates it. The source fingerprint includes all Python modules; historical replay runs in the recorded source revision.
+
+`TwinWorkspace` reuses the existing Three.js/2D network world. GPU tracers receive signed velocity, physical pipe length and flow-derived counts from Python. Their phase progresses at v/L; schematic geometry, radial offsets and display speed are explicitly illustrative. Observation, residual, pressure, uncertainty and hazard layers expose different quantities. Adaptive rendering changes fidelity only. No WebGPU, surrogate or Rust scientific implementation is claimed.

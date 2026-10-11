@@ -23,3 +23,9 @@ Comparison uses shared camera, scenario index and layer state. Benchmarks should
 ## Phase-3 measurements
 
 `benchmarks/hydraulic.py` independently records fresh nonlinear throughput, evaluations, errors and memory in `artifacts/hydraulic-performance.json`. `benchmarks/render_modes.py` samples the same real hydraulic state across fidelity modes and probes WebGPU. The measured software medians were 116.75 ms standard, 116.65 ms high-resolution, and 16.70 ms scientific 2D. The small difference between the two 3D measurements is not evidence that higher resolution is faster; warm-up and shared-host variability matter. Effective rendering resolutions are recorded. No WebGPU adapter was obtained in this environment, and no WGSL speedup is claimed. Python, WebGL and SVG remain the justified implementations; Rust/WASM is still deferred. See GPU_BENCHMARKS.md for scope.
+
+## Phase-4 workload budgets
+
+For the six-node synthetic benchmark, targets are full three-start calibration ≤10 s, a bounded non-calibration agent investigation ≤10 s, full twin investigation ≤30 s, cached twin API p95 ≤150 ms and scientific process peak RSS ≤256 MiB. These are development budgets, not universal service guarantees. The Phase-4 benchmark scripts are implemented but have not yet been executed; neither `artifacts/twin-science-performance.json` nor `artifacts/twin-render-performance.json` exists at this checkpoint. These budgets are unvalidated. Shared-host wall-clock variation is expected and no hard realtime guarantee is made.
+
+Default twin rendering measures its own first 60 frames and degrades to exact numerical 2D above 80 ms p95. Explicitly selected modes remain available for investigation. Hardware 3D targets and GPU-compute memory/runtime have not been established in this software-only environment. Large networks, stronger physics and field data may alter the bottlenecks; Rust/WASM/surrogates remain unjustified at the current workload size.

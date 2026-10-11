@@ -17,3 +17,12 @@
 ## Phase-2 implementation status
 
 Additional Phase-2 risks: training Pareto overfitting (sealed held-out audits); software-GPU frame cost (measured, reduced DPR, selectable/automatic low-load mode); large evidence views (direct JSON response serialization, future paging); native solver cancellation latency (cooperative checkpoints); local API lacks authentication (loopback-only research use). Hydraulic calibration and independent physical validation remain open.
+
+## Phase-4 research risks
+
+- Same-equation synthetic calibration can conceal structural model error. Mitigation: explicit SYNTHETIC labels, held-out excitation and no field-validity claim; obtain independent reference/field data before certification.
+- Local sensitivity rank can imply false global uniqueness. Mitigation: retain singular values/condition/correlations, label local scope and withhold covariance for rank deficiency/bounds.
+- Phenomenological hazard can be mistaken for material rupture prediction. Mitigation: separate hazard/state, expose coefficients and draws, preserve UNMODELLED field-rupture limitation and no CFD/transient claims.
+- Interval-end stochastic cascades depend on timestep. Mitigation: retain timestep and full pre/post states; convergence of cascade statistics is an outstanding gate.
+- Reusing audit data to design future candidates biases generalisation. Mitigation: frozen training selection, disjoint streams and explicit post-hoc labels; new investigations require new sealed seeds.
+- Software GPU rendering can impede interaction. Mitigation: measured adaptive 2D fallback and unchanged scientific values; no unsupported WebGPU speedup claim.

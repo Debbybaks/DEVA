@@ -22,3 +22,20 @@ The current build is a substantial local research platform, not certified infras
 Coupled hydraulic catalogue evolution now uses explicit SI geometry, pressure-dependent service, signed Darcy flow, source/velocity constraints and preserved uncertainty. Storage replay consists of computed extended-period states. A separately labelled operational valve-isolation policy produces real recomputed rounds; physical rupture remains unmodelled. Z3 earns bounded single-outage connectivity evidence and a two-outage counterexample. Claim objects, source fingerprints, observed causal traces, hydraulic comparison, an expanded central world and real-data Demonstration Mode are implemented.
 
 Remaining priorities: independent EPANET/full-network and field calibration; Reynolds-dependent friction and pump/source regulation; transient and material-based rupture physics; multi-seed reliability studies and uncertainty calibration; priced topology mutation/discrete construction constraints; independent proof-kernel checking; large-network rendering and hardware GPU benchmarks. These remain prerequisites for stronger scientific claims, not hidden features or cosmetic flags.
+
+## Phase 4 — implemented bounded digital-twin research loop
+
+Completed: unit-safe observation architecture; synthetic hidden-parameter recovery; local identifiability; disjoint calibration validation; local covariance/prediction intervals; explicit knowledge categories; dated prefix refits; exhaustive bounded sensor-layout comparison and conditional information-gain proxies; seeded state-dependent research hazard/cascade frames; causal graphs and conditional counterfactual hazard changes; explicit scheduled maintenance; retained ensembles; bounded tool-based Engineering Agent; topology-counterexample hydraulic replay; observed/residual/uncertainty world; GPU tracers; guided real-data presentation.
+
+Remaining gates: field/reference datasets and model discrepancy; global structural identifiability; correlated/bias-aware sensor models; demand/input estimation; regulated pump/source models; material/calibrated rupture and leak physics; transient hydraulics; timestep-convergence studies of cascade statistics; repair-resource/control optimisation; larger and multi-seed reliability studies; topology-changing design search; independently checked formal proof artifacts; hardware WebGPU benchmarks and large-network performance. Natural-language planning and online field operation remain unimplemented. These limits are not cosmetic flags.
+
+## Phase-4 checkpoint status
+
+| Status | Scope |
+|---|---|
+| COMPLETE | Bounded synthetic calibration and held-out validation; observation units/provenance; local identifiability; twin state; sensor-layout information proxy; seeded research-hazard cascades and replay; bounded registered-tool agent; counterexample simulation; scientific world and guided stored-data demonstration |
+| PARTIAL | Field-capable calibration, incremental online operation, physical cascade validity, general autonomous investigation, verification/evolution loop, performance infrastructure (Phase-4 benchmarks unrun) |
+| NOT STARTED | Bias-aware/correlated observation model, structural model discrepancy, material rupture/transient hydraulics, repair-resource optimisation, surrogate/WASM kernels |
+| BLOCKED | Field-certified claims without field data; calibrated rupture prediction without failure data; hardware WebGPU comparison without an available adapter |
+
+Next: diagnose the frozen agent's 4/40 held-out failures with controlled counterfactuals; retain this validation split as diagnostic evidence, never reuse it to claim independent improved reliability.

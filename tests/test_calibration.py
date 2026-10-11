@@ -201,3 +201,34 @@ class CalibrationTests(unittest.TestCase):
                 self.data["splits"]["calibration"],
                 current_sensors=["unknown"],
             )
+
+    def test_analytical_source_head_offset_and_observation_conversion(self):
+        spec = [
+            dict(
+                id="west-head-offset",
+                kind="source_head_offset",
+                components=["source-west"],
+                initial=0.0,
+                lower=-4.0,
+                upper=4.0,
+            )
+        ]
+        r = dict(
+            id="source:cal",
+            timestamp="2026-10-01T00:00:00Z",
+            sensor_id="west-pressure",
+            component="source-west",
+            measurement_type="pressure",
+            measurement=dict(value=48000.0, unit="mm"),
+            uncertainty=dict(value=100.0, unit="mm"),
+            scenario=dict(id="source:known-head"),
+            provenance=dict(kind="SYNTHETIC", source="analytical fixed-head boundary"),
+        )
+        validation = deepcopy(r)
+        validation["id"] = "source:validation"
+        validation["timestamp"] = "2026-10-02T00:00:00Z"
+        fit = calibrate(RAW, D, spec, [r], [validation], starts=1)
+        self.assertAlmostEqual(fit["parameters"][0]["estimate"], 3.0, places=6)
+        self.assertEqual(fit["parameters"][0]["unit"], "m")
+        self.assertAlmostEqual(fit["parameters"][0]["standard_error"], 0.1, places=5)
+        self.assertEqual(fit["status"], "BENCHMARK CALIBRATED")

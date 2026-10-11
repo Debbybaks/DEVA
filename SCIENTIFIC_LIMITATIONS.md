@@ -14,3 +14,11 @@
 ## Phase-3 update
 
 Hydraulic V2 is now coupled and analytically validated, but fixed Darcy factors, geometry and cost remain uncalibrated. Source limits are checked rather than pressure-regulated. The optional operational valve cascade is not physical rupture. Formal evidence covers bounded topology only. See HYDRAULIC_MODEL_V2.md, HYDRAULIC_VALIDATION.md and CASCADE_MODEL.md.
+
+## Phase-4 distinctions
+
+Synthetic hidden-parameter calibration is implemented and held-out benchmark validation can earn BENCHMARK CALIBRATED. Field calibration remains incomplete. Local numerical rank does not prove globally unique parameter inference. Known independent Gaussian noise, accurate excitation and same-equation truth are assumptions, not measured field properties. Local prediction intervals exclude model discrepancy.
+
+A seeded phenomenological failure-hazard model can produce emergent cascades through solved hydraulic redistribution. It is an uncalibrated research hypothesis. Real-world pipe rupture, leakage, material fatigue, corrosion and transient pressure-wave dynamics remain unmodelled. Conditional causal graphs expose calculations/draws; they do not uniquely identify real-world causal mechanisms. Scheduled repair is exogenous, not autonomous physical recovery.
+
+The Engineering Agent uses bounded deterministic tools and declared catalogue mutations. It can stop without meeting a target and does not claim global optimality, unrestricted natural-language reasoning or real-time field control. Sensor recommendations maximise a local information proxy, not guaranteed economic value. Topology proof remains bounded Boolean connectivity; hydraulic service is numerical evidence only.

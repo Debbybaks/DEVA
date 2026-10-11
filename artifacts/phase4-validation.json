@@ -1,0 +1,44 @@
+{
+  "source_revision": "b780be432e9f8275125c5ecfefb9d77a00863ba6",
+  "python": {
+    "tests": 90,
+    "result": "PASS",
+    "seconds": 121.215
+  },
+  "frontend": {
+    "tests": 11,
+    "result": "PASS"
+  },
+  "build": "PASS; no production frontend changes since validation",
+  "browser": {
+    "baseline": "4 PASS",
+    "expanded_before_startup_fix": "5 PASS / 1 hydraulic startup FAIL",
+    "unchanged_hydraulic_test_after_fix": "PASS",
+    "latest_twin_assertions": "2 PASS across targeted runs; one new exact-text locator corrected to account for nested annotation, timeout unchanged"
+  },
+  "historical_replays": [
+    {
+      "artifact": "emergency-water-evidence",
+      "experiment_id": "deva-9a473107d6fcb70f",
+      "result": "EXACT: executed before Phase-4 changes; preserved payload rechecked"
+    },
+    {
+      "artifact": "evolution-evidence",
+      "experiment_id": "deva-evolution-415e051c31e3bded",
+      "result": "EXACT: executed before Phase-4 changes; preserved payload rechecked"
+    },
+    {
+      "artifact": "hydraulic-evidence",
+      "experiment_id": "deva-hydraulic-065f46bd63838ed5",
+      "result": "EXACT: executed before Phase-4 changes; preserved payload rechecked"
+    }
+  ],
+  "historical_byte_sha256": "14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e",
+  "scientific_result": "4/40 held-out hospital failures; 2% target NOT established",
+  "benchmarks": "Phase-4 scripts unexecuted",
+  "limitations": [
+    "Synthetic same-model calibration; no field validation",
+    "Uncalibrated research rupture hazard",
+    "Bounded Z3 topology proof does not prove hydraulic reality"
+  ]
+}
