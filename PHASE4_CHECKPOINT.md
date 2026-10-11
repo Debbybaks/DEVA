@@ -44,3 +44,7 @@ npm run test:e2e
 ```
 
 Run targeted tests after changes; avoid repeating the 90-test suite immediately without a relevant change. Browser/process tests require local networking permission. Playwright starts/reuses API8000 and Vite5173. Continue: frozen failure diagnosis → calibration uncertainty propagation → causal replay refinement → counterexample/evolution/reverification → measured performance → world inspection and demonstration → complete milestone validation.
+
+## Resumed milestone
+
+Checkpoint preparation completed in commit `2b6b861`. The unchanged hydraulic browser flow passed again after resume (7.7 s); both expanded twin flows passed across targeted runs. Three new diagnosis tests passed. Frozen 4/40 failures are now diagnosed in AGENT_REMAINING_FAILURE_ANALYSIS.md and a hash-linked machine-readable artifact. All share east-trunk loss and connected pressure/service deficit. Diagnostic west-trunk 175 mm upgrade resolves those stored cases but exceeds budget; no independent reliability claim is made. Next: propagate bounded calibration uncertainty into these cases, then use a fresh sealed split for any new design selection.

@@ -39,3 +39,5 @@ Remaining gates: field/reference datasets and model discrepancy; global structur
 | BLOCKED | Field-certified claims without field data; calibrated rupture prediction without failure data; hardware WebGPU comparison without an available adapter |
 
 Next: diagnose the frozen agent's 4/40 held-out failures with controlled counterfactuals; retain this validation split as diagnostic evidence, never reuse it to claim independent improved reliability.
+
+Resumed milestone: COMPLETE — hash-checked frozen 4/40 diagnosis, exact failed-state replay, controlled demand/head/outage counterfactuals and negative single-pipe cost probes. PARTIAL — calibration uncertainty propagation into these cases and independent validation of diagnostic redesigns.
