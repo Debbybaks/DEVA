@@ -1,0 +1,7 @@
+# Direct API/test dependency versions used in this managed environment.
+# This is a direct-version snapshot, not a complete transitive lock.
+-r requirements-reproduction.txt
+fastapi==0.141.1
+uvicorn==0.52.1
+httpx==0.28.1
+pydantic==2.13.4

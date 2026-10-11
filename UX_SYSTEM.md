@@ -9,3 +9,7 @@ Switchable layers: physical topology, dependency/corridor groups, flow utilisati
 Current core is static. Scenario browsing has an index control, not a time scrubber. Physical timeline/play/speed controls become available only with a dynamic model. Future motion represents worker progress and computed flows, not invented time dynamics.
 
 Accessibility: keyboard selectable nodes/edges, equivalent textual evidence, colour-independent failure markers, reduced motion, high contrast, screen-reader summaries. Users can download JSON evidence immediately; professional report rendering is later work.
+
+## Phase-2 implementation status
+
+The command environment is implemented in apps/command. It includes the network canvas, layers, matched-scenario comparisons, camera focus, candidate ancestry, interactive outage/source/degradation controls, equations and Evidence Mode. Scenario index is explicitly not physical time. Low-load 2D view retains flows and inspection; physical recovery, temporal cascades and sensor layers remain unavailable.

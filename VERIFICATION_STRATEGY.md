@@ -7,3 +7,7 @@ Stage labels describe earned evidence, not safety certification. Failed requirem
 Verification independently recomputes cost, capacity bounds and scenario service margins from outputs. Operational residuals are checked after each solve. A numerical feasible solution remains numerical evidence. Future exact certificates can prove feasibility in a finite abstract model but cannot prove the model matches reality.
 
 Success gates: analytical and invariant tests pass; nominal and scenario outputs are retained; rejected designs remain visible; infeasible synthesis returns explicit failure; confidence intervals identify sampling assumptions; replays match science outputs; fresh experiment timestamps do not affect deterministic experiment identity.
+
+## Phase-2 implementation status
+
+Phase-2 independent audits recompute mass balance, bounds, demand identity and achieved service instead of trusting stored residual/pass flags. Provenance links required service, budgets, assumptions, candidates and declared results. MATHEMATICALLY VERIFIED and FORMALLY VERIFIED remain unavailable; the client rejects these unsupported labels. Held-out and adversarial failures are displayed alongside scoped declared-suite status.

@@ -14,3 +14,7 @@ This is a capacity planning abstraction, not a hydraulic digital twin. A feasibl
 Exact demonstration: minimise installed capacity cost subject to a 95% minimum demand fraction at every demand node across a declared finite scenario set. Starting alternatives are a nominally sized network and uniform allocations. Robust LP synthesis competes with them. Then independently test seeded random combined failures and demand/supply uncertainty. The first implementation assumes known topology and continuous capacities. Construction discreteness and topology search are later phases.
 
 Acceptance: known chain/parallel cases within 1e-7; conservation and capacity residuals below 1e-7; no robust designation if any required scenario fails; byte-identical scientific outputs under identical seed/configuration/software; all rejected alternatives retained; held-out sampling cannot certify safety.
+
+## Phase-2 implementation status
+
+Version 1 remains continuous capacity planning. The separate passive hydraulic research solver does not change the design-domain selection or establish hydraulic feasibility of evolved capacities.

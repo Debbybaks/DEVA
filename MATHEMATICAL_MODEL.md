@@ -11,3 +11,7 @@ Monte Carlo: independently draw correlated corridor failure, individual outages,
 Numerical validation: check conservation, nonnegative variables, capacities, source limits, demand limits, and common-service inequalities after solver success. No floating-point solver output earns FORMALLY VERIFIED. A future formal certificate must define its scope and independently check a rational primal/dual certificate or another proof artefact.
 
 Exclusions: pressure, friction, elevation, pumps, storage, transients, contamination, repairs, cascading hydraulic failure, sensor state estimation. The current model is steady-state. Sample ordering is not physical time.
+
+## Phase-2 implementation status
+
+The original equations and solver are unchanged. Phase-2 adds constrained empirical Pareto evolution, IID split audits, independent primal checks and unit-edge topological min cuts. See DESIGN_EVOLUTION.md, OPTIMISATION.md, HYDRAULIC_MODEL.md and UNCERTAINTY_MODEL.md. No physical time or formal certificate has been added.

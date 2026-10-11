@@ -1,37 +1,77 @@
 # DEVA
 **Design, Engineering & Verification Autonomy** — named after Deborah.
 
-Design. Simulate. Break. Verify.
+Design. Simulate. Break. Evolve. Verify.
 
-Phase 0 foundations and a validated Phase 1 scientific core are implemented. DEVA currently solves continuous capacity design for a directed emergency-water delivery network. It generates nominal, uniform and scenario-robust alternatives, checks per-node service through linear programming, attacks them with outages and seeded combined events, and exports complete JSON evidence. It has no frontend, hydraulic pressure model, language-model interpreter, background service or formal proof engine yet.
+DEVA is a local engineering research workbench with a Python scientific engine and a strict TypeScript spatial command environment. It designs continuous capacities for an emergency-water network, evolves competing designs, searches for counterexamples, and preserves the evidence behind every conclusion.
 
-## Run
-Python 3.11+ with NumPy and SciPy. From this directory:
+## What is implemented
+
+- Original validated transport LP, unchanged baseline experiments and all original 16 tests.
+- Counterfactual failure taxonomy, paired probabilistic sensitivities and factorial sweeps.
+- Bounded Design Evolution Engine: ancestry, mutations, rejected branches and empirical three-objective Pareto analysis.
+- Independent training, validation and held-out streams; recommendation frozen before audit data is generated.
+- Adversarial outage search, unit-edge minimum cuts and demand-threshold bracketing.
+- Independent numerical evidence audits and a requirement-to-conclusion provenance graph.
+- Passive Darcy–Weisbach hydraulic research solver, separately validated against analytical cases. It is **not** coupled to capacity optimisation or calibrated field data.
+- FastAPI/process workers, SQLite job/event persistence, resumable SSE progress, caching, cooperative cancellation and recorded interactive Failure Lab evidence.
+- React/Three.js command canvas, meaningful GLSL flux/uncertainty encoding, scientific layers, matched-scenario design comparison, camera synchronisation, component equations, ancestry and Evidence Mode.
+- JSON evidence and a portable Markdown report export; computational and browser benchmark tools.
+
+## Start locally
+
+From `/workspace/deva`, Python 3.11+ and Node 20.19+/22.12+:
 
 ```bash
 python -m venv .venv
-.venv/bin/python -m pip install -e .
-.venv/bin/deva examples/emergency_water.json --seed 20261011 --samples 200 --output artifacts/my-experiment.json
-.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python -m pip install -e '.[api,test]'
+npm --prefix apps/command ci
+.venv/bin/python -m uvicorn deva.api:app --host 127.0.0.1 --port 8000
 ```
 
-If dependencies are already installed, `PYTHONPATH=src python -m deva.cli ...` runs without installation. No API credentials are needed. Computation is local. The supplied example takes seconds, not hours. Sampling supports up to 10,000 scenarios; large dense synthesis problems are rejected before allocation. This bound does not provide server-grade denial-of-service protection.
+In a second terminal:
 
-## Demonstration findings
-The committed 200-sample experiment uses seed 20261011, NumPy 2.3.5 and SciPy 1.17.0. There are 11 declared scenarios: nominal, six pipe outages, two corridor outages, demand surge and supply shortage.
+```bash
+npm --prefix apps/command run dev
+```
 
-| Candidate | Capacity cost | Declared requirements | Held-out failures |
-|---|---:|---|---:|
-| Nominal LP | 199.5 | Fails | 165 / 200 |
-| Uniform allocation | 570 | Passes | 7 / 200 |
-| Robust LP | 399 | Passes | 38 / 200 |
+Open `http://localhost:5173`. Vite proxies `/api` to the Python service. No API credentials are required. This is a local research service; authentication, tenancy and internet deployment are not implemented. Fonts are bundled locally. WebGL2 renders the network; a selectable 2D low-load representation retains the exact flows and inspection controls. Slow rendering during worker computation switches to the low-load view to prioritise scientific work.
 
-Robust LP wins by minimum cost among candidates meeting **declared** constraints. Uniform capacity has lower failure under this synthetic held-out distribution. This tradeoff is preserved rather than hidden. Held-out failures prevent a general safety claim. The robust LP's conditional failure interval is approximately 14.2–25.0%; this is not a real-world failure estimate.
+## Run the independent scientific engine
 
-## Claims and limits
-The solver provides a numerically checked optimum for a continuous linear model over a finite synthesis scenario set. Tests validate implementation against analytical cases. Passing the declared suite earns `ROBUST UNDER TESTED CONDITIONS`, always scoped to that suite. No output is `FORMALLY VERIFIED`. Conservation and delivery capacities do not establish water pressure, quality, constructability or infrastructure safety.
+```bash
+.venv/bin/python -m deva.cli examples/emergency_water.json --seed 20261011 --samples 200 --output /tmp/baseline-replay.json
+.venv/bin/python -m deva.diagnose artifacts/emergency-water-evidence.json --samples 100 --output /tmp/failure-analysis.json
+.venv/bin/python -m deva.evolve_cli examples/emergency_water.json --seed 20261013 --generations 3 --output /tmp/evolution.json
+.venv/bin/python -m deva.report /tmp/evolution.json --output /tmp/evolution-report.md
+```
 
-The complete evidence includes configuration, scenarios, flows, deliveries, residuals, parent relationships, rejected candidates, local sensitivities, uncertainty, versions, seed, timestamp and SHA-256 of the scientific payload. Re-running the same configuration and software produces identical scientific payloads; the execution timestamp changes.
+The interface is unnecessary for numerical correctness or reproducibility. Experiments have content-derived scientific identities; execution timestamps are separate. Compare canonical JSON scientific payloads, rather than Python tuple/list representations after deserialisation. The committed experiment reproduces exactly in this software environment; cross-platform bitwise reproduction is not promised.
 
-## Foundations
-Read [VISION.md](VISION.md), [DOMAIN_SELECTION.md](DOMAIN_SELECTION.md), [MATHEMATICAL_MODEL.md](MATHEMATICAL_MODEL.md), [ARCHITECTURE.md](ARCHITECTURE.md), [VERIFICATION_STRATEGY.md](VERIFICATION_STRATEGY.md) and [ROADMAP.md](ROADMAP.md). UX and visual specifications describe the future command environment. [docs/TEST_STRATEGY.md](docs/TEST_STRATEGY.md) defines validation scope. [docs/VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md) records current evidence and remaining gates.
+## Evidence worth investigating
+
+The original artifact is preserved byte-for-byte: **38/200 held-out failures**, of which 36 are outage–demand interactions and 2 are topological disconnections. It is never replaced by a better-looking result. See [FAILURE_TAXONOMY.md](FAILURE_TAXONOMY.md).
+
+The new experiment uses seed 20261013, three generations, 60 training scenarios, 80 validation scenarios and 200 independent held-out scenarios. It retains 26 candidates. On the **same new test split**, the original minimum-cost robust capacity design fails 44/200; the training-selected evolved design `g2-c012` fails 13/200. Its capacity cost is 532.558 versus 399 for the original robust design. It had zero training failures and five validation failures. This is an empirical cost/reliability tradeoff in one synthetic experiment, not a field reliability or general safety guarantee.
+
+Inspect [artifacts/evolution-report.md](artifacts/evolution-report.md), [artifacts/evolution-evidence.json](artifacts/evolution-evidence.json), and [artifacts/baseline-failure-analysis.json](artifacts/baseline-failure-analysis.json). Evidence Mode exposes provenance, negative results, seed streams, solver versions, uncertainty and sensitivities. Interactive disturbances have downloadable content-addressed evidence records in the local runtime directory.
+
+## Validation and performance
+
+```bash
+.venv/bin/python -m unittest discover -s tests -v
+npm --prefix apps/command run test
+npm --prefix apps/command run build
+npm --prefix apps/command run test:e2e
+.venv/bin/python benchmarks/run.py
+# With the local API and UI running, Chromium and Python Playwright installed:
+.venv/bin/python benchmarks/browser.py
+```
+
+Playwright uses `/usr/bin/chromium` by default; set `DEVA_CHROMIUM_PATH` for another executable. Scientific/CLI/API tests and frontend tests are distinct from real-browser end-to-end checks. Browser tests use actual Python outputs and no mock simulation data. See [docs/VALIDATION_REPORT.md](docs/VALIDATION_REPORT.md) and [PERFORMANCE.md](PERFORMANCE.md). GPU measurements here use software SwiftShader; there is no hardware frame-rate claim.
+
+## Scientific boundaries
+
+Capacity-network results do not establish hydraulic pressure, potable-water delivery, construction feasibility or certified infrastructure safety. Particle motion encodes relative volumetric flux; it is not velocity or travel time. The model is steady-state, so scenario indices are not timestamps and no physical cascade/recovery timeline is shown. Mathematical/formal verification, physical transients, sensor inference, discrete construction catalogues, calibration and LLM problem interpretation remain incomplete. WebGPU, Rust and WASM have not been added without measured justification.
+
+Start with [MATHEMATICAL_MODEL.md](MATHEMATICAL_MODEL.md), [ARCHITECTURE.md](ARCHITECTURE.md), [DESIGN_EVOLUTION.md](DESIGN_EVOLUTION.md), [OPTIMISATION.md](OPTIMISATION.md), [HYDRAULIC_MODEL.md](HYDRAULIC_MODEL.md), [SCIENTIFIC_LIMITATIONS.md](SCIENTIFIC_LIMITATIONS.md) and [ROADMAP.md](ROADMAP.md).

@@ -13,3 +13,7 @@
 | Seeds across library versions | Replay drift | Record software versions; replay scientific payload comparison | Same-environment tested |
 | Visual spectacle hides limitations | Loss of scientific credibility | Earned labels and direct evidence navigation | UI acceptance gate |
 | No field validation | Research extrapolation | Independent hydraulic/field comparisons before deployment | Open |
+
+## Phase-2 implementation status
+
+Additional Phase-2 risks: training Pareto overfitting (sealed held-out audits); software-GPU frame cost (measured, reduced DPR, selectable/automatic low-load mode); large evidence views (direct JSON response serialization, future paging); native solver cancellation latency (cooperative checkpoints); local API lacks authentication (loopback-only research use). Hydraulic calibration and independent physical validation remain open.

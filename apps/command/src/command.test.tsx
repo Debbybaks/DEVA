@@ -68,6 +68,15 @@ describe("Typed scientific contract and command state", () => {
     );
     expect(screen.getByText("0 ≤ fₑ ≤ aₑ cₑ")).toBeInTheDocument();
     expect(
+      screen.getByText("Conditional Wilson 95% interval"),
+    ).toBeInTheDocument();
+    await user.selectOptions(
+      screen.getByLabelText("Rendering mode"),
+      "diagram",
+    );
+    expect(screen.getByRole("button", { name: "Ⅱ Pause flux" })).toBeDisabled();
+    expect(screen.getByLabelText("Flux animation speed")).toBeDisabled();
+    expect(
       screen.getByText("Untested in this capacity model"),
     ).toBeInTheDocument();
   });

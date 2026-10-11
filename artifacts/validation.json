@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-10-11T16:29:38.416000+00:00",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "observed_validation": {
+    "python_tests": 43,
+    "original_tests_unchanged": 16,
+    "frontend_tests": 5,
+    "live_browser_tests": 3,
+    "strict_typescript_production_build": "passed",
+    "browser_screenshot_page_errors": []
+  },
+  "exact_scientific_replays": [
+    {
+      "experiment_id": "deva-9a473107d6fcb70f",
+      "scientific_sha256": "9a473107d6fcb70fc45a4b1a756e09ed4db5f3a64a5462513711a07323b82eaf"
+    },
+    {
+      "experiment_id": "deva-evolution-415e051c31e3bded",
+      "scientific_sha256": "415e051c31e3bded21d803ebcd5d59da88c5d7aa891f5b26f8f0deb24c793685"
+    }
+  ],
+  "limits": [
+    "No formal verification",
+    "No hydraulic calibration or hydraulic/evolution coupling",
+    "No physical cascade or recovery simulation",
+    "Software GPU performance insufficient for smooth spatial interaction; numerical 2D mode available"
+  ]
+}
