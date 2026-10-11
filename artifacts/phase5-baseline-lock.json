@@ -1,0 +1,26 @@
+{
+  "milestone": "91fdf4c7e0544b0a07b14cdb59d599ac6cdf94e2",
+  "artifacts": {
+    "emergency-water-evidence": {
+      "byte_sha256": "14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e",
+      "scientific_sha256": "9a473107d6fcb70fc45a4b1a756e09ed4db5f3a64a5462513711a07323b82eaf",
+      "experiment_id": "deva-9a473107d6fcb70f"
+    },
+    "evolution-evidence": {
+      "byte_sha256": "f8c54a3a240b9071ec12e444713cb1228e39cbe6c8fb1ca40742965203514bc1",
+      "scientific_sha256": "415e051c31e3bded21d803ebcd5d59da88c5d7aa891f5b26f8f0deb24c793685",
+      "experiment_id": "deva-evolution-415e051c31e3bded"
+    },
+    "hydraulic-evidence": {
+      "byte_sha256": "00bb0a8f11280527182c5388bcb3d2f181645ee42c699b5eef0223f7f187628c",
+      "scientific_sha256": "065f46bd63838ed50800731957c833195d1900c0d52f44f544c64869bef3c640",
+      "experiment_id": "deva-hydraulic-065f46bd63838ed5"
+    },
+    "digital-twin-evidence": {
+      "byte_sha256": "7086b3bb8e519c66a306af1b60b4693904e4243635543aa69884aea6e3b32a26",
+      "scientific_sha256": "882834fc7dd2ec29dea5e232f1720c175d8cc817dc194fbf65662e274f8e210c",
+      "experiment_id": "deva-twin-882834fc7dd2ec29"
+    }
+  },
+  "validation": "96 Python / 12 frontend / 6 browser / build / 4 exact replays already passed; unchanged expensive checks not repeated at recovery"
+}
