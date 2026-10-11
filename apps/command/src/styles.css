@@ -1503,3 +1503,12 @@ details select {
     max-width: 90vw;
   }
 }
+/* Keep scientific replay controls in one compact row where space permits. */
+.hydraulic-time select {
+  width: auto;
+  min-width: 130px;
+  max-width: 330px;
+}
+.hydraulic-toolbar select {
+  width: auto;
+}
