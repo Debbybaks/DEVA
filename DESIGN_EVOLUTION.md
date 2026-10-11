@@ -1,0 +1,9 @@
+# Design Evolution Engine
+
+Implementation: `deva.evolution`. Initial candidates preserve nominal LP, declared-scenario LP and uniform allocation; an outage × demand cross-scenario LP addresses the diagnosed missing interaction. Infeasible synthesis attempts are retained. It is a bounded research evolutionary algorithm, not a convergence theorem or a general-purpose AI agent.
+
+Each generation selects up to four declared-feasible training Pareto parents. Two operators produce children: reinforce saturated edges in the worst training scenario, and seed-controlled single-edge capacity tradeoff. Clamp to physical capacity bounds and proportionally project onto the budget if needed. Projection can destroy declared feasibility; such children are evaluated and rejected, never hidden. Store parents, generation, operator, selected edges, multiplier, budget projection, triggering training counterexample, cost, every result, uncertainty, verification and rejection reason. Generation budget is the defensible stopping rule; stagnation is diagnostic, not claimed convergence.
+
+Training, validation, held-out and mutation streams come from independent NumPy SeedSequence children. The historical 200 samples are not used for evolution. Freeze the recommendation from training before constructing validation or held-out scenarios. Validation and held-out are audits only; neither changes parent selection or the recommendation. Every archived candidate is evaluated on all splits. Post-hoc inspection of other held-out candidates is exploratory and cannot justify reselecting a certified winner without another fresh test split.
+
+Run: `.venv/bin/python -m deva.evolve_cli examples/emergency_water.json --generations 3 --output artifacts/new-evolution.json`. Scientific payload hash includes all seeds, inputs, outcomes and versions; progress timing and execution timestamp remain outside scientific identity.
