@@ -1,0 +1,7 @@
+# Passive hydraulic research adapter
+
+`deva.hydraulics` is an independently executable nonlinear steady-state model. It requires explicitly supplied lengths (m), diameters (m), fixed Darcy friction factors, elevations (m), reservoir heads (m), and demands (m³/s). None are inferred from capacity cost. It does not silently replace the validated capacity model or claim the existing capacity optimum is hydraulically feasible.
+
+Darcy–Weisbach: h_i−h_j = r_e q_e |q_e|, r_e = 8 f_e L_e/(g π² D_e⁵), g=9.80665 m/s². Internal nodes obey Bq=d. Fixed-head nodes supply or absorb the flow required by the boundary condition. Pressure head is h−elevation. Signed flows allow physical reversal. SciPy least_squares solves dimensionlessly scaled flow/head residuals. Accept only mass residual ≤1e-8 m³/s and energy residual ≤1e-6 m; solver success alone is insufficient. Numerical tests compare single-pipe head loss and parallel splitting to exact analytical results.
+
+Negative pressure is preserved and fails the pressure requirement; constant demanded flow at negative pressure is physically invalid. Pressure-dependent demand, pump curves, valves, storage, source constraints, temperature-dependent viscosity, Reynolds/friction coupling, transient water hammer, leakage and water quality remain absent. No hydraulic calibration dataset or independent EPANET benchmark has been supplied. This adapter is research-only and not coupled to evolution. It does not earn mathematical/formal verification. Temporal control is unavailable until a separately validated dynamic model exists.
