@@ -81,7 +81,11 @@ class TwinIntegrationTests(unittest.TestCase):
             )
             e = client.get("/api/jobs/" + jid + "/evidence").json()
             verify_hash(e)
-            events = client.get("/api/jobs/" + jid + "/events").text
+            stream = client.get(
+                "/api/jobs/" + jid + "/events", headers={"Accept-Encoding": "gzip"}
+            )
+            self.assertNotIn("content-encoding", stream.headers)
+            events = stream.text
             for stage in (
                 "observations",
                 "calibration",
@@ -92,6 +96,24 @@ class TwinIntegrationTests(unittest.TestCase):
                 self.assertIn(stage, events)
             self.assertEqual(client.get("/api/twin/view").status_code, 200)
             self.assertEqual(client.get("/api/twin/nonsense").status_code, 404)
+
+    def test_compression_preserves_values_and_streaming_headers(self):
+        with (
+            tempfile.TemporaryDirectory() as directory,
+            TestClient(create_app(directory)) as client,
+        ):
+            compressed = client.get(
+                "/api/hydraulic/view", headers={"Accept-Encoding": "gzip"}
+            )
+            plain = client.get(
+                "/api/hydraulic/view", headers={"Accept-Encoding": "identity"}
+            )
+            self.assertEqual(compressed.headers.get("content-encoding"), "gzip")
+            self.assertNotIn("content-encoding", plain.headers)
+            self.assertEqual(compressed.json(), plain.json())
+            self.assertEqual(
+                compressed.json()["experiment_id"], "deva-hydraulic-065f46bd63838ed5"
+            )
 
     def test_strict_request_boundaries(self):
         with (

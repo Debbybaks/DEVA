@@ -15,6 +15,8 @@ from pathlib import Path
 from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query, Header
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
+from starlette.middleware.gzip import GZipMiddleware
+import threading
 from pydantic import BaseModel, ConfigDict, Field
 from .schema import Problem
 from .model import Scenario, simulate
@@ -24,7 +26,30 @@ from .view import project
 from .experiment import canonical
 from . import MODEL_VERSION
 
+
+class ScientificGZipMiddleware(GZipMiddleware):
+    async def __call__(self, scope, receive, send):
+        # Preserve live progress even on older Starlette releases without SSE exclusions.
+        if (
+            scope.get("type") == "http"
+            and scope.get("path", "").startswith("/api/jobs/")
+            and scope.get("path", "").endswith("/events")
+        ):
+            await self.app(scope, receive, send)
+        else:
+            await super().__call__(scope, receive, send)
+
+
 ROOT = Path(__file__).resolve().parents[2]
+
+projection_lock = threading.Lock()
+
+
+@lru_cache(maxsize=8)
+def hydraulic_projection(path, modified_ns, size):
+    from .hydraulic_view import project as hydraulic_project
+
+    return hydraulic_project(json.loads(Path(path).read_text()))
 
 
 @lru_cache(maxsize=8)
@@ -189,10 +214,20 @@ def create_app(directory=None):
         app.state.jobs = JobStore(
             directory or os.getenv("DEVA_RUNTIME_DIR", str(ROOT / ".runtime"))
         )
+        # Prewarm the immutable 6.4 MB hydraulic projection once; StrictMode's
+        # aborted first request must not duplicate expensive projection work.
+        path = ROOT / "artifacts/hydraulic-evidence.json"
+        if path.exists():
+            metadata = path.stat()
+            await asyncio.to_thread(
+                hydraulic_projection, str(path), metadata.st_mtime_ns, metadata.st_size
+            )
         yield
         app.state.jobs.close()
 
     app = FastAPI(title="DEVA Scientific Engine", version="0.4.0", lifespan=lifespan)
+
+    app.add_middleware(ScientificGZipMiddleware, minimum_size=2048, compresslevel=1)
 
     def job(jid):
         try:
@@ -392,8 +427,14 @@ def create_app(directory=None):
         path = ROOT / "artifacts/hydraulic-evidence.json"
         if not path.exists():
             raise HTTPException(404, "Hydraulic experiment not generated")
-        record = json.loads(path.read_text())
-        return JSONResponse(hydraulic_project(record) if kind == "view" else record)
+        record = json.loads(path.read_text()) if kind == "evidence" else None
+        metadata = path.stat()
+        with projection_lock:
+            return JSONResponse(
+                hydraulic_projection(str(path), metadata.st_mtime_ns, metadata.st_size)
+                if kind == "view"
+                else record
+            )
 
     @app.post("/api/hydraulic/jobs", status_code=202)
     def hydraulic_job(request: HydraulicRequest):
@@ -455,7 +496,7 @@ def create_app(directory=None):
         path = ROOT / "artifacts/digital-twin-evidence.json"
         if not path.exists():
             raise HTTPException(404, "Synthetic twin benchmark not generated")
-        record = json.loads(path.read_text())
+        record = json.loads(path.read_text()) if kind == "evidence" else None
         metadata = path.stat()
         return JSONResponse(
             twin_projection(str(path), metadata.st_mtime_ns, metadata.st_size)
