@@ -55,7 +55,15 @@ def execute(directory, job_id, configuration):
         emit(directory, job_id, event)
 
     try:
-        result = evolve(**configuration, progress=progress)
+        if configuration.get("engine") == "hydraulic":
+            from .hydraulic_experiment import experiment
+
+            result = experiment(
+                **{k: v for k, v in configuration.items() if k != "engine"},
+                progress=progress,
+            )
+        else:
+            result = evolve(**configuration, progress=progress)
         progress(dict(stage="persisting_evidence"))
         path = Path(directory) / f"{job_id}.json"
         temporary = path.with_suffix(".tmp")

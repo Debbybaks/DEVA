@@ -1,0 +1,7 @@
+# Experimental operational isolation cascade
+
+`deva.cascade.protective_cascade` models an **explicit excess-flow protective valve policy**. It is optional experimental operating logic, not a pipe-rupture or mechanical-stress model. Given user-specified per-pipe trip velocities in m/s, the solver recomputes the hydraulic state; all still-open protected pipes with |v| above their setpoint close simultaneously. The next round is another genuine nonlinear solve. Every result, trigger velocity, setpoint, disturbance and newly closed pipe is retained.
+
+The demonstration first closes the east trunk, increasing west-trunk flow. A synthetic 0.5 m/s protective setpoint then isolates the west trunk, disconnecting demand. The setpoint is intentionally illustrative and has not been calibrated to a device. No delay or failure-propagation travel time is assigned. Rounds are discrete policy transitions, not physical timestamps. A closed pipe never reopens automatically; at most the finite pipe count of changing rounds can occur.
+
+Analytical/logical tests check state-triggered closure, loss of service and termination. The UI exposes actual rounds and evidence for each trigger, while retaining **PHYSICAL RUPTURE CASCADE: UNMODELLED**. The historical capacity UI retains its original cascade warning. Future physical rupture prediction requires materials, pressure/stress laws, deterioration calibration and validated transient dynamics; it cannot be inferred from this control experiment.

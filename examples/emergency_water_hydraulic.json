@@ -1,0 +1,228 @@
+{
+  "id": "emergency-water-hydraulic-v2",
+  "objective": "Select explicit pipe diameters for pressure-dependent emergency service under reservoir-head and outage uncertainty, exposing construction-cost tradeoffs.",
+  "nodes": [
+    {
+      "id": "source-west",
+      "elevation": {
+        "value": 0,
+        "unit": "m"
+      },
+      "demand": {
+        "value": 0,
+        "unit": "m3/h"
+      }
+    },
+    {
+      "id": "source-east",
+      "elevation": {
+        "value": 0,
+        "unit": "m"
+      },
+      "demand": {
+        "value": 0,
+        "unit": "m3/h"
+      }
+    },
+    {
+      "id": "junction-west",
+      "elevation": {
+        "value": 0,
+        "unit": "m"
+      },
+      "demand": {
+        "value": 0,
+        "unit": "m3/h"
+      }
+    },
+    {
+      "id": "junction-east",
+      "elevation": {
+        "value": 0,
+        "unit": "m"
+      },
+      "demand": {
+        "value": 0,
+        "unit": "m3/h"
+      }
+    },
+    {
+      "id": "hospital",
+      "elevation": {
+        "value": 12,
+        "unit": "m"
+      },
+      "demand": {
+        "value": 40,
+        "unit": "m3/h"
+      }
+    },
+    {
+      "id": "shelter",
+      "elevation": {
+        "value": 8,
+        "unit": "m"
+      },
+      "demand": {
+        "value": 30,
+        "unit": "m3/h"
+      }
+    }
+  ],
+  "pipes": [
+    {
+      "id": "west-trunk",
+      "tail": "source-west",
+      "head": "junction-west",
+      "length": {
+        "value": 500,
+        "unit": "m"
+      },
+      "friction_factor": {
+        "value": 0.02,
+        "unit": "1"
+      },
+      "cost_per_m_at_100mm": 0.12,
+      "corridor": "west"
+    },
+    {
+      "id": "east-trunk",
+      "tail": "source-east",
+      "head": "junction-east",
+      "length": {
+        "value": 500,
+        "unit": "m"
+      },
+      "friction_factor": {
+        "value": 0.02,
+        "unit": "1"
+      },
+      "cost_per_m_at_100mm": 0.12,
+      "corridor": "east"
+    },
+    {
+      "id": "west-hospital",
+      "tail": "junction-west",
+      "head": "hospital",
+      "length": {
+        "value": 300,
+        "unit": "m"
+      },
+      "friction_factor": {
+        "value": 0.02,
+        "unit": "1"
+      },
+      "cost_per_m_at_100mm": 0.12,
+      "corridor": "west"
+    },
+    {
+      "id": "west-shelter",
+      "tail": "junction-west",
+      "head": "shelter",
+      "length": {
+        "value": 300,
+        "unit": "m"
+      },
+      "friction_factor": {
+        "value": 0.02,
+        "unit": "1"
+      },
+      "cost_per_m_at_100mm": 0.12,
+      "corridor": "west"
+    },
+    {
+      "id": "east-hospital",
+      "tail": "junction-east",
+      "head": "hospital",
+      "length": {
+        "value": 300,
+        "unit": "m"
+      },
+      "friction_factor": {
+        "value": 0.02,
+        "unit": "1"
+      },
+      "cost_per_m_at_100mm": 0.12,
+      "corridor": "east"
+    },
+    {
+      "id": "east-shelter",
+      "tail": "junction-east",
+      "head": "shelter",
+      "length": {
+        "value": 300,
+        "unit": "m"
+      },
+      "friction_factor": {
+        "value": 0.02,
+        "unit": "1"
+      },
+      "cost_per_m_at_100mm": 0.12,
+      "corridor": "east"
+    }
+  ],
+  "sources": [
+    {
+      "node": "source-west",
+      "head": {
+        "value": 45,
+        "unit": "m"
+      },
+      "maximum_supply": {
+        "value": 100,
+        "unit": "m3/h"
+      }
+    },
+    {
+      "node": "source-east",
+      "head": {
+        "value": 42,
+        "unit": "m"
+      },
+      "maximum_supply": {
+        "value": 100,
+        "unit": "m3/h"
+      }
+    }
+  ],
+  "target": 0.95,
+  "minimum_pressure": {
+    "value": 15,
+    "unit": "m"
+  },
+  "full_service_pressure": {
+    "value": 20,
+    "unit": "m"
+  },
+  "maximum_velocity": {
+    "value": 2.5,
+    "unit": "m/s"
+  },
+  "budget": 1100,
+  "diameter_options": [
+    {
+      "value": 75,
+      "unit": "mm"
+    },
+    {
+      "value": 100,
+      "unit": "mm"
+    },
+    {
+      "value": 125,
+      "unit": "mm"
+    },
+    {
+      "value": 150,
+      "unit": "mm"
+    },
+    {
+      "value": 175,
+      "unit": "mm"
+    },
+    {
+      "value": 200,
+      "unit": "mm"
+    }
+  ]
+}

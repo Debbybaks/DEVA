@@ -46,6 +46,67 @@ class LabRequest(BaseModel):
     source_losses: list[str] = Field(default_factory=list, max_length=30)
 
 
+class HydraulicRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    raw: dict
+    seed: int = Field(default=20261020, ge=0, lt=2**32)
+    generations: int = Field(default=2, ge=1, le=3)
+    train_count: int = Field(default=24, ge=2, le=80)
+    validation_count: int = Field(default=24, ge=2, le=80)
+    test_count: int = Field(default=100, ge=2, le=200)
+
+
+class HydraulicLabRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    raw: dict
+    diameters_m: list[float] = Field(min_length=1, max_length=60)
+    closed: list[str] = Field(default_factory=list, max_length=60)
+    demand_factor: float = Field(default=1.0, gt=0, le=3, allow_inf_nan=False)
+    source_head_delta_m: float = Field(
+        default=0.0, ge=-100, le=100, allow_inf_nan=False
+    )
+    friction_factor: float = Field(default=1.0, ge=0.5, le=2, allow_inf_nan=False)
+    source_losses: list[str] = Field(default_factory=list, max_length=30)
+
+
+def compute_hydraulic_lab(configuration):
+    from .hydraulic_v2 import simulate, VERSION
+    from .hydraulic_evidence import audit, envelope, provenance_revision
+    from .hydraulic_view import state, causal_trace
+
+    r = HydraulicLabRequest(**configuration)
+    scenario = dict(
+        id="hydraulic-interactive",
+        closed=r.closed,
+        demand_factor=r.demand_factor,
+        source_head_delta_m=r.source_head_delta_m,
+        friction_factor=r.friction_factor,
+        source_losses=r.source_losses,
+    )
+    result = simulate(r.raw, r.diameters_m, scenario)
+    check = audit(r.raw, r.diameters_m, scenario, result)
+    e = envelope(
+        dict(
+            model_version=VERSION,
+            configuration=r.raw,
+            diameters_m=r.diameters_m,
+            scenario=scenario,
+            result=result,
+            verification_object=check,
+            code=provenance_revision(),
+            software=dict(
+                python=platform.python_version(),
+                numpy=np.__version__,
+                scipy=scipy.__version__,
+            ),
+        )
+    )
+    e["experiment_id"] = "deva-hydraulic-lab-" + e["scientific_sha256"][:16]
+    e["causal_trace"] = causal_trace(r.raw, scenario, result)
+    e["state"] = state(r.raw, r.diameters_m, scenario, result)
+    return e
+
+
 def check_problem(raw):
     try:
         p = Problem.parse(raw)
@@ -115,7 +176,7 @@ def create_app(directory=None):
         yield
         app.state.jobs.close()
 
-    app = FastAPI(title="DEVA Scientific Engine", version="0.2.0", lifespan=lifespan)
+    app = FastAPI(title="DEVA Scientific Engine", version="0.3.0", lifespan=lifespan)
 
     def job(jid):
         try:
@@ -162,9 +223,17 @@ def create_app(directory=None):
         row = job(jid)
         if row["status"] != "completed":
             raise HTTPException(409, "Evidence not completed")
-        return JSONResponse(
-            project(json.loads((app.state.jobs.directory / f"{jid}.json").read_text()))
-        )
+        record = json.loads((app.state.jobs.directory / f"{jid}.json").read_text())
+        if record["science"]["schema_version"] == "3.0":
+            if record["science"]["recommendation"] is None:
+                raise HTTPException(
+                    409,
+                    "No budget-feasible catalogue design; full negative evidence retained at this job evidence endpoint",
+                )
+            from .hydraulic_view import project as hydraulic_project
+
+            return JSONResponse(hydraulic_project(record))
+        return JSONResponse(project(record))
 
     @app.post("/api/jobs", status_code=202)
     def submit(request: EvolutionRequest):
@@ -289,6 +358,69 @@ def create_app(directory=None):
             return dict(node=node, ancestors=ancestors(graph, node))
         except ValueError as error:
             raise HTTPException(422, str(error))
+
+    @app.get("/api/hydraulic/{kind}")
+    def hydraulic_artifact(kind: str):
+        from .hydraulic_view import project as hydraulic_project
+
+        if kind not in ("view", "evidence"):
+            raise HTTPException(404, "Unknown hydraulic artifact")
+        path = ROOT / "artifacts/hydraulic-evidence.json"
+        if not path.exists():
+            raise HTTPException(404, "Hydraulic experiment not generated")
+        record = json.loads(path.read_text())
+        return JSONResponse(hydraulic_project(record) if kind == "view" else record)
+
+    @app.post("/api/hydraulic/jobs", status_code=202)
+    def hydraulic_job(request: HydraulicRequest):
+        from .hydraulic_v2 import parse
+
+        try:
+            parse(request.raw)
+            record, cached = app.state.jobs.submit(
+                dict(engine="hydraulic", **request.model_dump())
+            )
+            return dict(job_id=record["id"], cached=cached)
+        except ValueError as error:
+            raise HTTPException(422, str(error))
+        except RuntimeError as error:
+            raise HTTPException(429, str(error))
+
+    @app.post("/api/hydraulic/lab")
+    async def hydraulic_lab(request: HydraulicLabRequest):
+        from .hydraulic_v2 import parse
+
+        try:
+            parse(request.raw)
+            computed = await asyncio.wrap_future(
+                app.state.jobs.pool.submit(compute_hydraulic_lab, request.model_dump())
+            )
+            path = app.state.jobs.directory / f"{computed['experiment_id']}.json"
+            import uuid
+
+            temporary = path.with_suffix("." + uuid.uuid4().hex + ".tmp")
+            await asyncio.to_thread(
+                temporary.write_text, json.dumps(computed, allow_nan=False)
+            )
+            await asyncio.to_thread(temporary.replace, path)
+            return JSONResponse(computed)
+        except (ValueError, RuntimeError) as error:
+            raise HTTPException(422, str(error))
+
+    @app.get("/api/hydraulic/lab/{experiment_id}")
+    def hydraulic_lab_download(experiment_id: str):
+        prefix = "deva-hydraulic-lab-"
+        suffix = experiment_id.removeprefix(prefix)
+        if (
+            not experiment_id.startswith(prefix)
+            or len(suffix) != 16
+            or any(c not in "0123456789abcdef" for c in suffix)
+        ):
+            raise HTTPException(404, "Unknown hydraulic evidence")
+        path = app.state.jobs.directory / f"{experiment_id}.json"
+        if not path.exists():
+            raise HTTPException(404, "Unknown hydraulic evidence")
+        return FileResponse(path, media_type="application/json")
 
     return app
 
