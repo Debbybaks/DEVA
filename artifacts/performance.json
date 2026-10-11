@@ -1,0 +1,26 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  },
+  "graph": {
+    "nodes": 6,
+    "edges": 6
+  },
+  "simulation": {
+    "samples": 100,
+    "median_seconds": 0.004109975000005761,
+    "p95_seconds": 0.009765342050013715,
+    "scenarios_per_second": 199.36222310282653
+  },
+  "synthesis_seconds": 0.04151791799995408,
+  "evolution": {
+    "seconds": 2.723904280999932,
+    "candidates": 8,
+    "candidates_per_second": 2.9369607646650637
+  },
+  "process_peak_rss_mib": 63.0390625,
+  "caveat": "Single-process warm local benchmark, Linux RSS; no cross-machine claim. Browser frame timings are separate."
+}

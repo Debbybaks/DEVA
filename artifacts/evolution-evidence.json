@@ -1,10 +1,10 @@
 {
-  "experiment_id": "deva-evolution-0bea3589cd34a9d0",
-  "scientific_sha256": "0bea3589cd34a9d0c7b2800925037c63de6a0daddacc93b90943515efee0bce4",
-  "timestamp": "2026-10-11T15:33:29.181064+00:00",
+  "experiment_id": "deva-evolution-415e051c31e3bded",
+  "scientific_sha256": "415e051c31e3bded21d803ebcd5d59da88c5d7aa891f5b26f8f0deb24c793685",
+  "timestamp": "2026-10-11T15:58:54.490677+00:00",
   "science": {
     "schema_version": "2.0",
-    "model_version": "capacity-evolution-0.2.0",
+    "model_version": "capacity-evolution-0.2.1",
     "configuration": {
       "id": "emergency-water-demo-v1",
       "objective": "Deliver at least 95% of hospital and shelter demand despite each declared outage within a 700-unit capacity budget.",
@@ -102,6 +102,32 @@
         1.35
       ],
       "caveat": "Synthetic IID scenario distribution; not calibrated real-world failure probabilities."
+    },
+    "requirements": [
+      {
+        "id": "per-node-service",
+        "threshold": 0.95,
+        "unit": "demand fraction",
+        "scope": "declared finite scenarios"
+      },
+      {
+        "id": "capacity-budget",
+        "threshold": 700.0,
+        "unit": "demonstration currency"
+      }
+    ],
+    "assumptions": [
+      "Directed steady-state transport",
+      "Continuous capacities",
+      "Perfect adaptive dispatch",
+      "Synthetic IID scenario family; uncalibrated"
+    ],
+    "mathematical_model": {
+      "conservation": "B f + q - y = 0",
+      "capacity": "0 <= f_e <= a_e c_e",
+      "service": "y_v >= target * d_v",
+      "units": "m\u00b3/h",
+      "optimisation": "Continuous LP plus bounded empirical Pareto evolution"
     },
     "scenarios": {
       "declared": [

@@ -2,3 +2,10 @@ __pycache__/
 *.pyc
 *.egg-info/
 .venv/
+
+.runtime/
+node_modules/
+dist/
+playwright-report/
+test-results/
+*.tsbuildinfo
