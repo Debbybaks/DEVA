@@ -90,3 +90,97 @@ test("background evolution streams actual progress and loads computed results", 
     page.getByText(/training=\d+ · validation=\d+ · heldout=\d+/),
   ).toBeVisible();
 });
+
+test("coupled hydraulics → pressure inspection → intervention → storage → scoped proof", async ({
+  page,
+  request,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto("/?model=hydraulic");
+  await expect(
+    page.getByText("Design against pressure. Trust the evidence."),
+  ).toBeVisible();
+  await expect(page.locator("canvas")).toHaveCount(1);
+  await page.getByLabel("Visual performance").selectOption("2d");
+  await expect(
+    page.getByRole("img", { name: "Analytical network diagram" }),
+  ).toBeVisible();
+  await page
+    .locator("summary")
+    .filter({ hasText: "Component → equations → evidence" })
+    .click();
+  await page.getByLabel("Hydraulic inspect component").selectOption("hospital");
+  const view = await (await request.get("/api/hydraulic/view")).json();
+  const chosen = view.candidates.find(
+    (c: { id: string }) => c.id === view.recommendation,
+  );
+  const pressure = chosen.states.heldout[0].hydraulic.pressure_head_m.hospital;
+  await expect(
+    page.getByText(`Pressure head: ${pressure.toFixed(6)} m`, { exact: true }),
+  ).toBeVisible();
+  await page.getByLabel("Hydraulic comparison").selectOption("h0-c000");
+  await expect(
+    page.getByRole("img", { name: "Analytical network diagram" }),
+  ).toHaveCount(2);
+  await page
+    .locator("summary")
+    .filter({ hasText: "Hydraulic Failure Lab" })
+    .click();
+  await page.getByLabel("Hydraulic outage").selectOption("east-trunk");
+  await page.getByLabel("Hydraulic demand factor").fill("1.6");
+  await page.getByLabel("Source head change").fill("-10");
+  const response = page.waitForResponse(
+    (r) =>
+      r.url().endsWith("/api/hydraulic/lab") && r.request().method() === "POST",
+  );
+  await page
+    .getByRole("button", { name: "Solve hydraulic disturbance" })
+    .click();
+  const computed = await (await response).json();
+  expect(computed.science.verification_object.result).toBe("pass");
+  expect(computed.state.result.passes).toBe(false);
+  await expect(
+    page.getByRole("link", { name: "Download hydraulic intervention" }),
+  ).toBeVisible();
+  const download = await request.get(
+    `/api/hydraulic/lab/${computed.experiment_id}`,
+  );
+  expect(download.ok()).toBe(true);
+  expect((await download.json()).science).toEqual(computed.science);
+  await page.getByLabel("Hydraulic inspect component").selectOption("hospital");
+  await expect(
+    page.getByText(
+      `Pressure head: ${computed.state.hydraulic.pressure_head_m.hospital.toFixed(6)} m`,
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await page.getByLabel("Hydraulic sequence").selectOption("storage");
+  await page.getByRole("button", { name: "Step forward", exact: true }).click();
+  await expect(page.getByText(/300.0 s ·/)).toBeVisible();
+  await page.getByLabel("Hydraulic sequence").selectOption("cascade");
+  await page.getByRole("button", { name: "Step forward", exact: true }).click();
+  await expect(
+    page.getByText("No further valve trips.", { exact: false }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Hydraulic evidence", exact: true })
+    .click();
+  await expect(
+    page.locator("summary").filter({
+      hasText:
+        "FORMALLY VERIFIED: Every demand node connects to an active source after at most 1 pipe outages",
+    }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Demonstration", exact: true })
+    .click();
+  await expect(page.getByText("1 / 9 · Engineering objective")).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  const widths = await page.evaluate(() => ({
+    width: document.documentElement.scrollWidth,
+    viewport: innerWidth,
+  }));
+  expect(widths.width).toBeLessThanOrEqual(widths.viewport + 1);
+  expect(errors).toEqual([]);
+});

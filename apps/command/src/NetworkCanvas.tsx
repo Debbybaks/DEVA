@@ -1,5 +1,5 @@
 import { Component, useEffect, useMemo, useRef } from "react";
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -21,6 +21,16 @@ export type NetworkProps = {
   sourceLosses?: string[];
   diagram?: boolean;
   onFrame?: (ms: number) => void;
+  hydraulic?: {
+    pressure_head_m: Record<string, number | null>;
+    diameters_m: number[];
+    velocity_ms: number[];
+    minimum_pressure_m: number;
+    showPressure: boolean;
+  };
+  quality?: "standard" | "high";
+  // Drei's portal declaration predates nullable React 19 refs; its implementation handles null.
+  labelPortal?: RefObject<HTMLElement | null>;
 };
 const vertex = `uniform float uRadius; varying vec2 vUv; varying vec3 vNormal; void main(){vUv=uv;vNormal=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position+normal*(uRadius-.1),1.0);}`;
 const fragment = `uniform float uTime;uniform float uFlux;uniform float uActive;uniform float uUncertainty;uniform vec3 uColor;varying vec2 vUv;varying vec3 vNormal;void main(){float direction=fract(vUv.x*13.0-uTime*uFlux*.85);float tracer=smoothstep(.8,.92,direction)*(1.0-smoothstep(.96,1.0,direction));float lighting=.64+.36*abs(vNormal.z);float hatch=step(.5,fract(vUv.x*34.0+vUv.y*4.0));vec3 ink=uColor*lighting+vec3(.24,.34,.31)*tracer*uActive;float opacity=mix(.9,.42+.3*hatch,uUncertainty);gl_FragColor=vec4(ink,opacity);}`;
@@ -40,7 +50,7 @@ function PipeMesh({
   const flow = props.result.flow[index],
     selected = props.selection === e.id;
   const risk = props.candidate.visual_fields[index];
-  const utilization = c * available > 0 ? flow / (c * available) : 0;
+  const utilization = c * available > 0 ? Math.abs(flow) / (c * available) : 0;
   const color =
     props.layer === "failure" && available < 1
       ? "#d37b6d"
@@ -97,12 +107,16 @@ function PipeMesh({
       uniforms.uTime.value += Math.min(delta, 0.1) * props.speed;
     uniforms.uRadius.value = THREE.MathUtils.lerp(
       uniforms.uRadius.value,
-      0.045 + Math.sqrt(c / 100) * 0.065,
+      props.hydraulic
+        ? 0.025 + props.hydraulic.diameters_m[index] * 0.6
+        : 0.045 + Math.sqrt(c / 100) * 0.065,
       Math.min(delta * 6, 1),
     );
-    uniforms.uFlux.value = flow / 30;
+    uniforms.uFlux.value = props.hydraulic
+      ? props.hydraulic.velocity_ms[index]
+      : flow / 30;
     uniforms.uActive.value =
-      props.layer === "flow" && available > 0 && flow > 0 ? 1 : 0;
+      props.layer === "flow" && available > 0 && Math.abs(flow) > 1e-9 ? 1 : 0;
     uniforms.uUncertainty.value = THREE.MathUtils.lerp(
       uniforms.uUncertainty.value,
       props.layer === "uncertainty"
@@ -140,6 +154,7 @@ function PipeMesh({
       )}
       {(selected || props.layer === "capacity") && (
         <Html
+          portal={props.labelPortal as RefObject<HTMLElement> | undefined}
           position={[middle[0], 0.3, middle[2]]}
           center
           className="pipe-label"
@@ -157,12 +172,31 @@ function Scene(props: NetworkProps) {
   const p = useMemo(() => positions(props.problem), [props.problem]);
   const controls = useRef<OrbitImpl>(null);
   const { camera } = useThree();
+  const transition = useRef<{
+    position: THREE.Vector3;
+    target: THREE.Vector3;
+  } | null>(null);
   useEffect(() => {
-    camera.position.set(...props.pose.position);
-    controls.current?.target.set(...props.pose.target);
-    controls.current?.update();
-  }, [camera, props.pose]);
-  useFrame((_, delta) => props.onFrame?.(delta * 1000));
+    transition.current = {
+      position: new THREE.Vector3(...props.pose.position),
+      target: new THREE.Vector3(...props.pose.target),
+    };
+  }, [props.pose]);
+  useFrame((_, delta) => {
+    props.onFrame?.(delta * 1000);
+    const next = transition.current;
+    if (next && controls.current) {
+      const factor = 1 - Math.exp(-6 * Math.min(delta, 0.1));
+      camera.position.lerp(next.position, factor);
+      controls.current.target.lerp(next.target, factor);
+      controls.current.update();
+      if (
+        camera.position.distanceToSquared(next.position) < 0.0001 &&
+        controls.current.target.distanceToSquared(next.target) < 0.0001
+      )
+        transition.current = null;
+    }
+  });
   return (
     <>
       <ambientLight intensity={0.8} />
@@ -216,7 +250,29 @@ function Scene(props: NetworkProps) {
                 side={THREE.DoubleSide}
               />
             </mesh>
+            {props.hydraulic?.showPressure && (
+              <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]}>
+                <circleGeometry args={[0.8, 32]} />
+                <shaderMaterial
+                  transparent
+                  depthWrite={false}
+                  uniforms={{
+                    uPressure: {
+                      value: props.hydraulic.pressure_head_m[n] ?? 0,
+                    },
+                    uKnown: {
+                      value:
+                        props.hydraulic.pressure_head_m[n] === null ? 0 : 1,
+                    },
+                    uThreshold: { value: props.hydraulic.minimum_pressure_m },
+                  }}
+                  vertexShader="varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}"
+                  fragmentShader="uniform float uPressure;uniform float uKnown;uniform float uThreshold;varying vec2 vUv;void main(){float r=length(vUv-.5)*2.;float a=(1.-smoothstep(.35,1.,r))*.6;vec3 c=mix(vec3(.8,.35,.25),vec3(.3,.7,.65),clamp(uPressure/40.,0.,1.));if(uKnown<.5)c=vec3(.4);gl_FragColor=vec4(c,a);}"
+                />
+              </mesh>
+            )}
             <Html
+              portal={props.labelPortal as RefObject<HTMLElement> | undefined}
               position={[0, source ? 0.9 : 0.7, 0]}
               center
               className="node-label"
@@ -224,11 +280,15 @@ function Scene(props: NetworkProps) {
               <button onClick={() => props.select(n)}>
                 <b>{n.replaceAll("-", " ")}</b>
                 <small>
-                  {source
-                    ? `${props.result.injection[i].toFixed(1)} m³/h supply`
-                    : demand
-                      ? `${props.result.delivered[i].toFixed(1)} / ${props.result.demand[i].toFixed(1)} m³/h`
-                      : "JUNCTION"}
+                  {props.hydraulic?.showPressure
+                    ? props.hydraulic.pressure_head_m[n] === null
+                      ? "PRESSURE UNKNOWN · ISOLATED"
+                      : `${props.hydraulic.pressure_head_m[n].toFixed(2)} m pressure head`
+                    : source
+                      ? `${props.result.injection[i].toFixed(1)} m³/h supply`
+                      : demand
+                        ? `${props.result.delivered[i].toFixed(1)} / ${props.result.demand[i].toFixed(1)} m³/h`
+                        : "JUNCTION"}
                 </small>
               </button>
             </Html>
@@ -238,6 +298,9 @@ function Scene(props: NetworkProps) {
       <OrbitControls
         ref={controls}
         makeDefault
+        onStart={() => {
+          transition.current = null;
+        }}
         enableDamping
         minDistance={5}
         maxDistance={24}
@@ -277,7 +340,7 @@ function Diagram(props: NetworkProps) {
           markerHeight="6"
           refX="5"
           refY="3"
-          orient="auto"
+          orient="auto-start-reverse"
         >
           <path d="M0,0 L6,3 L0,6" fill="#66b8ac" />
         </marker>
@@ -299,7 +362,8 @@ function Diagram(props: NetworkProps) {
               strokeDasharray={
                 props.scenario.availability[i] === 0 ? "6 8" : undefined
               }
-              markerEnd="url(#arrow)"
+              markerStart={props.result.flow[i] < 0 ? "url(#arrow)" : undefined}
+              markerEnd={props.result.flow[i] > 0 ? "url(#arrow)" : undefined}
             />
             <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 - 7}>
               {props.result.flow[i].toFixed(1)} m³/h
@@ -311,7 +375,28 @@ function Diagram(props: NetworkProps) {
         const [x, y] = point(n);
         return (
           <g key={n} onClick={() => props.select(n)}>
-            <circle cx={x} cy={y} r="12" fill="#b4b5a1" />
+            <circle
+              cx={x}
+              cy={y}
+              r="12"
+              fill={
+                props.hydraulic?.showPressure
+                  ? props.hydraulic.pressure_head_m[n] === null
+                    ? "#66747b"
+                    : props.hydraulic.pressure_head_m[n]! <
+                        props.hydraulic.minimum_pressure_m
+                      ? "#d37b6d"
+                      : "#66b8ac"
+                  : "#b4b5a1"
+              }
+            />
+            {props.hydraulic?.showPressure && (
+              <text x={x} y={y + 28} textAnchor="middle">
+                {props.hydraulic.pressure_head_m[n] === null
+                  ? "Unknown"
+                  : `${props.hydraulic.pressure_head_m[n]!.toFixed(2)} m`}
+              </text>
+            )}
             <text x={x} y={y - 22} textAnchor="middle">
               {n}
             </text>
@@ -334,6 +419,7 @@ class CanvasBoundary extends Component<
   }
 }
 export default function NetworkCanvas(props: NetworkProps) {
+  const labelPortal = useRef<HTMLDivElement>(null);
   const available = useMemo(() => {
     try {
       const canvas = document.createElement("canvas");
@@ -348,22 +434,28 @@ export default function NetworkCanvas(props: NetworkProps) {
   if (props.diagram || !available) return <Diagram {...props} />;
   return (
     <CanvasBoundary fallback={<Diagram {...props} />}>
-      <Canvas
-        camera={{ position: overview.position, fov: 40 }}
-        dpr={[0.75, 1.25]}
-        gl={{ antialias: true, alpha: false }}
-        onCreated={({ gl, setDpr }) => {
-          gl.setClearColor("#121b20");
-          const context = gl.getContext();
-          const info = context.getExtension("WEBGL_debug_renderer_info");
-          const renderer = info
-            ? String(context.getParameter(info.UNMASKED_RENDERER_WEBGL))
-            : "";
-          if (/swiftshader|llvmpipe|software/i.test(renderer)) setDpr(0.75);
-        }}
-      >
-        <Scene {...props} />
-      </Canvas>
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        <Canvas
+          camera={{ position: overview.position, fov: 40 }}
+          dpr={props.quality === "high" ? [1, 2] : [0.75, 1.25]}
+          gl={{ antialias: true, alpha: false }}
+          onCreated={({ gl, setDpr }) => {
+            gl.setClearColor("#121b20");
+            const context = gl.getContext();
+            const info = context.getExtension("WEBGL_debug_renderer_info");
+            const renderer = info
+              ? String(context.getParameter(info.UNMASKED_RENDERER_WEBGL))
+              : "";
+            if (/swiftshader|llvmpipe|software/i.test(renderer)) setDpr(0.75);
+          }}
+        >
+          <Scene {...props} labelPortal={labelPortal} />
+        </Canvas>
+        <div
+          ref={labelPortal}
+          style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+        />
+      </div>
     </CanvasBoundary>
   );
 }

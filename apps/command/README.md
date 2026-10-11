@@ -7,3 +7,6 @@ The network is the primary interface. GLSL motion represents relative volumetric
 Evidence Mode exposes hashes, versions, streams, failed designs, raw failure/sensitivity records and provenance. All original 38/200 failures remain visible. No fake progress, generated simulation data, chatbot or AI avatar is used.
 
 The scientific model is steady-state: there is no physical timeline, recovery or propagation animation. The scenario slider browses experiments. Animation controls affect visual flux only. Software renderer DPR is reduced; high frame cost while computing triggers a temporary 2D view, restored on completion. WebGPU and WASM are not introduced without evidence.
+
+
+Hydraulic V2 is available at `/?model=hydraulic` and through the existing top navigation. It consumes Python schema-3.0 state, has a larger world, computed storage/isolation sequences, property-specific evidence and guided stored demonstrations. The source-labelled SVG/standard/high modes preserve quantities. No surveyed spatial field or calibrated rupture timeline is fabricated. The formal label applies only to the displayed bounded topology property.

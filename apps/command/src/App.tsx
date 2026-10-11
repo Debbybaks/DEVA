@@ -8,6 +8,7 @@ import {
 } from "react";
 import { z } from "zod";
 import { overview, positions, type Pose } from "./geometry";
+const HydraulicWorkspace = lazy(() => import("./HydraulicWorkspace"));
 const NetworkCanvas = lazy(() => import("./NetworkCanvas"));
 import EvolutionMap from "./EvolutionMap";
 import ParetoPlot from "./ParetoPlot";
@@ -33,6 +34,9 @@ const progressSchema = z.object({
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
 
 export default function App() {
+  const [physics, setPhysics] = useState(
+    new URLSearchParams(window.location.search).get("model") === "hydraulic",
+  );
   const [state, dispatch] = useCommandState();
   const [view, setView] = useState<View | null>(null);
   const [dataUrl, setDataUrl] = useState("/api/view/evolution");
@@ -83,6 +87,7 @@ export default function App() {
     return () => media.removeEventListener("change", change);
   }, []);
   useEffect(() => {
+    if (physics) return;
     const controller = new AbortController();
     setLoading(true);
     setError("");
@@ -106,7 +111,7 @@ export default function App() {
         }
       });
     return () => controller.abort();
-  }, [dataUrl]);
+  }, [dataUrl, physics]);
   useEffect(() => {
     setLab(null);
   }, [state.candidate, state.compare, state.split, state.index]);
@@ -305,6 +310,14 @@ export default function App() {
     : dataUrl.includes("baseline")
       ? "/api/evidence/baseline"
       : "/api/evidence/evolution";
+  if (physics)
+    return (
+      <Suspense
+        fallback={<main className="boot">Loading hydraulic world…</main>}
+      >
+        <HydraulicWorkspace onBack={() => setPhysics(false)} />
+      </Suspense>
+    );
   if (!view)
     return (
       <main className="boot">
@@ -341,6 +354,7 @@ export default function App() {
           DEVA<span>DESIGN, ENGINEERING & VERIFICATION AUTONOMY</span>
         </a>
         <nav aria-label="Command modes">
+          <button onClick={() => setPhysics(true)}>Hydraulic V2</button>
           {(["laboratory", "evolution", "evidence"] as const).map((mode) => (
             <button
               key={mode}

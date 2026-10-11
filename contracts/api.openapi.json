@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "DEVA Scientific Engine",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "paths": {
     "/api/health": {
@@ -471,6 +471,152 @@
           }
         }
       }
+    },
+    "/api/hydraulic/{kind}": {
+      "get": {
+        "summary": "Hydraulic Artifact",
+        "operationId": "hydraulic_artifact_api_hydraulic__kind__get",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hydraulic/jobs": {
+      "post": {
+        "summary": "Hydraulic Job",
+        "operationId": "hydraulic_job_api_hydraulic_jobs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HydraulicRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hydraulic/lab": {
+      "post": {
+        "summary": "Hydraulic Lab",
+        "operationId": "hydraulic_lab_api_hydraulic_lab_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HydraulicLabRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hydraulic/lab/{experiment_id}": {
+      "get": {
+        "summary": "Hydraulic Lab Download",
+        "operationId": "hydraulic_lab_download_api_hydraulic_lab__experiment_id__get",
+        "parameters": [
+          {
+            "name": "experiment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Experiment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -537,6 +683,118 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "HydraulicLabRequest": {
+        "properties": {
+          "raw": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Raw"
+          },
+          "diameters_m": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "maxItems": 60,
+            "minItems": 1,
+            "title": "Diameters M"
+          },
+          "closed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 60,
+            "title": "Closed"
+          },
+          "demand_factor": {
+            "type": "number",
+            "maximum": 3.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Demand Factor",
+            "default": 1.0
+          },
+          "source_head_delta_m": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": -100.0,
+            "title": "Source Head Delta M",
+            "default": 0.0
+          },
+          "friction_factor": {
+            "type": "number",
+            "maximum": 2.0,
+            "minimum": 0.5,
+            "title": "Friction Factor",
+            "default": 1.0
+          },
+          "source_losses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Source Losses"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw",
+          "diameters_m"
+        ],
+        "title": "HydraulicLabRequest"
+      },
+      "HydraulicRequest": {
+        "properties": {
+          "raw": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Raw"
+          },
+          "seed": {
+            "type": "integer",
+            "exclusiveMaximum": 4294967296.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 20261020
+          },
+          "generations": {
+            "type": "integer",
+            "maximum": 3.0,
+            "minimum": 1.0,
+            "title": "Generations",
+            "default": 2
+          },
+          "train_count": {
+            "type": "integer",
+            "maximum": 80.0,
+            "minimum": 2.0,
+            "title": "Train Count",
+            "default": 24
+          },
+          "validation_count": {
+            "type": "integer",
+            "maximum": 80.0,
+            "minimum": 2.0,
+            "title": "Validation Count",
+            "default": 24
+          },
+          "test_count": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 2.0,
+            "title": "Test Count",
+            "default": 100
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw"
+        ],
+        "title": "HydraulicRequest"
       },
       "LabRequest": {
         "properties": {

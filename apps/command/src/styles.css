@@ -1271,3 +1271,235 @@ details select {
     scroll-behavior: auto !important;
   }
 }
+/* Phase 3 extends the existing engineering world; values remain mode invariant. */
+.hydraulic-shell {
+  background: #10191d;
+  color: #dce0d9;
+  min-height: 100vh;
+}
+.hydraulic-world {
+  padding: 20px 28px 70px;
+}
+.hydraulic-toolbar,
+.hydraulic-layers,
+.hydraulic-time {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.hydraulic-toolbar h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-right: auto;
+}
+.hydraulic-toolbar select {
+  max-width: 210px;
+}
+.hydraulic-layers {
+  padding: 14px 0;
+}
+.hydraulic-layers button[aria-pressed="true"] {
+  border-color: #66b8ac;
+  color: #66b8ac;
+}
+.hydraulic-layers span {
+  margin-left: auto;
+  font-size: 11px;
+  color: #b6c7c8;
+}
+.hydraulic-canvas {
+  height: 68vh;
+  min-height: 420px;
+  border: 1px solid #293c43;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.hydraulic-canvas.paired {
+  grid-template-columns: 1fr 1fr;
+}
+.hydraulic-viewport {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+}
+.world-annotation {
+  position: absolute;
+  z-index: 2;
+  left: 20px;
+  top: 18px;
+  font:
+    11px "IBM Plex Mono",
+    monospace;
+  pointer-events: none;
+  color: #b6cecc;
+}
+.hydraulic-legend {
+  font:
+    10px "IBM Plex Mono",
+    monospace;
+  color: #8ca8ad;
+  padding: 12px 0;
+}
+.hydraulic-time input[type="range"] {
+  flex: 1;
+  min-width: 140px;
+}
+.hydraulic-time output {
+  font:
+    11px "IBM Plex Mono",
+    monospace;
+}
+.hydraulic-tools {
+  border-top: 1px solid #2b3e44;
+  margin-top: 20px;
+}
+.hydraulic-tools > details {
+  padding: 14px 0;
+  border-bottom: 1px solid #2b3e44;
+}
+.hydraulic-tools summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: #b9cccc;
+  margin-bottom: 12px;
+}
+.hydraulic-tools input[type="number"] {
+  width: 90px;
+  margin: 8px;
+}
+.hydraulic-tools select {
+  max-width: 220px;
+  margin-right: 10px;
+}
+.hydraulic-tools p,
+.hydraulic-evidence p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #a7bcbe;
+}
+.hydraulic-tools button {
+  margin: 4px;
+}
+.hydraulic-tools pre,
+.hydraulic-evidence pre {
+  font-size: 11px;
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.hydraulic-frontier {
+  width: 100%;
+  height: 270px;
+  font:
+    10px "IBM Plex Mono",
+    monospace;
+  fill: #9cb4b8;
+}
+.hydraulic-frontier g {
+  cursor: pointer;
+}
+.hydraulic-frontier g:focus circle {
+  stroke: #f3e0b8;
+  stroke-width: 3;
+}
+.lineage-choice {
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 300px;
+  text-align: left;
+}
+.lineage-choice small {
+  font-size: 10px;
+  margin-top: 4px;
+}
+.hydraulic-evidence {
+  padding: 20px 0;
+}
+.hydraulic-evidence article {
+  padding: 12px 0;
+  border-bottom: 1px solid #2b3e44;
+}
+.hydraulic-evidence h3 {
+  font-size: 15px;
+}
+.hydraulic-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #10191d;
+  border-top: 1px solid #2b3e44;
+  font:
+    9px "IBM Plex Mono",
+    monospace;
+  padding: 12px 24px;
+  color: #8ca8ad;
+  z-index: 10;
+}
+.event-markers,
+.demo-guide {
+  display: flex;
+  gap: 10px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+}
+.demo-guide {
+  border-top: 1px solid #66b8ac;
+  border-bottom: 1px solid #2b3e44;
+}
+.demo-guide span {
+  font-size: 12px;
+  flex: 1;
+  min-width: 200px;
+}
+.causal-fact {
+  display: block;
+  text-align: left;
+}
+.hydraulic-viewport svg {
+  height: 100%;
+  width: 100%;
+}
+@media (max-width: 800px) {
+  .hydraulic-world {
+    padding: 12px;
+  }
+  .hydraulic-shell .masthead {
+    height: auto;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  .hydraulic-shell .baseline-strip {
+    height: auto;
+    flex-wrap: wrap;
+    padding: 12px;
+  }
+  .hydraulic-toolbar h1 {
+    width: 100%;
+  }
+  .hydraulic-canvas.paired {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 90vh;
+  }
+  .hydraulic-canvas {
+    height: 55vh;
+    min-height: 350px;
+  }
+  .hydraulic-time {
+    gap: 6px;
+  }
+  .hydraulic-evidence code {
+    overflow-wrap: anywhere;
+  }
+  .hydraulic-footer {
+    position: static;
+    box-sizing: border-box;
+  }
+  .hydraulic-tools pre {
+    max-width: 90vw;
+  }
+}
