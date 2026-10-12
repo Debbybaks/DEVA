@@ -22,7 +22,14 @@ function PhysicalWorld({
   time: number;
   onSelect: (id: string) => void;
 }) {
-  if (!frame) return <p role="status">Loading stored physical states…</p>;
+  if (!frame)
+    return (
+      <p role="status">
+        {experiment.selection === null
+          ? "No fully evaluated budget-feasible design. Rejections remain in the evidence."
+          : "Loading stored physical states…"}
+      </p>
+    );
   if (!frame.outcome.state)
     return (
       <p role="status">UNKNOWN SOLVER STATE / inspect preserved evidence</p>
@@ -673,7 +680,9 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
           <span>
             {domain.toUpperCase()} /{" "}
             {!frame
-              ? "LOADING / NO REQUIREMENT CLAIM"
+              ? experiment.selection === null
+                ? "UNTESTED / NO FULLY EVALUATED DESIGN"
+                : "LOADING / NO REQUIREMENT CLAIM"
               : frame.outcome.passes
                 ? "REQUIREMENTS SATISFIED IN THIS STATE"
                 : "REQUIREMENT FAILURE / INSPECT EVIDENCE"}

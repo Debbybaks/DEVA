@@ -64,3 +64,33 @@ it("opens different physical worlds and preserves local evidence", async () => {
   expect(screen.getByText("Evidence remains local")).toBeVisible();
   expect(screen.getByText(/4\/40 hospital failures/)).toBeVisible();
 });
+
+it("retains rejected-only investigations without inventing a physical state", async () => {
+  const rejected = structuredClone(raw);
+  for (const e of rejected.science.experiments) {
+    e.selection = null;
+    for (const c of e.candidates) {
+      c.frames = [];
+      c.rejection_reason = "ENGINEERING COST EXCEEDED";
+    }
+  }
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(
+      async () =>
+        new Response(JSON.stringify(rejected), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    ),
+  );
+  render(<WorldsWorkspace onBack={() => {}} />);
+  await screen.findByText(
+    "No fully evaluated budget-feasible design. Rejections remain in the evidence.",
+  );
+  expect(
+    screen.queryByRole("img", {
+      name: "Chronological microgrid power and stored energy",
+    }),
+  ).toBeNull();
+});
