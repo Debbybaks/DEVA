@@ -71,3 +71,5 @@ NOT STARTED: final immutable v1.0 tag and PROJECT_COMPLETE.md. These must wait f
 No third domain or research expansion will be added in Phase 6.
 
 Phase-6 RC qualification COMPLETE: 121 Python, 15 frontend, eight browser, seven exact replays, build, clean installation/build, public-boundary tests and native production smoke. PARTIAL: container build execution (sandbox blocked). BLOCKED: authorised public deployment and public smoke. Final release is NOT COMPLETE; no final tag/completion marker. Research scope remains frozen.
+
+Phase 6 COMPLETE for frozen v1.0 scope: local validation, provider container build, actual public smoke and scientific consistency checks pass. Final metadata commit is deployed and requalified before immutable v1.0.0 tagging. Feature development stops here. Future research remains separately scoped.

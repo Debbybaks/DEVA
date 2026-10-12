@@ -1,6 +1,6 @@
 # DEVA v1.0 release evidence
 
-This is release-candidate qualification, not a completed public release.
+Local and actual public release qualification pass. Public evidence: artifacts/release/public-final/. The final tag points to the exact requalified production metadata commit.
 
 Machine-readable validation: artifacts/release/validation.json. Canonical replay manifest: REPLAY_MANIFEST.json. Raw test/build/replay logs, dependency audit, local production smoke and representative screenshots: artifacts/release/. Current scientific report: DEVA_V1_TECHNICAL_REPORT.md incorporating the unchanged Phase-5 report.
 
@@ -15,3 +15,5 @@ Local native production smoke includes same-origin assets/API, both worlds, evid
 The public archive is read-only. New autonomous investigations remain available in the trusted local scientific environment; public multi-tenant live compute is outside frozen v1.0. No field data, calibrated rupture prediction, AC dynamics or universal reliability claim is implied. The 2% target remains unestablished.
 
 Release archive command after RC tagging: `.venv/bin/python scripts/package_release.py`. It includes Git history needed for pinned old-source replays, tagged source and built frontend with checksums. Public URL and final tag must only be populated after authorised deployment and public smoke gates pass.
+
+Actual public native-container smoke PASS, version 1.0.0. Public startup samples include 2.23 s and 6.75 s across independent runs; cold/network variation remains visible. The local unchanged five-second startup assertion continues to pass. No universal public startup bound is claimed.

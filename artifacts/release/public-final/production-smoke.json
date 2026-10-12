@@ -1,0 +1,20 @@
+{
+  "base": "https://deva-vert.vercel.app",
+  "status": "PASS",
+  "public": true,
+  "timings": {
+    "world_startup_ms": 6749.723721
+  },
+  "checks": [
+    "both physical domains",
+    "evidence/uncertainty/xray",
+    "judge/portfolio/researcher",
+    "stored demonstration",
+    "mobile width",
+    "keyboard focus",
+    "reduced motion",
+    "read-only compute",
+    "404 recovery"
+  ],
+  "page_errors": []
+}

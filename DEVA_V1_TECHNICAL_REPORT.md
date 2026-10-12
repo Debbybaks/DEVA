@@ -11,4 +11,4 @@ Formal result: Boolean topology and rational necessary-energy abstractions check
 Limitations: field calibration and rupture validation absent; steady hydraulic research equations; perfect-foresight finite-horizon energy adequacy without AC dynamics; software-rendering performance limitations.
 Future work: FUTURE_RESEARCH.md. These research extensions do not expand frozen v1.0 scope.
 
-Release qualification is tracked in V1_RELEASE_GATES.md and the release evidence package. Until actual deployment and public smoke pass this remains a release candidate, not DEVA v1.0 complete.
+Release qualification is tracked in V1_RELEASE_GATES.md and the release evidence package. Actual public deployment and smoke have passed at https://deva-vert.vercel.app. Research limitations remain unchanged.

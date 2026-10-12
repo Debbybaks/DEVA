@@ -1,18 +1,36 @@
 {
-  "version": "1.0.0-rc.1",
-  "validated_source_commit": "f0f876c",
-  "release_commit_resolution": "git rev-parse v1.0.0-rc.1^{commit}",
-  "release_tag": "v1.0.0-rc.1",
-  "deployment_identifier": null,
-  "canonical_url": null,
-  "status": "LOCAL_RELEASE_CANDIDATE; PUBLIC_DEPLOYMENT_PENDING",
-  "domains": ["water", "microgrid"],
-  "tests": {"python": 121, "frontend": 15, "browser": 8},
+  "version": "1.0.0",
+  "validated_source_commit": "80dc3017ab533c23eb2a440843d62090a37475cf",
+  "release_commit_resolution": "git rev-parse v1.0.0^{commit}",
+  "release_tag": "v1.0.0",
+  "deployment_identifier": "dpl_6qweyzfshg8d9risnP9b5UDkfwcd",
+  "canonical_url": "https://deva-vert.vercel.app",
+  "status": "ALL_GATES_PASS; FINAL_METADATA_COMMIT_REQUALIFIED_BEFORE_TAG",
+  "domains": [
+    "water",
+    "microgrid"
+  ],
+  "tests": {
+    "python": 121,
+    "frontend": 15,
+    "browser": 8
+  },
   "exact_replay_checks": 7,
   "production_build": "PASS",
-  "local_production_smoke": "PASS; not a public smoke test",
+  "local_production_smoke": "PASS; actual public smoke also PASS",
   "release_timestamp": "2026-10-12",
   "evidence_package": "artifacts/release/validation.json",
-  "limitations": ["field calibration incomplete", "rupture hazard uncalibrated", "AC dynamics unmodelled", "general topology synthesis incomplete", "rare-event probability guarantees incomplete", "publication-grade algorithm comparisons incomplete", "software 3D slow", "WebGPU unestablished", "2% target unestablished"],
-  "blocking_gates": ["L: public deployment", "M: public smoke"]
+  "limitations": [
+    "field calibration incomplete",
+    "rupture hazard uncalibrated",
+    "AC dynamics unmodelled",
+    "general topology synthesis incomplete",
+    "rare-event probability guarantees incomplete",
+    "publication-grade algorithm comparisons incomplete",
+    "software 3D slow",
+    "WebGPU unestablished",
+    "2% target unestablished"
+  ],
+  "blocking_gates": [],
+  "deployment_identifier_scope": "Validated final-version source deployment; final tagged metadata deployment is identified in the checksum archive manifest."
 }

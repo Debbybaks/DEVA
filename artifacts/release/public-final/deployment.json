@@ -1,0 +1,17 @@
+{
+  "id": "dpl_6qweyzfshg8d9risnP9b5UDkfwcd",
+  "url": "https://deva-hoy4buxgu-debbybaks-projects.vercel.app",
+  "productionUrl": "https://deva-vert.vercel.app",
+  "inspectorUrl": "https://vercel.com/debbybaks-projects/deva/6qweyzfshg8d9risnP9b5UDkfwcd",
+  "readyState": "READY",
+  "target": "production",
+  "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_6qweyzfshg8d9risnP9b5UDkfwcd",
+  "buildMachine": {
+    "cores": 2,
+    "memory": 8192,
+    "machine": "basic",
+    "selectionType": "fixed",
+    "selectionSource": "plan-default"
+  },
+  "deploymentProtection": []
+}

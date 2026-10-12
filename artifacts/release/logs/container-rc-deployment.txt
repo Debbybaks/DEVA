@@ -1,0 +1,302 @@
+Vercel CLI 63.1.2 (Node.js 24.19.0)
+Deploying deva
+Uploading [--------------------] (0.0B/272B)
+Uploading [====================] (272.0B/272B)
+  Inspect         https://vercel.com/debbybaks-projects/deva/6dDuNM6vranCkuDXS5iLGZouUM2N
+  Production      https://deva-9shqs9a8m-debbybaks-projects.vercel.app
+Building…
+Building…
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Previous build caches not available.
+Error: Failed to get package info: Error: Failed to fetch dist-tags from npm
+    at process.<anonymous> (/tmp/deva-vercel-npm/_npx/67eb4586ca667318/node_modules/vercel/dist/get-latest-worker.cjs:124:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+Downloading 346 deployment files...
+Running "vercel build"
+Vercel CLI 62.7.0
+▲ container  buildah: buildah version 1.43.4 (image-spec 1.1.1, runtime-spec 1.2.1) (storage-driver=storage.conf)
+▲ container  buildah storage: driver=overlay graphRoot=/vercel/.containers/storage runRoot=/run/containers/storage backingFs=xfs — verified
+→ Authenticating to vcr.vercel.com as team_WOGfgAM1EPvDjeZHQNcLvy1J
+✓ authenticated
+→ Ensuring registry repository "deva"
+✓ created repository "deva"
+▲ container  Building image vcr.vercel.com/debbybaks-projects/deva/deva:dpl_6dDuNM6vranCkuDXS5iLGZouUM2N (buildah)
+→ buildah build (linux/amd64)
+▲ container  layer store: cold (no images present before build)
+[1/2] STEP 1/6: FROM node:24-bookworm-slim AS frontend
+Resolved "node" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull docker.io/library/node:24-bookworm-slim...
+Getting image source signatures
+Copying blob sha256:08489011619dfda982191cb9cc0418dc48ea3b1341588aeef534e4db0ab4d3d0
+Copying blob sha256:7fd1ebe418b5079d4aa36f416af9b143d127bc75b0155d71cb5fd559b5e04d39
+Copying blob sha256:1a0cf4b1ffc8dd659bb8c6e90471bc8fec24620e4fdb68bb2b6faa56154ae146
+Copying blob sha256:517d640e32835287653c4b15eb5d9f6bcf48e103baea4f7e29bac937002f649b
+Copying blob sha256:11ffcabe0f772f0f1a9c80b4b290b5ec0de54f11c671f0fa10e5844f9b52d17a
+Copying config sha256:470015c1ab1577c19efce2e80cdad4afd9c682cf8f4dcf3dccae5abfd9113397
+Writing manifest to image destination
+[1/2] STEP 2/6: WORKDIR /build
+--> 73381d67e064
+[1/2] STEP 3/6: COPY apps/command/package*.json ./
+--> 81c33285b434
+[1/2] STEP 4/6: RUN npm ci
+npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+added 232 packages, and audited 233 packages in 8s
+34 packages are looking for funding
+run `npm fund` for details
+3 vulnerabilities (1 moderate, 2 critical)
+To address all issues (including breaking changes), run:
+npm audit fix --force
+Run `npm audit` for details.
+npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+npm warn install-scripts
+npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+--> ed9400221601
+[1/2] STEP 5/6: COPY apps/command/ ./
+--> 9eeb9cb8079d
+[1/2] STEP 6/6: RUN npm run build
+> deva-command@1.0.0-rc.1 build
+> tsc -b && vite build
+vite v7.3.7 building client environment for production...
+transforming...
+node_modules/zod/v4/core/util.js (400:0): A comment
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+* esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+* will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 705 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              0.58 kB │ gzip:   0.38 kB
+dist/assets/ibm-plex-mono-latin-400-normal-CvHOgSBP.woff    13.14 kB
+dist/assets/ibm-plex-mono-latin-500-normal-CB9ihrfo.woff    13.16 kB
+dist/assets/manrope-latin-800-normal-BfWYOv1c.woff2         13.65 kB
+dist/assets/manrope-latin-500-normal-BYYD-dBL.woff2         14.04 kB
+dist/assets/manrope-latin-400-normal-PaqtzbVb.woff2         14.11 kB
+dist/assets/manrope-latin-600-normal-4f0koTD-.woff2         14.17 kB
+dist/assets/manrope-latin-700-normal-BZp_XxE4.woff2         14.21 kB
+dist/assets/ibm-plex-mono-latin-400-normal-DMJ8VG8y.woff2   14.71 kB
+dist/assets/ibm-plex-mono-latin-500-normal-DSY6xOcd.woff2   14.89 kB
+dist/assets/manrope-latin-800-normal-uHUdIJgA.woff          17.91 kB
+dist/assets/manrope-latin-500-normal-DMZssgOp.woff          18.24 kB
+dist/assets/manrope-latin-400-normal-8tf8FM3T.woff          18.29 kB
+dist/assets/manrope-latin-600-normal-BqgrALkZ.woff          18.38 kB
+dist/assets/manrope-latin-700-normal-DGRFkw-m.woff          18.41 kB
+dist/assets/WorldsWorkspace-BXUEZHd_.css                     3.57 kB │ gzip:   1.31 kB
+dist/assets/index-DuAboE7m.css                              26.20 kB │ gzip:   6.31 kB
+dist/assets/hydraulicContracts-6FdY2gtM.js                   3.02 kB │ gzip:   1.29 kB
+dist/assets/HydraulicWorkspace-o-vLpC0u.js                  17.19 kB │ gzip:   6.15 kB
+dist/assets/WorldsWorkspace-B7xoD3b9.js                     19.54 kB │ gzip:   7.12 kB
+dist/assets/TwinWorkspace-BoZUtpCO.js                       29.82 kB │ gzip:  10.01 kB
+dist/assets/index-KhvTXtFt.js                              354.09 kB │ gzip: 107.81 kB
+dist/assets/NetworkCanvas-DfwWI1Cd.js                      916.06 kB │ gzip: 248.93 kB
+✓ built in 8.83s
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+--> 5c77a7983b02
+[2/2] STEP 1/15: FROM python:3.12.14-slim-bookworm
+Resolved "python" as an alias (/etc/containers/registries.conf.d/000-shortnames.conf)
+Trying to pull docker.io/library/python:3.12.14-slim-bookworm...
+Getting image source signatures
+Copying blob sha256:7c6fab1667eb7d9029684d783e4c127f11dd7ed5120829f875b799a0b9431558
+Copying blob sha256:774043ccc8ccd0d0833a9ee0792142ab7ad93df971e59dd248fbf82db16d0150
+Copying blob sha256:1c5e03f304918f89aed0c098c8f4b6f163f7bf9d2702991696bf0132a2853e30
+Copying blob sha256:a2e58067964fcd8f46a6b5992975e9c8ab34e7620d96204e08e99bf0fdf4dab8
+Copying config sha256:febd0be41adb897a0ab8f1f1c693d8912669ea60c4940e076e9946b60e210ef0
+Writing manifest to image destination
+[2/2] STEP 2/15: WORKDIR /app
+--> cd7cdcfb0b7b
+[2/2] STEP 3/15: COPY requirements*.txt ./
+--> 831d94e0435f
+[2/2] STEP 4/15: RUN pip install --no-cache-dir -r requirements-release-lock.txt -r requirements-build-lock.txt
+Collecting annotated-doc==0.0.5 (from -r requirements-release-lock.txt (line 2))
+Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+Collecting annotated-types==0.8.0 (from -r requirements-release-lock.txt (line 3))
+Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting anyio==4.14.2 (from -r requirements-release-lock.txt (line 4))
+Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
+Collecting certifi==2026.7.22 (from -r requirements-release-lock.txt (line 5))
+Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting click==8.4.2 (from -r requirements-release-lock.txt (line 6))
+Downloading click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+Collecting fastapi==0.141.1 (from -r requirements-release-lock.txt (line 7))
+Downloading fastapi-0.141.1-py3-none-any.whl.metadata (27 kB)
+Collecting h11==0.16.0 (from -r requirements-release-lock.txt (line 8))
+Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting httpcore==1.0.9 (from -r requirements-release-lock.txt (line 9))
+Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting httpx==0.28.1 (from -r requirements-release-lock.txt (line 10))
+Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting idna==3.18 (from -r requirements-release-lock.txt (line 11))
+Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+Collecting numpy==2.3.5 (from -r requirements-release-lock.txt (line 12))
+Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Collecting pydantic==2.13.4 (from -r requirements-release-lock.txt (line 13))
+Downloading pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+Collecting pydantic-core==2.46.4 (from -r requirements-release-lock.txt (line 14))
+Downloading pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Collecting scipy==1.17.0 (from -r requirements-release-lock.txt (line 15))
+Downloading scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+Collecting starlette==1.6.0 (from -r requirements-release-lock.txt (line 16))
+Downloading starlette-1.6.0-py3-none-any.whl.metadata (6.4 kB)
+Collecting typing-extensions==4.16.0 (from -r requirements-release-lock.txt (line 17))
+Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting typing-inspection==0.4.3 (from -r requirements-release-lock.txt (line 18))
+Downloading typing_inspection-0.4.3-py3-none-any.whl.metadata (2.6 kB)
+Collecting uvicorn==0.52.1 (from -r requirements-release-lock.txt (line 19))
+Downloading uvicorn-0.52.1-py3-none-any.whl.metadata (6.6 kB)
+Collecting z3-solver==4.16.0.0 (from -r requirements-release-lock.txt (line 20))
+Downloading z3_solver-4.16.0.0-py3-none-manylinux_2_27_x86_64.whl.metadata (602 bytes)
+Collecting setuptools==84.0.0 (from -r requirements-build-lock.txt (line 1))
+Downloading setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting wheel==0.48.0 (from -r requirements-build-lock.txt (line 2))
+Downloading wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+Collecting packaging>=24.0 (from wheel==0.48.0->-r requirements-build-lock.txt (line 2))
+Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading anyio-4.14.2-py3-none-any.whl (125 kB)
+Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+Downloading click-8.4.2-py3-none-any.whl (119 kB)
+Downloading fastapi-0.141.1-py3-none-any.whl (131 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+Downloading idna-3.18-py3-none-any.whl (65 kB)
+Downloading numpy-2.3.5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 248.3 MB/s eta 0:00:00
+Downloading pydantic-2.13.4-py3-none-any.whl (472 kB)
+Downloading pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 498.4 MB/s eta 0:00:00
+Downloading scipy-1.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.0 MB)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.0/35.0 MB 232.9 MB/s eta 0:00:00
+Downloading starlette-1.6.0-py3-none-any.whl (75 kB)
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading typing_inspection-0.4.3-py3-none-any.whl (14 kB)
+Downloading uvicorn-0.52.1-py3-none-any.whl (79 kB)
+Downloading z3_solver-4.16.0.0-py3-none-manylinux_2_27_x86_64.whl (31.7 MB)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 31.7/31.7 MB 251.7 MB/s eta 0:00:00
+Downloading setuptools-84.0.0-py3-none-any.whl (818 kB)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 818.2/818.2 kB 914.0 MB/s eta 0:00:00
+Downloading wheel-0.48.0-py3-none-any.whl (33 kB)
+Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Installing collected packages: z3-solver, typing-extensions, setuptools, packaging, numpy, idna, h11, click, certifi, annotated-types, annotated-doc, wheel, uvicorn, typing-inspection, scipy, pydantic-core, httpcore, anyio, starlette, pydantic, httpx, fastapi
+Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.14.2 certifi-2026.7.22 click-8.4.2 fastapi-0.141.1 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.18 numpy-2.3.5 packaging-26.3 pydantic-2.13.4 pydantic-core-2.46.4 scipy-1.17.0 setuptools-84.0.0 starlette-1.6.0 typing-extensions-4.16.0 typing-inspection-0.4.3 uvicorn-0.52.1 wheel-0.48.0 z3-solver-4.16.0.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+--> a61e7f8db537
+[2/2] STEP 5/15: COPY pyproject.toml ./
+--> b4bd0697a56a
+[2/2] STEP 6/15: COPY src ./src
+--> d6500c21ea25
+[2/2] STEP 7/15: RUN pip install --no-deps --no-build-isolation -e .
+Obtaining file:///app
+Checking if build backend supports build_editable: started
+Checking if build backend supports build_editable: finished with status 'done'
+Preparing editable metadata (pyproject.toml): started
+Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: deva-engineering
+Building editable for deva-engineering (pyproject.toml): started
+Building editable for deva-engineering (pyproject.toml): finished with status 'done'
+Created wheel for deva-engineering: filename=deva_engineering-1.0.0rc1-0.editable-py3-none-any.whl size=1767 sha256=1c38e154e1c3d6134f72a6f8124f2f025e1115ed9dcfd85788197d8cda635dd9
+Stored in directory: /tmp/pip-ephem-wheel-cache-82dugu8a/wheels/54/1b/b7/aa63e25c8f14f4f2ae7b04e6097bdecb770e455c5c1ee0a600
+Successfully built deva-engineering
+Installing collected packages: deva-engineering
+Successfully installed deva-engineering-1.0.0rc1
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+[notice] A new release of pip is available: 25.0.1 -> 26.2.1
+[notice] To update, run: pip install --upgrade pip
+--> be2b18fe6848
+[2/2] STEP 8/15: COPY artifacts ./artifacts
+--> 36ed43373c16
+[2/2] STEP 9/15: COPY examples ./examples
+--> 08111f8da51d
+[2/2] STEP 10/15: COPY --from=frontend /build/dist ./apps/command/dist
+--> 6858e62f42a8
+[2/2] STEP 11/15: RUN useradd --uid 10001 --create-home deva && mkdir /app/.runtime && chown deva /app/.runtime
+--> aa3ceca3ca63
+[2/2] STEP 12/15: USER deva
+--> 36b64962fe59
+[2/2] STEP 13/15: ENV DEVA_RUNTIME_DIR=/tmp/deva-runtime
+--> 0f0d280ffabb
+[2/2] STEP 14/15: EXPOSE 80
+--> aace1b8b3c1c
+[2/2] STEP 15/15: CMD ["python", "-m", "uvicorn", "deva.release_app:app", "--host", "0.0.0.0", "--port", "80"]
+[2/2] COMMIT vcr.vercel.com/debbybaks-projects/deva/deva:dpl_6dDuNM6vranCkuDXS5iLGZouUM2N
+--> b0c24b3a97d7
+Successfully tagged vcr.vercel.com/debbybaks-projects/deva/deva:dpl_6dDuNM6vranCkuDXS5iLGZouUM2N
+b0c24b3a97d7c298b23bf4542ffb69353c8cc645c2f5ba36d5d97c0583c5da8a
+✓ built in 67.3s
+→ Pushing vcr.vercel.com/debbybaks-projects/deva/deva:dpl_6dDuNM6vranCkuDXS5iLGZouUM2N
+▲ container  pushing vcr.vercel.com/debbybaks-projects/deva/deva:dpl_6dDuNM6vranCkuDXS5iLGZouUM2N with zstd compression (level=3, force, oci)
+Getting image source signatures
+Copying blob sha256:aec2f2358097256545068e204e185716f4864c7321c76d7a33ef9cc5b7d2955a
+Copying blob sha256:16df0073c13c96653ee2b601b16e514321513eb4af983de156c2d4e17df8a5d9
+Copying blob sha256:9639007baab8a136bc468bd5d757fdf79cf5d77b6ff2a87889071252e334fab3
+Copying blob sha256:abca6d63c9dbe51fa3bc42e75e0387da12803ef64430ad151814e468d5e1c203
+Copying blob sha256:b64093adb3e980818487e4addc92ca11f7f2aea2d9b6055baff4e1dab725fc3e
+Copying blob sha256:34467cc93912af891dfee8a3902adf9b4f355a9bca4eaa46f658d1181a21de0d
+Copying blob sha256:be48a3a661b928d4088ce72e6d4ebbddf35e47364e87afd68144ceba04d8e3b5
+Copying blob sha256:ccee037213eaf72a568caa258b85a6c90010c8ed1bec22130d333ac947601b6c
+Copying blob sha256:bd9e507c14044bc353d3cd1bea8fe4518db3a68febc1a3a4ac9675524547ea5c
+Copying blob sha256:df08b8d308e84127e43f70a6385a21f75b56c468aac29cf3cacc52ac397dbf54
+Copying blob sha256:27905095fa9b8a5108b37733e2a98d4df23f574f9d7cbdf213b3237c264d8b90
+Copying blob sha256:c84ad32d1f66fd69066f1661f0afaf1d993c2167ffa2390a15c0313dcc54ff13
+Copying blob sha256:9df943f099ad459da09e27744495b1b3cf3baab8de3eb6bb4cb43d0742f44db9
+Copying config sha256:b0c24b3a97d7c298b23bf4542ffb69353c8cc645c2f5ba36d5d97c0583c5da8a
+Writing manifest to image destination
+✓ pushed sha256:c29dde27ad59… in 7.1s
+▲ container  Image reference vcr.vercel.com/debbybaks-projects/deva/deva@sha256:c29dde27ad59b148f32355eb965ab0adf1493791fdfda3fe0285ef223b652c1d
+Build Completed in /vercel/output [1m]
+Deploying outputs...
+[2K[1A[2K[G  Production      https://deva-9shqs9a8m-debbybaks-projects.vercel.app
+Completing…
+▲ Aliased         https://deva-vert.vercel.app
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_6dDuNM6vranCkuDXS5iLGZouUM2N",
+    "url": "https://deva-9shqs9a8m-debbybaks-projects.vercel.app",
+    "productionUrl": "https://deva-vert.vercel.app",
+    "inspectorUrl": "https://vercel.com/debbybaks-projects/deva/6dDuNM6vranCkuDXS5iLGZouUM2N",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_6dDuNM6vranCkuDXS5iLGZouUM2N",
+    "buildMachine": {
+      "cores": 2,
+      "memory": 8192,
+      "machine": "basic",
+      "selectionType": "fixed",
+      "selectionSource": "plan-default"
+    },
+    "deploymentProtection": []
+  },
+  "message": "Deployment deva-9shqs9a8m-debbybaks-projects.vercel.app ready. Production URL: https://deva-vert.vercel.app",
+  "next": [
+    {
+      "command": "vercel curl https://deva-vert.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect deva-9shqs9a8m-debbybaks-projects.vercel.app --scope team_WOGfgAM1EPvDjeZHQNcLvy1J",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod --scope team_WOGfgAM1EPvDjeZHQNcLvy1J",
+      "when": "Promote to production"
+    }
+  ]
+}

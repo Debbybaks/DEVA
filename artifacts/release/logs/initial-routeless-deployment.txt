@@ -1,0 +1,61 @@
+Vercel CLI 63.1.2 (Node.js 24.19.0)
+Deploying deva
+Uploading [--------------------] (0.0B/159.6MB)
+Uploading [=====---------------] (39.9MB/159.6MB)
+Uploading [==========----------] (79.8MB/159.6MB)
+Error: Failed to get package info: Error: Failed to fetch dist-tags from npm
+    at process.<anonymous> (/tmp/deva-vercel-npm/_npx/67eb4586ca667318/node_modules/vercel/dist/get-latest-worker.cjs:124:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+Uploading [===============-----] (119.7MB/159.6MB)
+Uploading [====================] (159.6MB/159.6MB)
+  Inspect         https://vercel.com/debbybaks-projects/deva/H8qaJHRhKrznYpAZMmPq7ntnhs1D
+  Production      https://deva-43cgugcej-debbybaks-projects.vercel.app
+Building…
+Building…
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Previous build caches not available.
+Downloading 345 deployment files...
+Running "vercel build"
+Vercel CLI 62.7.0
+Build Completed in /vercel/output [678ms]
+Deploying outputs...
+[2K[1A[2K[G  Production      https://deva-43cgugcej-debbybaks-projects.vercel.app
+Completing…
+▲ Aliased         https://deva-vert.vercel.app
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_H8qaJHRhKrznYpAZMmPq7ntnhs1D",
+    "url": "https://deva-43cgugcej-debbybaks-projects.vercel.app",
+    "productionUrl": "https://deva-vert.vercel.app",
+    "inspectorUrl": "https://vercel.com/debbybaks-projects/deva/H8qaJHRhKrznYpAZMmPq7ntnhs1D",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_H8qaJHRhKrznYpAZMmPq7ntnhs1D",
+    "buildMachine": {
+      "cores": 2,
+      "memory": 8192,
+      "machine": "basic",
+      "selectionType": "fixed",
+      "selectionSource": "plan-default"
+    },
+    "deploymentProtection": []
+  },
+  "message": "Deployment deva-43cgugcej-debbybaks-projects.vercel.app ready. Production URL: https://deva-vert.vercel.app",
+  "next": [
+    {
+      "command": "vercel curl https://deva-vert.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect deva-43cgugcej-debbybaks-projects.vercel.app --scope team_WOGfgAM1EPvDjeZHQNcLvy1J",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod --scope team_WOGfgAM1EPvDjeZHQNcLvy1J",
+      "when": "Promote to production"
+    }
+  ]
+}
