@@ -24,11 +24,14 @@ class ExperimentMemory:
 
     def __init__(self):
         self.records = {}
+        self.experiments = {}
 
     def save(self, path):
         path = Path(path)
         temporary = path.with_suffix(path.suffix + ".tmp")
-        payload = dict(schema_version="5.0", records=self.records)
+        payload = dict(
+            schema_version="5.0", records=self.records, experiments=self.experiments
+        )
         temporary.write_text(json.dumps(payload, allow_nan=False))
         temporary.replace(path)
 
@@ -40,6 +43,7 @@ class ExperimentMemory:
         ):
             raise ValueError("Invalid scientific memory")
         memory = cls()
+        memory.experiments = payload.get("experiments", {})
         for key, record in payload["records"].items():
             if (
                 hashlib.sha256(canonical(record["outcome"]).encode()).hexdigest()
@@ -48,6 +52,29 @@ class ExperimentMemory:
                 raise ValueError("Memory output checksum mismatch")
             memory.records[key] = record
         return memory
+
+    def remember(self, experiment):
+        from .audit import verify_hash
+
+        verify_hash(experiment)
+        s = experiment["science"]
+        self.experiments[experiment["experiment_id"]] = dict(
+            domain=s["domain"]["id"],
+            model_version=s["domain"]["model_version"],
+            scientific_sha256=experiment["scientific_sha256"],
+            configuration=s["configuration"],
+            seeds=s["seeds"],
+            selection=s["selection"],
+            candidates=[
+                {k: v for k, v in c.items() if k != "training"} for c in s["candidates"]
+            ],
+            hypotheses=s["hypotheses"],
+            heldout=(
+                {k: v for k, v in s["heldout"].items() if k != "records"}
+                if s["heldout"]
+                else None
+            ),
+        )
 
     def key(self, domain, design, scenario, source):
         return hashlib.sha256(
@@ -416,9 +443,11 @@ def investigate(
         )
     ]
     digest = hashlib.sha256(canonical(payload).encode()).hexdigest()
-    return dict(
+    experiment = dict(
         experiment_id="deva-domain-" + digest[:16],
         scientific_sha256=digest,
         science=payload,
         performance=dict(runtime_seconds=time.monotonic() - started),
     )
+    memory.remember(experiment)
+    return experiment

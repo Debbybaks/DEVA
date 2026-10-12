@@ -35,7 +35,13 @@ def import_batch(payload, domain_id, quantities, components):
             "split",
         }:
             raise ValueError("Exact observation fields required")
-        if not record["id"] or record["id"] in seen:
+        if (
+            any(
+                not isinstance(record[k], str) or not record[k]
+                for k in ["id", "timestamp", "component", "sensor", "quantity", "split"]
+            )
+            or record["id"] in seen
+        ):
             raise ValueError("Unique observation identities required")
         seen.add(record["id"])
         stamp = datetime.fromisoformat(record["timestamp"].replace("Z", "+00:00"))
@@ -57,6 +63,15 @@ def import_batch(payload, domain_id, quantities, components):
         unit = quantities[record["quantity"]]
         q = record["measurement"]
         sigma = record["uncertainty"]
+        if any(
+            not isinstance(v, dict)
+            or set(v) != {"value", "unit"}
+            or not isinstance(v["unit"], str)
+            for v in [q, sigma]
+        ):
+            raise ValueError(
+                "Explicit numeric measurement/uncertainty quantity required"
+            )
         value = Quantity.of(q["value"], q["unit"]).to(unit)
         uncertainty = Quantity.of(sigma["value"], sigma["unit"]).to(unit)
         if uncertainty <= 0:
