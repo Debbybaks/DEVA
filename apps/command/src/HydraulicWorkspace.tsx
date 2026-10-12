@@ -1,3 +1,7 @@
+import EvidenceSummary, {
+  EvidenceFields,
+  RawEvidence,
+} from "./EvidenceSummary";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { request } from "./contracts";
 import {
@@ -50,7 +54,10 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
         setError("");
       })
       .catch((e) => {
-        if (!c.signal.aborted) setError(String(e));
+        if (!c.signal.aborted)
+          setError(
+            "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+          );
       });
     return () => c.abort();
   }, [url]);
@@ -163,7 +170,9 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
           focus(result.causal_trace.facts[0].component);
       }
     } catch (e) {
-      setError(String(e));
+      setError(
+        "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+      );
     } finally {
       setBusy(false);
     }
@@ -189,7 +198,9 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
       setJob(data.job_id);
       setQuality("2d");
     } catch (e) {
-      setError(String(e));
+      setError(
+        "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+      );
     } finally {
       setBusy(false);
     }
@@ -259,6 +270,7 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
           DEVA<span>PRESSURE-DEPENDENT ENGINEERING WORLD</span>
         </div>
         <nav>
+          <a href="https://github.com/Debbybaks/DEVA">GitHub / Source code</a>
           <button onClick={onBack}>Transport archive</button>
           <a href="/?model=twin">Digital twin</a>
           <button
@@ -726,14 +738,10 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
               })}
             </svg>
             <p>{view.frontier.scope}</p>
-            <pre>
-              {JSON.stringify(view.frontier.marginal_segments, null, 2)}
-            </pre>
+            <EvidenceSummary value={view.frontier.marginal_segments} />
             <details>
               <summary>90% to 100%: demonstrated versus absent</summary>
-              <pre>
-                {JSON.stringify(view.frontier.requested_levels, null, 2)}
-              </pre>
+              <EvidenceSummary value={view.frontier.requested_levels} />
             </details>
           </details>
           <details>
@@ -750,7 +758,7 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
                 {c.parents.join(" + ") || "origin"} → {c.id} ·{" "}
                 {c.cost.toFixed(2)} ·{" "}
                 {c.rejection_reason ?? "training frontier"}
-                <small>{JSON.stringify(c.mutation)}</small>
+                <EvidenceFields value={c.mutation} />
               </button>
             ))}
           </details>
@@ -802,23 +810,21 @@ export default function HydraulicWorkspace({ onBack }: { onBack: () => void }) {
                 <p>{v.scope}</p>
                 <p>{v.assumptions.join(" · ")}</p>
                 <p>{v.limitations.join(" · ")}</p>
-                <pre>{v.smtlib}</pre>
+                <RawEvidence value={v.smtlib} label="View raw solver input" />
                 <details>
                   <summary>
                     Machine-readable proof object ·{" "}
                     {v.proof_sha256 ?? "No proof; counterexample/unknown"}
                   </summary>
-                  <pre>{v.proof ?? JSON.stringify(v, null, 2)}</pre>
+                  <RawEvidence value={v.proof ?? v} label="View raw proof" />
                 </details>
               </details>
             ))}
             <details>
               <summary>Aleatoric vs epistemic uncertainty</summary>
-              <pre>{JSON.stringify(view.uncertainty, null, 2)}</pre>
+              <EvidenceSummary value={view.uncertainty} />
             </details>
-            <pre>
-              {JSON.stringify({ code: view.code, seeds: view.seeds }, null, 2)}
-            </pre>
+            <EvidenceSummary value={{ code: view.code, seeds: view.seeds }} />
             <p>{view.limitations.join(" · ")}</p>
           </section>
         )}

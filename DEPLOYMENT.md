@@ -22,3 +22,7 @@ Project deva (`prj_AaPigm7026IjUeJ96uWU0TVz8WXe`), team `team_WOGfgAM1EPvDjeZHQN
 Source RC: 5e2878297871f75e0596c9bb6e518dc3d5a02e00. Only hosting configuration is overlaid; no historical artifacts or scientific code changed. Compatibility is documentation-checked, not a successful provider build until deployment evidence exists. Connected ChatGPT authentication does not provide workspace CLI credentials. Do not claim gates L–M pass before actual deployment/smoke.
 
 Deployment verified: https://deva-vert.vercel.app, dedicated project deva. Explicit services entrypoint was necessary; the autodetection-only deployment had no routes. Container provider build now passes. Actual public smoke and canonical evidence comparison pass. Final release resolves through v1.0.0; archive metadata contains its exact commit/deployment identifiers.
+
+## v1.0 public presentation maintenance
+
+Canonical source repository: [Debbybaks/DEVA](https://github.com/Debbybaks/DEVA). Live application: [DEVA](https://deva-vert.vercel.app). Engineering Worlds presents readable evidence summaries and recorded ablation cards. Raw scientific payloads require an explicit View raw evidence action; normal Judge, Portfolio and demonstration views do not open raw payloads. The preserved archive remains at /archive, and hosted scientific writes remain denied. Immutable release manifests and scientific evidence refer to their original releases; newer UI commit/build identifiers do not replace scientific hashes.

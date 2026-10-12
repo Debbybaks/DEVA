@@ -1,3 +1,4 @@
+import EvidenceSummary, { RawEvidence } from "./EvidenceSummary";
 import {
   lazy,
   Suspense,
@@ -84,7 +85,10 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
         setSelection(null);
       })
       .catch((e) => {
-        if (!controller.signal.aborted) setError(String(e));
+        if (!controller.signal.aborted)
+          setError(
+            "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+          );
       });
     return () => controller.abort();
   }, [url]);
@@ -104,7 +108,9 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
           stream.close();
         }
         if (["failed", "cancelled"].includes(value.stage)) {
-          setError(value.error ?? value.stage);
+          setError(
+            "The investigation stopped. Inspect its retained evidence in Researcher Mode.",
+          );
           setJob(null);
           stream.close();
         }
@@ -287,7 +293,10 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
       setJob(data.job_id);
       setStatus("queued");
     } catch (e) {
-      if (!controller.signal.aborted) setError(String(e));
+      if (!controller.signal.aborted)
+        setError(
+          "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+        );
     } finally {
       if (!controller.signal.aborted) setBusy(false);
     }
@@ -390,6 +399,7 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
           DEVA<span>DIGITAL-TWIN LABORATORY</span>
         </div>
         <nav>
+          <a href="https://github.com/Debbybaks/DEVA">GitHub / Source code</a>
           <button onClick={onBack}>Hydraulic world</button>
           <button
             onClick={() => {
@@ -993,7 +1003,7 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
                 separately; see full evidence.
               </p>
             )}
-            <pre>{JSON.stringify(view.engineering_agent.plan, null, 2)}</pre>
+            <EvidenceSummary value={view.engineering_agent.plan} />
             {view.engineering_agent.research_narrative.map((n, i) => (
               <p key={i}>
                 {n.text} <code>{n.evidence}</code>
@@ -1016,11 +1026,11 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
                 <p>{p.scope}</p>
                 <p>{p.assumptions.join(" ")}</p>
                 <p>{p.tool}</p>
-                <pre>{p.smtlib}</pre>
+                <RawEvidence value={p.smtlib} label="View raw solver input" />
                 {p.proof && (
                   <details>
                     <summary>Z3 proof artifact / {p.proof_sha256}</summary>
-                    <pre>{p.proof}</pre>
+                    <RawEvidence value={p.proof} label="View raw proof" />
                   </details>
                 )}
                 {p.counterexample_closed && (
@@ -1080,18 +1090,14 @@ export default function TwinWorkspace({ onBack }: { onBack: () => void }) {
               INCOMPLETE. Hydraulic service: NUMERICALLY VALIDATED, not formally
               proven.
             </p>
-            <pre>
-              {JSON.stringify(
-                {
-                  seed: view.seed,
-                  code: view.code,
-                  experiment_id: view.experiment_id,
-                  scientific_sha256: view.scientific_sha256,
-                },
-                null,
-                2,
-              )}
-            </pre>
+            <EvidenceSummary
+              value={{
+                seed: view.seed,
+                code: view.code,
+                experiment_id: view.experiment_id,
+                scientific_sha256: view.scientific_sha256,
+              }}
+            />
           </details>
         </section>
       )}

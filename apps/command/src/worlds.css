@@ -257,3 +257,60 @@
     animation: none;
   }
 }
+
+.worlds-header nav {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.worlds-header nav a {
+  font-size: 12px;
+  letter-spacing: 0;
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .world-lineage {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: visible;
+    gap: 12px;
+  }
+  .world-lineage button {
+    min-width: 0;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #34464e;
+  }
+  .worlds-header nav {
+    width: 100%;
+  }
+  .engineering-world text {
+    font-size: 16px;
+  }
+}
+
+.world-readout {
+  display: none;
+}
+@media (max-width: 600px) {
+  .world-readout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    margin: 0;
+  }
+  .world-readout > div {
+    min-width: 0;
+  }
+  .world-readout dt {
+    font-size: 11px;
+    color: #99b2b7;
+    text-transform: uppercase;
+  }
+  .world-readout dd {
+    font-size: 14px;
+    margin: 5px 0 0;
+    overflow-wrap: anywhere;
+  }
+}

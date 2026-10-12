@@ -13,6 +13,7 @@ const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
 const timings={};
 try {
  const start=performance.now(); await page.goto(base);
+ await expect(page.getByRole('link',{name:'GitHub / Source code'})).toHaveAttribute('href','https://github.com/Debbybaks/DEVA');
  await expect(page.getByRole('heading',{name:'Different physics. One investigation engine.'})).toBeVisible();
  await expect(page.locator('pre:visible')).toHaveCount(0);
  await expect(page.getByRole('img',{name:'Chronological microgrid power and stored energy'})).toBeVisible();
@@ -30,9 +31,12 @@ try {
  for(const audience of ['judge','portfolio','researcher']) {
   await page.getByLabel('World audience').selectOption(audience);
   await expect(page.getByLabel('World audience')).toHaveValue(audience);
+  await expect(page.locator('pre:visible')).toHaveCount(0);
  }
  await page.getByRole('button',{name:'Evidence lens',exact:true}).click();
  await page.getByText('Claim ledger / domain-scoped',{exact:true}).click();
+ await expect(page.locator('pre:visible')).toHaveCount(0);
+ await page.getByText('View raw evidence',{exact:true}).first().click();
  await expect(page.locator('pre:visible').first()).toBeVisible();
  await page.getByRole('button',{name:'Demonstration 3.0'}).click();
  for(let n=0;n<8;n++) await page.getByRole('button',{name:'Next act'}).click();

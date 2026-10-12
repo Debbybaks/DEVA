@@ -3,6 +3,12 @@
 
 Design. Simulate. Break. Evolve. Verify.
 
+**Live DEVA:** [https://deva-vert.vercel.app](https://deva-vert.vercel.app)
+
+**Source repository:** [Debbybaks/DEVA](https://github.com/Debbybaks/DEVA)
+
+DEVA v1.0 brings Water Resilience and Microgrid Energy Adequacy into Engineering Worlds, with visual system states, scoped evidence and uncertainty lenses, and Judge, Portfolio and Researcher modes. Hosted access is read-only; new scientific investigations run in the trusted local environment.
+
 DEVA is a local engineering research workbench with a Python scientific engine and a strict TypeScript spatial command environment. It designs continuous capacities for an emergency-water network, evolves competing designs, searches for counterexamples, and preserves the evidence behind every conclusion.
 
 ## What is implemented

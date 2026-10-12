@@ -1,3 +1,4 @@
+import EvidenceSummary from "./EvidenceSummary";
 import {
   lazy,
   Suspense,
@@ -114,7 +115,9 @@ export default function App() {
       })
       .catch((e) => {
         if (!controller.signal.aborted) {
-          setError(String(e));
+          setError(
+            "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+          );
           setLoading(false);
         }
       });
@@ -162,7 +165,11 @@ export default function App() {
     connection.onerror = () => {
       request(`/api/jobs/${job}`, jobStatusSchema)
         .then((s) => finish(s.status, s.error ?? undefined))
-        .catch((e) => setError(String(e)));
+        .catch((e) =>
+          setError(
+            "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+          ),
+        );
     };
     return () => connection.close();
   }, [job]);
@@ -232,7 +239,9 @@ export default function App() {
         setRunning(false);
       } else setJob(response.job_id);
     } catch (e) {
-      setError(String(e));
+      setError(
+        "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+      );
       setRunning(false);
     }
   };
@@ -281,7 +290,9 @@ export default function App() {
         dispatch({ type: "layer", layer: "failure" });
       }
     } catch (e) {
-      setError(String(e));
+      setError(
+        "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+      );
     } finally {
       setLabBusy(false);
     }
@@ -383,6 +394,7 @@ export default function App() {
           DEVA<span>DESIGN, ENGINEERING & VERIFICATION AUTONOMY</span>
         </a>
         <nav aria-label="Command modes">
+          <a href="https://github.com/Debbybaks/DEVA">GitHub / Source code</a>
           <button onClick={() => setPhysics(true)}>Hydraulic V2</button>
           <a href="/?model=twin">Digital twin</a>
           <a href="/?model=worlds">Engineering worlds</a>
@@ -564,7 +576,9 @@ export default function App() {
                 className="quiet"
                 onClick={() =>
                   fetch(`/api/jobs/${job}`, { method: "DELETE" }).catch((e) =>
-                    setError(String(e)),
+                    setError(
+                      "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+                    ),
                   )
                 }
               >
@@ -903,20 +917,16 @@ export default function App() {
                     Infeasible synthesis attempts (
                     {view.infeasible_attempts.length})
                   </summary>
-                  <pre>{JSON.stringify(view.infeasible_attempts, null, 2)}</pre>
+                  <EvidenceSummary value={view.infeasible_attempts} />
                 </details>
                 <details>
                   <summary>Failure taxonomy / sensitivity</summary>
-                  <pre>
-                    {JSON.stringify(
-                      {
-                        failure_taxonomy: view.failure_taxonomy,
-                        sensitivity: view.sensitivity,
-                      },
-                      null,
-                      2,
-                    )}
-                  </pre>
+                  <EvidenceSummary
+                    value={{
+                      failure_taxonomy: view.failure_taxonomy,
+                      sensitivity: view.sensitivity,
+                    }}
+                  />
                 </details>
               </section>
             ) : (

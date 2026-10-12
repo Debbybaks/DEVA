@@ -1,3 +1,5 @@
+import EvidenceSummary from "./EvidenceSummary";
+import { SearchAblation } from "./WorldEvidence";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { request } from "./contracts";
@@ -62,99 +64,124 @@ function PhysicalWorld({
       },
     ];
     return (
-      <svg
-        viewBox="0 0 850 450"
-        role="img"
-        aria-label="Chronological microgrid power and stored energy"
-      >
-        <defs>
-          <marker
-            id="world-arrow"
-            viewBox="0 0 10 10"
-            refX="8"
-            refY="5"
-            markerWidth="5"
-            markerHeight="5"
-            orient="auto-start-reverse"
-          >
-            <path d="M0 0L10 5L0 10" fill="currentColor" />
-          </marker>
-        </defs>
-        {[
-          { id: "solar", path: "M160 110H390V150H610", power: s.solar_W[t] },
-          {
-            id: "generator",
-            path: "M160 300H280V150H610",
-            power: s.generator_W[t],
-          },
-          {
-            id: "battery",
-            path: "M440 300H530V150H610",
-            power: s.discharge_W[t] - s.charge_W[t],
-          },
-        ].map((link) => (
-          <path
-            key={link.id}
-            d={link.path}
-            className="energy-path"
-            strokeWidth={Math.max(1, Math.min(7, Math.abs(link.power) / 2000))}
-            opacity={Math.abs(link.power) > 0.001 ? 1 : 0.25}
-            markerEnd={link.power > 0.001 ? "url(#world-arrow)" : undefined}
-            markerStart={link.power < -0.001 ? "url(#world-arrow)" : undefined}
-          />
-        ))}
-        {components.map((c) => (
-          <g
-            key={c.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`Inspect ${c.id}`}
-            onClick={() => onSelect(c.id)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") onSelect(c.id);
-            }}
-            transform={`translate(${c.x},${c.y})`}
-          >
-            <rect
-              x="-50"
-              y="-35"
-              width="100"
-              height="70"
-              rx={c.id === "battery" ? 5 : 0}
-              className={
-                frame.component_passes?.[c.id]?.[t] === false
-                  ? "world-component violated"
-                  : "world-component"
+      <>
+        <svg
+          viewBox="0 0 850 450"
+          role="img"
+          aria-label="Chronological microgrid power and stored energy"
+        >
+          <defs>
+            <marker
+              id="world-arrow"
+              viewBox="0 0 10 10"
+              refX="8"
+              refY="5"
+              markerWidth="5"
+              markerHeight="5"
+              orient="auto-start-reverse"
+            >
+              <path d="M0 0L10 5L0 10" fill="currentColor" />
+            </marker>
+          </defs>
+          {[
+            { id: "solar", path: "M160 110H390V150H610", power: s.solar_W[t] },
+            {
+              id: "generator",
+              path: "M160 300H280V150H610",
+              power: s.generator_W[t],
+            },
+            {
+              id: "battery",
+              path: "M440 300H530V150H610",
+              power: s.discharge_W[t] - s.charge_W[t],
+            },
+          ].map((link) => (
+            <path
+              key={link.id}
+              d={link.path}
+              className="energy-path"
+              strokeWidth={Math.max(
+                1,
+                Math.min(7, Math.abs(link.power) / 2000),
+              )}
+              opacity={Math.abs(link.power) > 0.001 ? 1 : 0.25}
+              markerEnd={link.power > 0.001 ? "url(#world-arrow)" : undefined}
+              markerStart={
+                link.power < -0.001 ? "url(#world-arrow)" : undefined
               }
             />
-            <text y="-50" textAnchor="middle">
-              {c.label}
-            </text>
-            <text y="5" textAnchor="middle">
-              {(c.value / 1000).toFixed(2)} kW
-            </text>
-          </g>
-        ))}
-        <text x="610" y="240">
-          Demand {(s.demand_W[t] / 1000).toFixed(2)} kW
-        </text>
-        <text x="330" y="370">
-          Stored energy {(s.energy_J[t] / 3600000).toFixed(2)} kWh
-        </text>
-        <text x="330" y="395">
-          Computed time {(s.time_s[t] / 3600).toFixed(1)} h / signed battery
-          power
-        </text>
-        <path
-          d={s.energy_J
-            .map(
-              (v, i) =>
-                `${i ? "L" : "M"}${110 + i * 75},${430 - (v / Math.max(...s.energy_J, 1)) * 25}`,
-            )
-            .join(" ")}
-          className="energy-envelope"
-        />
-      </svg>
+          ))}
+          {components.map((c) => (
+            <g
+              key={c.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Inspect ${c.id}`}
+              onClick={() => onSelect(c.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") onSelect(c.id);
+              }}
+              transform={`translate(${c.x},${c.y})`}
+            >
+              <rect
+                x="-50"
+                y="-35"
+                width="100"
+                height="70"
+                rx={c.id === "battery" ? 5 : 0}
+                className={
+                  frame.component_passes?.[c.id]?.[t] === false
+                    ? "world-component violated"
+                    : "world-component"
+                }
+              />
+              <text y="-50" textAnchor="middle">
+                {c.label}
+              </text>
+              <text y="5" textAnchor="middle">
+                {(c.value / 1000).toFixed(2)} kW
+              </text>
+            </g>
+          ))}
+          <text x="610" y="240">
+            Demand {(s.demand_W[t] / 1000).toFixed(2)} kW
+          </text>
+          <text x="330" y="370">
+            Stored energy {(s.energy_J[t] / 3600000).toFixed(2)} kWh
+          </text>
+          <text x="330" y="395">
+            Computed time {(s.time_s[t] / 3600).toFixed(1)} h / signed battery
+            power
+          </text>
+          <path
+            d={s.energy_J
+              .map(
+                (v, i) =>
+                  `${i ? "L" : "M"}${110 + i * 75},${430 - (v / Math.max(...s.energy_J, 1)) * 25}`,
+              )
+              .join(" ")}
+            className="energy-envelope"
+          />
+        </svg>
+        <dl className="world-readout" aria-label="Microgrid computed state">
+          <div>
+            <dt>Demand</dt>
+            <dd>{s.demand_W[t]} W</dd>
+          </div>
+          <div>
+            <dt>Served power</dt>
+            <dd>{s.served_W[t]} W</dd>
+          </div>
+          <div>
+            <dt>Stored energy</dt>
+            <dd>{s.energy_J[t]} J</dd>
+          </div>
+          <div>
+            <dt>Computed time</dt>
+            <dd>{s.time_s[t]} s</dd>
+          </div>
+        </dl>
+      </>
     );
   }
   const s = frame.outcome.state;
@@ -169,75 +196,85 @@ function PhysicalWorld({
     ]),
   );
   return (
-    <svg
-      viewBox="0 0 850 450"
-      role="img"
-      aria-label="Water network signed flow and pressure"
-    >
-      {config.pipes.map((p, i) => {
-        const a = positions[p.tail],
-          b = positions[p.head];
-        return (
-          <g
-            key={p.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`Inspect ${p.id}`}
-            onClick={() => onSelect(p.id)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") onSelect(p.id);
-            }}
-          >
-            <line
-              x1={a[0]}
-              y1={a[1]}
-              x2={b[0]}
-              y2={b[1]}
-              className="water-edge"
-              strokeWidth={Math.max(
-                1,
-                Math.min(8, Math.abs(s.flow_m3s[i]) * 250),
-              )}
-            />
-            <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 - 6}>
-              {p.id} · {(s.flow_m3s[i] * 1000).toFixed(2)} L/s
-            </text>
-          </g>
-        );
-      })}
-      {config.nodes.map((n) => {
-        const [x, y] = positions[n.id],
-          p = s.pressure_head_m[n.id];
-        return (
-          <g
-            key={n.id}
-            transform={`translate(${x},${y})`}
-            role="button"
-            tabIndex={0}
-            aria-label={`Inspect ${n.id}`}
-            onClick={() => onSelect(n.id)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") onSelect(n.id);
-            }}
-          >
-            <circle
-              r="23"
-              className={
-                frame.component_passes?.[n.id]?.[0] === false
-                  ? "world-node violated"
-                  : "world-node"
-              }
-            />
-            <text x="32" y="-5">
-              {n.id}
-            </text>
-            <text x="32" y="16">
-              {p === null ? "UNKNOWN" : p.toFixed(2)} m head
-            </text>
-          </g>
-        );
-      })}
-    </svg>
+    <>
+      <svg
+        viewBox="0 0 850 450"
+        role="img"
+        aria-label="Water network signed flow and pressure"
+      >
+        {config.pipes.map((p, i) => {
+          const a = positions[p.tail],
+            b = positions[p.head];
+          return (
+            <g
+              key={p.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Inspect ${p.id}`}
+              onClick={() => onSelect(p.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onSelect(p.id);
+              }}
+            >
+              <line
+                x1={a[0]}
+                y1={a[1]}
+                x2={b[0]}
+                y2={b[1]}
+                className="water-edge"
+                strokeWidth={Math.max(
+                  1,
+                  Math.min(8, Math.abs(s.flow_m3s[i]) * 250),
+                )}
+              />
+              <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 - 6}>
+                {p.id} · {(s.flow_m3s[i] * 1000).toFixed(2)} L/s
+              </text>
+            </g>
+          );
+        })}
+        {config.nodes.map((n) => {
+          const [x, y] = positions[n.id],
+            p = s.pressure_head_m[n.id];
+          return (
+            <g
+              key={n.id}
+              transform={`translate(${x},${y})`}
+              role="button"
+              tabIndex={0}
+              aria-label={`Inspect ${n.id}`}
+              onClick={() => onSelect(n.id)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onSelect(n.id);
+              }}
+            >
+              <circle
+                r="23"
+                className={
+                  frame.component_passes?.[n.id]?.[0] === false
+                    ? "world-node violated"
+                    : "world-node"
+                }
+              />
+              <text x="32" y="-5">
+                {n.id}
+              </text>
+              <text x="32" y="16">
+                {p === null ? "UNKNOWN" : p.toFixed(2)} m head
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+      <dl className="world-readout" aria-label="Water computed pressure heads">
+        {config.nodes.map((n) => (
+          <div key={n.id}>
+            <dt>{n.id.replaceAll("-", " ")}</dt>
+            <dd>{s.pressure_head_m[n.id] ?? "Unknown"} m head</dd>
+          </div>
+        ))}
+      </dl>
+    </>
   );
 }
 export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
@@ -283,7 +320,10 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
     request("/api/worlds/view", worldSchema, { signal: controller.signal })
       .then((r) => setView(r.science))
       .catch((e) => {
-        if (!controller.signal.aborted) setError(String(e));
+        if (!controller.signal.aborted)
+          setError(
+            "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+          );
       });
     return () => controller.abort();
   }, []);
@@ -310,7 +350,10 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
         setError("");
       })
       .catch((e) => {
-        if (!controller.signal.aborted) setError(String(e));
+        if (!controller.signal.aborted)
+          setError(
+            "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+          );
       });
     return () => controller.abort();
   }, [summary?.id]);
@@ -343,7 +386,9 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
       setLiveStatus("Queued registered scientific investigation");
       setError("");
     } catch (e) {
-      setError(String(e));
+      setError(
+        "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+      );
     }
   }
   useEffect(() => {
@@ -387,12 +432,16 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
             setLoaded(e);
           })
           .catch((e) => {
-            setError(String(e));
+            setError(
+              "Scientific data could not be loaded. Please try again; the stored evidence remains available in the research archive.",
+            );
             setJob(null);
           });
       }
       if (data.stage === "failed" || data.stage === "cancelled") {
-        setError(data.error ?? data.stage);
+        setError(
+          "The investigation stopped. Inspect its retained evidence in Researcher Mode.",
+        );
         setJob(null);
         stream.close();
       }
@@ -481,11 +530,18 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
     <main className="worlds-shell">
       <header className="worlds-header">
         <a href="/">DEVA</a>
-        <a href="/archive">Research archive</a>
-        <span>DEVA v1.0 · RESEARCH LABORATORY · DESIGN. SIMULATE. BREAK. EVOLVE. VERIFY.</span>
+        <nav aria-label="Project links">
+          <a href="/archive">Research archive</a>
+          <a href="https://github.com/Debbybaks/DEVA">GitHub / Source code</a>
+        </nav>
+        <span>
+          DEVA v1.0 · RESEARCH LABORATORY · DESIGN. SIMULATE. BREAK. EVOLVE.
+          VERIFY.
+        </span>
         <button onClick={onBack}>Water reference laboratory</button>
       </header>
       <section className="worlds-title">
+        <p>DEVA v1.0 · Design. Simulate. Break. Evolve. Verify.</p>
         <p>ENGINEERING WORLDS / {view.label}</p>
         <h1>Different physics. One investigation engine.</h1>
         <p>Designs earn evidence. Failure remains visible.</p>
@@ -581,7 +637,12 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
           </p>
         </section>
       )}
-      {publicArchive && <p role="status">Public research archive · stored reproducible investigations. Run new scientific jobs in the trusted local research environment.</p>}
+      {publicArchive && (
+        <p role="status">
+          Public research archive · stored reproducible investigations. Run new
+          scientific jobs in the trusted local research environment.
+        </p>
+      )}
       {audience === "researcher" && !publicArchive && (
         <details className="world-depth">
           <summary>Run a registered scientific investigation</summary>
@@ -825,7 +886,7 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
         . {experiment.stop}. {experiment.solver_calls} physical solver calls.
       </p>
       {(lens !== "physical" || audience !== "researcher") && (
-        <section className="world-depth">
+        <section className="world-depth" key={`${audience}-${lens}-${act}`}>
           <h2>
             {lens === "xray"
               ? "Equation → constraint → consequence"
@@ -842,43 +903,70 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
             {frame?.outcome.violations.join(", ") ||
               "none in this computed state"}
           </p>
-          <p>{JSON.stringify(experiment.descriptor.validity_envelope)}</p>
+          <EvidenceSummary
+            value={experiment.descriptor.validity_envelope}
+            allowRaw={false}
+          />
           <details>
             <summary>Claim ledger / domain-scoped</summary>
-            <pre>{JSON.stringify(experiment.claim_ledger, null, 2)}</pre>
+            <EvidenceSummary
+              value={experiment.claim_ledger}
+              allowRaw={
+                act === null &&
+                (audience === "researcher" || lens === "evidence")
+              }
+            />
           </details>
           <details>
             <summary>
               Bounded verification / assumptions and proof scope
             </summary>
-            <pre>{JSON.stringify(experiment.verification, null, 2)}</pre>
+            <EvidenceSummary
+              value={experiment.verification}
+              allowRaw={
+                act === null &&
+                (audience === "researcher" || lens === "evidence")
+              }
+            />
           </details>
           <details>
             <summary>Plan / budgets / stopping</summary>
-            <pre>{JSON.stringify(experiment.plan, null, 2)}</pre>
+            <EvidenceSummary
+              value={experiment.plan}
+              allowRaw={
+                act === null &&
+                (audience === "researcher" || lens === "evidence")
+              }
+            />
           </details>
         </section>
       )}
+      <p className="world-verdict">
+        Three seeds are exploratory. Guided search is not established as
+        superior; random search was stronger on this microgrid benchmark.
+      </p>
       <details className="world-depth">
         <summary>Search ablation / preserve negative results</summary>
-        <p>
-          Three seeds are exploratory. Guided search is not established as
-          superior; random search was stronger on this microgrid benchmark.
-        </p>
-        <pre>{JSON.stringify(view.ablation, null, 2)}</pre>
+        <SearchAblation
+          key={`${audience}-${lens}-${act}`}
+          value={view.ablation}
+          allowRaw={
+            act === null && (audience === "researcher" || lens === "evidence")
+          }
+        />
       </details>
       <details className="world-depth">
         <summary>Water constraint negotiation / fresh test population</summary>
-        <pre>
-          {JSON.stringify(
-            {
-              candidates: view.decision_candidates,
-              negotiation: view.decision,
-            },
-            null,
-            2,
-          )}
-        </pre>
+        <EvidenceSummary
+          key={`${audience}-${lens}-${act}`}
+          allowRaw={
+            act === null && (audience === "researcher" || lens === "evidence")
+          }
+          value={{
+            candidates: view.decision_candidates,
+            negotiation: view.decision,
+          }}
+        />
         <p>
           Smallest known relaxation among tested designs is not a global optimum
           or infeasibility certificate.

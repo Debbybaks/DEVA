@@ -1,0 +1,72 @@
+.evidence-summary {
+  min-width: 0;
+  margin: 16px 0;
+}
+.evidence-fields {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.evidence-fields > div {
+  min-width: 0;
+  border-left: 2px solid #405b60;
+  padding-left: 12px;
+}
+.evidence-fields dt {
+  font-size: 11px;
+  color: #99b2b7;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.evidence-fields dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.evidence-list {
+  padding-left: 20px;
+  display: grid;
+  gap: 16px;
+}
+.raw-evidence {
+  margin-top: 16px;
+}
+.raw-evidence summary {
+  cursor: pointer;
+  color: #b8d8cc;
+}
+.raw-evidence pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 440px;
+  overflow: auto;
+  font-size: 11px;
+}
+.ablation-grid,
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.ablation-card,
+.decision-card {
+  padding: 18px;
+  border: 1px solid #40515b;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.ablation-card h3,
+.decision-card h3 {
+  margin-top: 0;
+}
+.ablation-meter {
+  height: 8px;
+  background: #22363b;
+  margin: 12px 0;
+}
+.ablation-meter span {
+  display: block;
+  height: 100%;
+  background: #b6ceab;
+}
