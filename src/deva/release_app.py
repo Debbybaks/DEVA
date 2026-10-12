@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse, FileResponse, RedirectResponse
 from .api import create_app, ROOT
 
 app = create_app(directory=Path(os.getenv("DEVA_RUNTIME_DIR", str(ROOT / ".runtime"))) / "public-archive")
-app.version = "1.0.0-rc.1"
+app.version = "1.0.0"
 
 @app.middleware("http")
 async def public_boundary(request, call_next):

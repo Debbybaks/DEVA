@@ -15,8 +15,10 @@ Local qualification evidence: RELEASE_EVIDENCE.md and artifacts/release/validati
 | I Accessibility | Keyboard/focus/labels/reduced-motion/mobile critical flows | PASS |
 | J Security | Public release denies scientific writes by default; safe paths, no secrets | PASS |
 | K Performance | Responsive 2D and unchanged five-second startup assertion | PASS |
-| L Deployment | RC deployed to an authorised stable public service | PENDING |
-| M Public smoke | Independent actual public URL workflow/API/evidence checks | PENDING |
+| L Deployment | RC deployed to an authorised stable public service | PASS |
+| M Public smoke | Independent actual public URL workflow/API/evidence checks | PASS |
 | N Reconstruction | Pinned dependencies, source revision, replay and release artifacts | PASS |
 
 Field certification, AC dynamics, rupture validity and unavailable WebGPU are documented scope limitations, not waived software failures. Search failure never proves infeasibility. A precise bounded Z3 result never proves hydraulic reality.
+
+Public RC qualification: https://deva-vert.vercel.app, container deployment dpl_6dDuNM6vranCkuDXS5iLGZouUM2N; full public smoke and canonical science comparison PASS. Final version-only commit is requalified before final tagging.

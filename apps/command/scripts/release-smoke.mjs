@@ -1,10 +1,14 @@
 import { chromium, expect } from '@playwright/test';
 import fs from 'node:fs/promises';
+import { X509Certificate, createHash } from 'node:crypto';
+const proxyCA = process.env.DEVA_BROWSER_PROXY_CA;
+const proxySPKI = proxyCA ? createHash('sha256').update(new X509Certificate(await fs.readFile(proxyCA)).publicKey.export({type:'spki',format:'der'})).digest('base64') : null;
 const base = process.argv[2] ?? 'http://127.0.0.1:8010';
 const output = process.argv[3] ?? '../../artifacts/release';
 await fs.mkdir(`${output}/screenshots`, {recursive: true});
-const browser = await chromium.launch({executablePath: process.env.DEVA_CHROMIUM_PATH ?? '/usr/bin/chromium',args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-const page = await browser.newPage({viewport:{width:1600,height:1000},reducedMotion:'reduce'});
+const browser = await chromium.launch({executablePath: process.env.DEVA_CHROMIUM_PATH ?? '/usr/bin/chromium',args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader', ...(proxySPKI ? [`--ignore-certificate-errors-spki-list=${proxySPKI}`] : [])]});
+const proxyURL = process.env.DEVA_SMOKE_PROXY ? new URL(process.env.DEVA_SMOKE_PROXY) : null;
+const page = await browser.newPage({...(proxyURL ? {proxy:{server:proxyURL.origin,username:decodeURIComponent(proxyURL.username),password:decodeURIComponent(proxyURL.password)}} : {}),viewport:{width:1600,height:1000},reducedMotion:'reduce'});
 const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
 const timings={};
 try {
