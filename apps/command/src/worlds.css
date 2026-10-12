@@ -1,0 +1,259 @@
+.worlds-shell {
+  min-height: 100vh;
+  background: #0c1419;
+  color: #d9e4e4;
+  padding: 24px 4vw;
+  font-family: Manrope, sans-serif;
+}
+.worlds-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid #334149;
+  padding-bottom: 18px;
+}
+.worlds-header a {
+  color: #eef6f5;
+  font-size: 24px;
+  letter-spacing: 0.3em;
+  text-decoration: none;
+}
+.worlds-header span {
+  flex: 1;
+  font:
+    11px "IBM Plex Mono",
+    monospace;
+  color: #91a9ad;
+}
+.worlds-title {
+  margin: 40px 0 24px;
+}
+.worlds-title h1 {
+  font-size: clamp(28px, 4vw, 54px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  margin: 10px 0;
+}
+.worlds-title p {
+  color: #9bb0b5;
+}
+.world-choice {
+  display: flex;
+  border-bottom: 1px solid #3c4a50;
+  gap: 30px;
+}
+.world-choice button {
+  border: 0;
+  background: none;
+  color: #c8d6d8;
+  font-size: 18px;
+  padding: 20px 0;
+  text-align: left;
+  flex: 1;
+}
+.world-choice button[aria-pressed="true"] {
+  border-bottom: 2px solid #b7d6c4;
+}
+.world-choice span {
+  display: block;
+  font-size: 12px;
+  color: #8b9fa6;
+  margin-top: 8px;
+}
+.world-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  margin: 20px 0;
+}
+.worlds-shell button,
+.worlds-shell select {
+  cursor: pointer;
+  color: inherit;
+  background: #15232a;
+  border: 1px solid #40515b;
+  padding: 9px 12px;
+}
+.worlds-shell button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.worlds-shell button:focus-visible,
+.worlds-shell svg g:focus-visible {
+  outline: 2px solid #c6dfbb;
+  outline-offset: 4px;
+}
+.world-toolbar label {
+  font:
+    11px "IBM Plex Mono",
+    monospace;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.engineering-world {
+  position: relative;
+  min-height: 430px;
+  border-top: 1px solid #33464e;
+  border-bottom: 1px solid #33464e;
+  background: #0e1a20;
+}
+.engineering-world svg {
+  width: 100%;
+  max-height: 580px;
+  display: block;
+}
+.engineering-world text {
+  fill: #cbdcde;
+  font:
+    12px "IBM Plex Mono",
+    monospace;
+}
+.engineering-world svg g[role="button"] {
+  cursor: pointer;
+}
+.energy-path {
+  stroke: #658d89;
+  stroke-width: 3;
+  fill: none;
+}
+.energy-envelope {
+  stroke: #b9d6a5;
+  stroke-width: 2;
+  fill: none;
+}
+.world-component,
+.world-node {
+  fill: #172c33;
+  stroke: #acc9c7;
+  stroke-width: 1.5;
+}
+.world-component.violated,
+.world-node.violated {
+  stroke: #d69b7c;
+  fill: #352826;
+}
+.water-edge {
+  stroke: #7fafb5;
+}
+.world-annotation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 15px 20px;
+  color: #a6c2c7;
+  font:
+    11px "IBM Plex Mono",
+    monospace;
+}
+.parent-world {
+  border-top: 1px dashed #56707b;
+  max-width: 70%;
+  margin: auto;
+}
+.parent-world p {
+  font-size: 11px;
+}
+.world-lineage {
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  border-bottom: 1px solid #34464e;
+  padding: 12px 0;
+}
+.world-lineage button {
+  min-width: 145px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  border-width: 0 1px 0 0;
+  background: transparent;
+  text-align: left;
+  font-size: 11px;
+}
+.world-lineage button[aria-pressed="true"] {
+  background: #23383c;
+}
+.world-lineage .rejected {
+  opacity: 0.5;
+}
+.world-lineage strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+.world-verdict {
+  line-height: 1.9;
+  color: #b7c8bd;
+  font-size: 13px;
+}
+.world-depth {
+  border-top: 1px solid #33464e;
+  padding: 20px 0;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.world-depth pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  max-height: 440px;
+  overflow: auto;
+}
+.world-act {
+  border-left: 2px solid #b6ceab;
+  padding: 12px 18px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.worlds-shell footer {
+  font-size: 11px;
+  color: #92a4aa;
+  line-height: 1.9;
+  margin-top: 32px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .worlds-shell {
+    padding: 18px;
+  }
+  .worlds-header {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .worlds-header span {
+    display: none;
+  }
+  .world-choice {
+    gap: 10px;
+  }
+  .world-choice button {
+    font-size: 13px;
+  }
+  .world-annotation {
+    font-size: 9px;
+    padding: 10px;
+  }
+  .engineering-world {
+    min-height: 240px;
+  }
+  .parent-world {
+    max-width: 100%;
+  }
+  .world-toolbar label {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .world-toolbar input {
+    max-width: 160px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .worlds-shell * {
+    scroll-behavior: auto;
+    transition: none;
+    animation: none;
+  }
+}

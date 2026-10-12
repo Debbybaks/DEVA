@@ -8,6 +8,7 @@ import {
 } from "react";
 import { z } from "zod";
 import { overview, positions, type Pose } from "./geometry";
+const WorldsWorkspace = lazy(() => import("./WorldsWorkspace"));
 const TwinWorkspace = lazy(() => import("./TwinWorkspace"));
 const HydraulicWorkspace = lazy(() => import("./HydraulicWorkspace"));
 const NetworkCanvas = lazy(() => import("./NetworkCanvas"));
@@ -40,7 +41,8 @@ export default function App() {
   );
   const [physics, setPhysics] = useState(
     new URLSearchParams(window.location.search).get("model") === "hydraulic" ||
-      new URLSearchParams(window.location.search).get("model") === "twin",
+      new URLSearchParams(window.location.search).get("model") === "twin" ||
+      new URLSearchParams(window.location.search).get("model") === "worlds",
   );
   const [state, dispatch] = useCommandState();
   const [view, setView] = useState<View | null>(null);
@@ -315,6 +317,16 @@ export default function App() {
     : dataUrl.includes("baseline")
       ? "/api/evidence/baseline"
       : "/api/evidence/evolution";
+  if (new URLSearchParams(window.location.search).get("model") === "worlds")
+    return (
+      <Suspense fallback={<p>Loading engineering worlds…</p>}>
+        <WorldsWorkspace
+          onBack={() => {
+            window.location.href = "/?model=twin";
+          }}
+        />
+      </Suspense>
+    );
   if (twin)
     return (
       <Suspense fallback={<p>Loading digital-twin laboratory…</p>}>
@@ -372,6 +384,7 @@ export default function App() {
         <nav aria-label="Command modes">
           <button onClick={() => setPhysics(true)}>Hydraulic V2</button>
           <a href="/?model=twin">Digital twin</a>
+          <a href="/?model=worlds">Engineering worlds</a>
           {(["laboratory", "evolution", "evidence"] as const).map((mode) => (
             <button
               key={mode}

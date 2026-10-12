@@ -530,6 +530,57 @@ def create_app(directory=None):
         except RuntimeError as error:
             raise HTTPException(429, str(error))
 
+    @lru_cache(maxsize=2)
+    def cached_worlds(path, mtime, size):
+        from .audit import verify_hash
+
+        record = json.loads(Path(path).read_text())
+        verify_hash(record)
+        return record
+
+    @app.get("/api/worlds/view")
+    @app.get("/api/worlds/experiment/{experiment_id}")
+    def worlds_view(experiment_id: str | None = None):
+        from copy import deepcopy
+        from starlette.responses import Response
+
+        path = ROOT / "artifacts/phase5-worlds-view.json"
+        if not path.exists():
+            raise HTTPException(
+                404, "Cross-domain research package has not been generated"
+            )
+        metadata = path.stat()
+        stored = cached_worlds(str(path), metadata.st_mtime_ns, metadata.st_size)
+        science = {k: v for k, v in stored["science"].items() if k != "experiments"}
+        selected = [
+            e
+            for e in stored["science"]["experiments"]
+            if experiment_id is None or e["id"] == experiment_id
+        ]
+        if not selected:
+            raise HTTPException(404, "Unknown cross-domain experiment")
+        if experiment_id is None:
+            selected = deepcopy(selected)
+            for e in selected:
+                for c in e["candidates"]:
+                    c["frames"] = []
+                for name in ["heldout", "adversarial"]:
+                    if e[name]:
+                        e[name]["records"] = []
+                e["verification"] = [
+                    {k: v for k, v in obj.items() if k not in ("proof", "smtlib")}
+                    for obj in e["verification"]
+                ]
+        science["experiments"] = selected
+        record = dict(
+            science=science,
+            scientific_sha256=hashlib.sha256(canonical(science).encode()).hexdigest(),
+        )
+        return Response(
+            content=json.dumps(record, separators=(",", ":")),
+            media_type="application/json",
+        )
+
     return app
 
 

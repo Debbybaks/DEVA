@@ -1,0 +1,648 @@
+import { useEffect, useState } from "react";
+import { request } from "./contracts";
+import {
+  worldSchema,
+  type WorldView,
+  type WorldExperiment,
+  type WorldFrame,
+} from "./worldContracts";
+import "./worlds.css";
+
+const pct = (v: number | null) =>
+  v === null ? "UNKNOWN" : `${(v * 100).toFixed(1)}%`;
+function PhysicalWorld({
+  experiment,
+  frame,
+  time,
+  onSelect,
+}: {
+  experiment: WorldExperiment;
+  frame: WorldFrame | undefined;
+  time: number;
+  onSelect: (id: string) => void;
+}) {
+  if (!frame?.outcome.state)
+    return (
+      <p role="status">UNKNOWN SOLVER STATE / inspect preserved evidence</p>
+    );
+  if (frame.outcome.domain === "microgrid") {
+    const s = frame.outcome.state,
+      t = Math.min(time, s.demand_W.length - 1);
+    const components = [
+      { id: "solar", x: 110, y: 110, value: s.solar_W[t], label: "SOLAR" },
+      {
+        id: "generator",
+        x: 110,
+        y: 300,
+        value: s.generator_W[t],
+        label: "GENERATOR",
+      },
+      {
+        id: "battery",
+        x: 390,
+        y: 300,
+        value: s.discharge_W[t] - s.charge_W[t],
+        label: "STORAGE",
+      },
+      {
+        id: "critical-load",
+        x: 660,
+        y: 150,
+        value: s.served_W[t],
+        label: "CRITICAL LOAD",
+      },
+    ];
+    return (
+      <svg
+        viewBox="0 0 850 450"
+        role="img"
+        aria-label="Chronological microgrid power and stored energy"
+      >
+        <defs>
+          <marker
+            id="world-arrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto"
+          >
+            <path d="M0 0L10 5L0 10" fill="currentColor" />
+          </marker>
+        </defs>
+        <path
+          d="M160 110H390V150H610M160 300H280V150H610M440 300H530V150H610"
+          className="energy-path"
+          markerEnd="url(#world-arrow)"
+        />
+        {components.map((c) => (
+          <g
+            key={c.id}
+            role="button"
+            tabIndex={0}
+            aria-label={`Inspect ${c.id}`}
+            onClick={() => onSelect(c.id)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") onSelect(c.id);
+            }}
+            transform={`translate(${c.x},${c.y})`}
+          >
+            <rect
+              x="-50"
+              y="-35"
+              width="100"
+              height="70"
+              rx={c.id === "battery" ? 5 : 0}
+              className={
+                frame.component_passes?.[c.id]?.[t] === false
+                  ? "world-component violated"
+                  : "world-component"
+              }
+            />
+            <text y="-50" textAnchor="middle">
+              {c.label}
+            </text>
+            <text y="5" textAnchor="middle">
+              {(c.value / 1000).toFixed(2)} kW
+            </text>
+          </g>
+        ))}
+        <text x="610" y="240">
+          Demand {(s.demand_W[t] / 1000).toFixed(2)} kW
+        </text>
+        <text x="330" y="370">
+          Stored energy {(s.energy_J[t] / 3600000).toFixed(2)} kWh
+        </text>
+        <text x="330" y="395">
+          Computed time {(s.time_s[t] / 3600).toFixed(1)} h / signed battery
+          power
+        </text>
+        <path
+          d={s.energy_J
+            .map(
+              (v, i) =>
+                `${i ? "L" : "M"}${110 + i * 75},${430 - (v / Math.max(...s.energy_J, 1)) * 25}`,
+            )
+            .join(" ")}
+          className="energy-envelope"
+        />
+      </svg>
+    );
+  }
+  const s = frame.outcome.state;
+  const config = experiment.configuration as {
+    nodes: { id: string }[];
+    pipes: { id: string; tail: string; head: string }[];
+  };
+  const positions = Object.fromEntries(
+    config.nodes.map((n, i) => [
+      n.id,
+      [130 + (i % 2) * 500, 65 + Math.floor(i / 2) * 150],
+    ]),
+  );
+  return (
+    <svg
+      viewBox="0 0 850 450"
+      role="img"
+      aria-label="Water network signed flow and pressure"
+    >
+      {config.pipes.map((p, i) => {
+        const a = positions[p.tail],
+          b = positions[p.head];
+        return (
+          <g
+            key={p.id}
+            role="button"
+            tabIndex={0}
+            aria-label={`Inspect ${p.id}`}
+            onClick={() => onSelect(p.id)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onSelect(p.id);
+            }}
+          >
+            <line
+              x1={a[0]}
+              y1={a[1]}
+              x2={b[0]}
+              y2={b[1]}
+              className="water-edge"
+              strokeWidth={Math.max(
+                1,
+                Math.min(8, Math.abs(s.flow_m3s[i]) * 250),
+              )}
+            />
+            <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 - 6}>
+              {p.id} · {(s.flow_m3s[i] * 1000).toFixed(2)} L/s
+            </text>
+          </g>
+        );
+      })}
+      {config.nodes.map((n) => {
+        const [x, y] = positions[n.id],
+          p = s.pressure_head_m[n.id];
+        return (
+          <g
+            key={n.id}
+            transform={`translate(${x},${y})`}
+            role="button"
+            tabIndex={0}
+            aria-label={`Inspect ${n.id}`}
+            onClick={() => onSelect(n.id)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onSelect(n.id);
+            }}
+          >
+            <circle
+              r="23"
+              className={
+                frame.component_passes?.[n.id]?.[0] === false
+                  ? "world-node violated"
+                  : "world-node"
+              }
+            />
+            <text x="32" y="-5">
+              {n.id}
+            </text>
+            <text x="32" y="16">
+              {p === null ? "UNKNOWN" : p.toFixed(2)} m head
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
+  const [view, setView] = useState<WorldView | null>(null),
+    [error, setError] = useState("");
+  const [domain, setDomain] = useState<"water" | "microgrid">("microgrid"),
+    [strategy, setStrategy] = useState("hybrid"),
+    [seedIndex, setSeedIndex] = useState(0),
+    [candidateId, setCandidateId] = useState("");
+  const [scenario, setScenario] = useState(0),
+    [time, setTime] = useState(0),
+    [compare, setCompare] = useState(false),
+    [lens, setLens] = useState<
+      "physical" | "xray" | "evidence" | "uncertainty"
+    >("physical"),
+    [selected, setSelected] = useState("");
+  const [audience, setAudience] = useState<
+      "researcher" | "judge" | "portfolio"
+    >("researcher"),
+    [act, setAct] = useState<number | null>(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    request("/api/worlds/view", worldSchema, { signal: controller.signal })
+      .then((r) => setView(r.science))
+      .catch((e) => {
+        if (!controller.signal.aborted) setError(String(e));
+      });
+    return () => controller.abort();
+  }, []);
+  const group =
+      view?.experiments.filter(
+        (e) => e.domain === domain && e.strategy === strategy,
+      ) ?? [],
+    summary = group[seedIndex] ?? group[0];
+  const [loaded, setLoaded] = useState<WorldExperiment | null>(null);
+  const experiment = loaded?.id === summary?.id ? loaded : summary;
+  useEffect(() => {
+    if (!summary) return;
+    const controller = new AbortController();
+    setLoaded(null);
+    request(`/api/worlds/experiment/${summary.id}`, worldSchema, {
+      signal: controller.signal,
+    })
+      .then((r) => {
+        setLoaded(r.science.experiments[0]);
+        setError("");
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) setError(String(e));
+      });
+    return () => controller.abort();
+  }, [summary?.id]);
+  const candidate =
+    experiment?.candidates.find(
+      (c) => c.id === (candidateId || experiment.selection),
+    ) ?? experiment?.candidates.find((c) => c.frames.length);
+  const frame = candidate?.frames[scenario],
+    parent = experiment?.candidates.find((c) => c.id === candidate?.parent),
+    before = parent?.frames[scenario];
+  function switchWorld(d: "water" | "microgrid") {
+    setDomain(d);
+    setCandidateId("");
+    setScenario(0);
+    setTime(0);
+    setSelected("");
+    setCompare(false);
+  }
+  function counterexample() {
+    const witness = [candidate, ...(experiment?.candidates ?? [])].find((c) =>
+      c?.frames.some((f) => !f.outcome.passes),
+    );
+    const i = witness?.frames.findIndex((f) => !f.outcome.passes) ?? -1;
+    if (witness && i >= 0) {
+      setCandidateId(witness.id);
+      setScenario(i);
+      setTime(0);
+      setError("");
+    } else
+      setError(
+        "No failure witness in the stored training scenarios; inspect held-out evidence.",
+      );
+  }
+  function demonstrate(n: number) {
+    setAct(n);
+    if (n === 0) {
+      switchWorld("water");
+      setStrategy("hybrid");
+      setSeedIndex(0);
+      const first = view?.experiments.find(
+        (e) => e.domain === "water" && e.strategy === "hybrid",
+      );
+      setCandidateId(first?.candidates[0]?.id ?? "");
+    }
+    if (n === 2) counterexample();
+    if (n === 3) setLens("xray");
+    if (n === 4) {
+      setCandidateId(experiment?.selection ?? "");
+      setScenario(0);
+    }
+    if (n === 5) setCompare(true);
+    if (n === 7) setLens("evidence");
+    if (n === 8) switchWorld("microgrid");
+  }
+  if (!view || !experiment)
+    return (
+      <main className="worlds-shell">
+        <h1>DEVA / Engineering worlds</h1>
+        <p>{error || "Loading stored cross-domain evidence…"}</p>
+        <button onClick={onBack}>Return to water laboratory</button>
+      </main>
+    );
+  const acts = [
+    "The problem",
+    "The digital world",
+    "Break it",
+    "Understand the mechanism",
+    "Competing designs",
+    "The trade-off",
+    "Decision frontier",
+    "Scoped verification",
+    "A second physical domain",
+    "What remains unestablished",
+  ];
+  return (
+    <main className="worlds-shell">
+      <header className="worlds-header">
+        <a href="/">DEVA</a>
+        <span>DESIGN. SIMULATE. BREAK. EVOLVE. VERIFY.</span>
+        <button onClick={onBack}>Water reference laboratory</button>
+      </header>
+      <section className="worlds-title">
+        <p>ENGINEERING WORLDS / {view.label}</p>
+        <h1>Different physics. One investigation engine.</h1>
+        <p>Designs earn evidence. Failure remains visible.</p>
+      </section>
+      <nav aria-label="Engineering worlds" className="world-choice">
+        <button
+          aria-pressed={domain === "water"}
+          onClick={() => switchWorld("water")}
+        >
+          01 / WATER RESILIENCE<span>Pressure · signed flow · service</span>
+        </button>
+        <button
+          aria-pressed={domain === "microgrid"}
+          onClick={() => switchWorld("microgrid")}
+        >
+          02 / MICROGRID ADEQUACY
+          <span>Power · stored energy · chronological dispatch</span>
+        </button>
+      </nav>
+      <div className="world-toolbar">
+        <label>
+          Audience
+          <select
+            aria-label="World audience"
+            value={audience}
+            onChange={(e) => setAudience(e.target.value as typeof audience)}
+          >
+            <option value="researcher">Researcher</option>
+            <option value="judge">Judge</option>
+            <option value="portfolio">Portfolio</option>
+          </select>
+        </label>
+        <button onClick={() => demonstrate(0)}>Demonstration 3.0</button>
+        {(["physical", "xray", "evidence", "uncertainty"] as const).map((l) => (
+          <button key={l} aria-pressed={lens === l} onClick={() => setLens(l)}>
+            {l === "xray"
+              ? "Engineering X-ray"
+              : l === "evidence"
+                ? "Evidence lens"
+                : l === "uncertainty"
+                  ? "Uncertainty lens"
+                  : "Physical world"}
+          </button>
+        ))}
+      </div>
+      {act !== null && (
+        <section className="world-act" aria-live="polite">
+          <strong>
+            ACT {act + 1} / {acts[act]}
+          </strong>
+          <button disabled={act === 0} onClick={() => demonstrate(act - 1)}>
+            Previous act
+          </button>
+          <button disabled={act === 9} onClick={() => demonstrate(act + 1)}>
+            Next act
+          </button>
+          <button onClick={() => setAct(null)}>Exit guide</button>
+          <p>
+            Stored experiments only · {view.source_experiment} · no live outcome
+            is scripted.
+          </p>
+        </section>
+      )}
+      {audience === "portfolio" && (
+        <p>
+          Python owns physical simulation and evidence. Strict TypeScript
+          consumes stored states. The shared engine provides bounded search,
+          Pareto competition, counterexample interventions and sealed
+          generalisation. Two-domain operation is demonstrated; general
+          engineering intelligence remains a research hypothesis.
+        </p>
+      )}
+      {error && <p role="status">{error}</p>}
+      {lens === "uncertainty" && (
+        <section
+          className="world-depth"
+          aria-label="Local uncertainty evidence"
+        >
+          <h2>Finite-sample reliability / local evidence</h2>
+          <p>
+            Frozen candidate: {experiment.heldout?.failures}/
+            {experiment.heldout?.samples} held-out failures; 95% Wilson interval{" "}
+            {experiment.heldout?.failure_rate_wilson_95
+              .map((v) => `${(v * 100).toFixed(2)}%`)
+              .join("–") ?? "UNTESTED"}
+            .
+          </p>
+          <p>
+            Conditional on the declared synthetic distribution. This is not
+            field confidence, parameter certainty or formal proof. Microgrid
+            parameter calibration remains untested; water calibration is
+            synthetic.
+          </p>
+        </section>
+      )}
+      <section className="engineering-world">
+        <div className="world-annotation">
+          <span>
+            {domain.toUpperCase()} /{" "}
+            {frame?.outcome.passes
+              ? "REQUIREMENTS SATISFIED IN THIS STATE"
+              : "REQUIREMENT FAILURE / INSPECT EVIDENCE"}
+          </span>
+          <span>
+            {frame?.scenario.id as string} · service{" "}
+            {pct(frame?.outcome.service ?? null)}
+          </span>
+        </div>
+        <PhysicalWorld
+          experiment={experiment}
+          frame={frame}
+          time={time}
+          onSelect={setSelected}
+        />
+        {compare && before && (
+          <div className="parent-world">
+            <p>PARENT / SAME SCENARIO AND COMPUTED INTERVAL</p>
+            <PhysicalWorld
+              experiment={experiment}
+              frame={before}
+              time={time}
+              onSelect={setSelected}
+            />
+          </div>
+        )}
+      </section>
+      <div className="world-toolbar">
+        <label>
+          Search strategy
+          <select
+            aria-label="World search strategy"
+            value={strategy}
+            onChange={(e) => {
+              setStrategy(e.target.value);
+              setCandidateId("");
+              setScenario(0);
+            }}
+          >
+            {["random", "evolutionary", "guided", "pareto", "hybrid"].map(
+              (s) => (
+                <option key={s}>{s}</option>
+              ),
+            )}
+          </select>
+        </label>
+        <label>
+          Predeclared seed
+          <select
+            aria-label="World experiment seed"
+            value={seedIndex}
+            onChange={(e) => {
+              setSeedIndex(Number(e.target.value));
+              setCandidateId("");
+              setScenario(0);
+            }}
+          >
+            {group.map((e, i) => (
+              <option value={i} key={e.id}>
+                {e.seed}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button onClick={counterexample}>Load training counterexample</button>
+        <button onClick={() => setCompare(!compare)} disabled={!parent}>
+          Compare parent / child
+        </button>
+        <label>
+          Independent training scenario
+          <input
+            aria-label="World scenario"
+            type="range"
+            min="0"
+            max={Math.max(0, (candidate?.frames.length ?? 1) - 1)}
+            value={scenario}
+            onChange={(e) => {
+              setScenario(Number(e.target.value));
+              setTime(0);
+            }}
+          />
+        </label>
+        {domain === "microgrid" &&
+          frame?.outcome.domain === "microgrid" &&
+          frame.outcome.state && (
+            <label>
+              Computed interval
+              <input
+                aria-label="Microgrid interval"
+                type="range"
+                min="0"
+                max={frame.outcome.state.demand_W.length - 1}
+                value={time}
+                onChange={(e) => setTime(Number(e.target.value))}
+              />
+            </label>
+          )}
+      </div>
+      <section className="world-lineage" aria-label="Candidate evolution">
+        {experiment.candidates.map((c) => (
+          <button
+            key={c.id}
+            disabled={!c.frames.length}
+            aria-pressed={candidate?.id === c.id}
+            onClick={() => {
+              setCandidateId(c.id);
+              setScenario(0);
+              setTime(0);
+            }}
+            className={c.rejection_reason ? "rejected" : ""}
+          >
+            <span>
+              G{c.generation} / {c.id.split(":").at(-1)}
+            </span>
+            <strong>{c.cost.toFixed(2)} cost</strong>
+            <small>
+              {c.rejection_reason ?? `${c.training_failures} training failures`}
+            </small>
+            {experiment.frontier.includes(c.id) && <small>NON-DOMINATED</small>}
+          </button>
+        ))}
+      </section>
+      <p className="world-verdict">
+        Frozen selection {experiment.selection}: {experiment.heldout?.failures}/
+        {experiment.heldout?.samples} held-out failures. Target{" "}
+        {experiment.target_achieved
+          ? "ESTABLISHED UNDER SPECIFIED DISTRIBUTION"
+          : "UNESTABLISHED"}
+        . {experiment.stop}. {experiment.solver_calls} physical solver calls.
+      </p>
+      {(lens !== "physical" || audience !== "researcher") && (
+        <section className="world-depth">
+          <h2>
+            {lens === "xray"
+              ? "Equation → constraint → consequence"
+              : "Evidence remains local"}
+          </h2>
+          {selected && <p>Selected component: {selected}</p>}
+          {experiment.descriptor.equations.map((eq) => (
+            <p key={eq}>
+              <code>{eq}</code>
+            </p>
+          ))}
+          <p>
+            Current violations:{" "}
+            {frame?.outcome.violations.join(", ") ||
+              "none in this computed state"}
+          </p>
+          <p>{JSON.stringify(experiment.descriptor.validity_envelope)}</p>
+          <details>
+            <summary>Claim ledger / domain-scoped</summary>
+            <pre>{JSON.stringify(experiment.claim_ledger, null, 2)}</pre>
+          </details>
+          <details>
+            <summary>
+              Bounded verification / assumptions and proof scope
+            </summary>
+            <pre>{JSON.stringify(experiment.verification, null, 2)}</pre>
+          </details>
+          <details>
+            <summary>Plan / budgets / stopping</summary>
+            <pre>{JSON.stringify(experiment.plan, null, 2)}</pre>
+          </details>
+        </section>
+      )}
+      <details className="world-depth">
+        <summary>Search ablation / preserve negative results</summary>
+        <p>
+          Three seeds are exploratory. Guided search is not established as
+          superior; random search was stronger on this microgrid benchmark.
+        </p>
+        <pre>{JSON.stringify(view.ablation, null, 2)}</pre>
+      </details>
+      <details className="world-depth">
+        <summary>Water constraint negotiation / fresh test population</summary>
+        <pre>
+          {JSON.stringify(
+            {
+              candidates: view.decision_candidates,
+              negotiation: view.decision,
+            },
+            null,
+            2,
+          )}
+        </pre>
+        <p>
+          Smallest known relaxation among tested designs is not a global optimum
+          or infeasibility certificate.
+        </p>
+      </details>
+      <footer>
+        <p>
+          Historical evidence unchanged: 38/200 · 44/200 → 13/200 at increased
+          cost · 4/40 hospital failures; 2% target unestablished.
+        </p>
+        <p>
+          Microgrid: energy adequacy, not AC physics. Water: field calibration
+          and rupture validation incomplete. Numerical evidence is not formal
+          proof. Scientific 2D retains exact stored values.
+        </p>
+        <code>{view.source_sha256}</code>
+      </footer>
+    </main>
+  );
+}
