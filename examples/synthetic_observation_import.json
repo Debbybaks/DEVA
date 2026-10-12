@@ -1,0 +1,38 @@
+{
+  "domain": "microgrid",
+  "provenance": {
+    "kind": "SYNTHETIC",
+    "source": "DEVA import-schema demonstration; not field measurements"
+  },
+  "records": [
+    {
+      "id": "synthetic-power-001",
+      "timestamp": "2026-10-12T00:00:00Z",
+      "component": "solar",
+      "sensor": "synthetic-solar-meter",
+      "quantity": "power",
+      "measurement": {
+        "value": 2,
+        "unit": "kW"
+      },
+      "uncertainty": {
+        "value": 100,
+        "unit": "W"
+      },
+      "split": "calibration"
+    },
+    {
+      "id": "synthetic-power-missing",
+      "timestamp": "2026-10-12T01:00:00Z",
+      "component": "solar",
+      "sensor": "synthetic-solar-meter",
+      "quantity": "power",
+      "measurement": null,
+      "uncertainty": {
+        "value": 100,
+        "unit": "W"
+      },
+      "split": "validation"
+    }
+  ]
+}

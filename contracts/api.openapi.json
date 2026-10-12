@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "DEVA Scientific Engine",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "paths": {
     "/api/health": {
@@ -617,10 +617,339 @@
           }
         }
       }
+    },
+    "/api/twin/{kind}": {
+      "get": {
+        "summary": "Twin Artifact",
+        "operationId": "twin_artifact_api_twin__kind__get",
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/twin/jobs": {
+      "post": {
+        "summary": "Twin Job",
+        "operationId": "twin_job_api_twin_jobs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TwinRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/domain/jobs": {
+      "post": {
+        "summary": "Domain Job",
+        "operationId": "domain_job_api_domain_jobs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/domain/jobs/{jid}/view": {
+      "get": {
+        "summary": "Domain Job View",
+        "operationId": "domain_job_view_api_domain_jobs__jid__view_get",
+        "parameters": [
+          {
+            "name": "jid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Jid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/worlds/experiment/{experiment_id}": {
+      "get": {
+        "summary": "Worlds View",
+        "operationId": "worlds_view_api_worlds_experiment__experiment_id__get",
+        "parameters": [
+          {
+            "name": "experiment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Experiment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/worlds/view": {
+      "get": {
+        "summary": "Worlds View",
+        "operationId": "worlds_view_api_worlds_view_get",
+        "parameters": [
+          {
+            "name": "experiment_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Experiment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "DomainRequest": {
+        "properties": {
+          "domain": {
+            "type": "string",
+            "title": "Domain"
+          },
+          "raw": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Raw"
+          },
+          "seed": {
+            "type": "integer",
+            "exclusiveMaximum": 4294967296.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 20261220
+          },
+          "strategy": {
+            "type": "string",
+            "title": "Strategy",
+            "default": "hybrid"
+          },
+          "target_failure_probability": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Target Failure Probability",
+            "default": 0.02
+          },
+          "maximum_cost": {
+            "type": "number",
+            "maximum": 100000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Maximum Cost",
+            "default": 300
+          },
+          "maximum_simulations": {
+            "type": "integer",
+            "maximum": 1500.0,
+            "minimum": 1.0,
+            "title": "Maximum Simulations",
+            "default": 400
+          },
+          "maximum_candidates": {
+            "type": "integer",
+            "maximum": 64.0,
+            "minimum": 1.0,
+            "title": "Maximum Candidates",
+            "default": 16
+          },
+          "maximum_generations": {
+            "type": "integer",
+            "maximum": 8.0,
+            "minimum": 0.0,
+            "title": "Maximum Generations",
+            "default": 4
+          },
+          "maximum_seconds": {
+            "type": "number",
+            "maximum": 120.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Maximum Seconds",
+            "default": 120
+          },
+          "training_samples": {
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 2.0,
+            "title": "Training Samples",
+            "default": 8
+          },
+          "validation_samples": {
+            "type": "integer",
+            "maximum": 64.0,
+            "minimum": 2.0,
+            "title": "Validation Samples",
+            "default": 12
+          },
+          "heldout_samples": {
+            "type": "integer",
+            "maximum": 256.0,
+            "minimum": 2.0,
+            "title": "Heldout Samples",
+            "default": 40
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "domain",
+          "raw"
+        ],
+        "title": "DomainRequest"
+      },
       "EvolutionRequest": {
         "properties": {
           "raw": {
@@ -852,6 +1181,38 @@
           "availability"
         ],
         "title": "LabRequest"
+      },
+      "TwinRequest": {
+        "properties": {
+          "raw": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Raw"
+          },
+          "diameters": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "maxItems": 60,
+            "minItems": 1,
+            "title": "Diameters"
+          },
+          "seed": {
+            "type": "integer",
+            "exclusiveMaximum": 4294967275.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "default": 20261030
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw",
+          "diameters"
+        ],
+        "title": "TwinRequest"
       },
       "ValidationError": {
         "properties": {

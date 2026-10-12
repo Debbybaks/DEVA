@@ -43,3 +43,21 @@ Next: diagnose the frozen agent's 4/40 held-out failures with controlled counter
 Resumed milestone: COMPLETE — hash-checked frozen 4/40 diagnosis, exact failed-state replay, controlled demand/head/outage counterfactuals and negative single-pipe cost probes. PARTIAL — calibration uncertainty propagation into these cases and independent validation of diagnostic redesigns.
 
 Resumed uncertainty milestone: COMPLETE — local calibration covariance propagation through all four fixed failures, full retained 64-draw states and bounded input validation; all four fail in every draw. COMPLETE — measured CPU/renderer benchmark infrastructure execution. PARTIAL — agent latency budget (p95 20.292 s exceeds 10 s); software 3D remains slow. BLOCKED — WebGPU/WGSL comparative measurements: no adapter. Field/model-discrepancy uncertainty remains NOT STARTED. COMPLETE — failed-case world inspection passed frontend and live-browser milestone validation.
+
+## Phase 5 — bounded cross-domain acceptance
+
+| Status | Earned scope |
+|---|---|
+| COMPLETE | Minimal Engineering Domain Contract; unchanged-state water adapter; independently tested microgrid energy solver and units |
+| COMPLETE | Same investigator across both domains; budgets, ancestry, Pareto competition, intervention ranking, independent scenario splits and stopping |
+| COMPLETE | Five-strategy/three-seed ablation, retained negative pilot, fixed-design cost negotiation, robustness curves and 512-case populations |
+| COMPLETE | Domain-scoped provenance/claims, durable physical and experiment memory, hypothesis lifecycle, observation import schema and synthetic missing-data example |
+| COMPLETE | Distinct Engineering Worlds, progressive physical-state loading, parent comparison, X-ray/evidence/local-uncertainty lenses and stored-data Demonstration 3.0 |
+| COMPLETE | Researcher/Judge/Portfolio views, evidence-backed research report, analytical/SMT checks and bounded energy certificate |
+| PARTIAL | General topology synthesis, natural-language formalisation, broader calibrated epistemic uncertainty, publication-grade algorithm studies |
+| DELIBERATELY DEFERRED | Rare-event importance-weighted probability estimation, external full-network reference comparisons, distributed execution and hard preemption |
+| BLOCKED | Field calibration and real rupture validation without suitable datasets; hardware WebGPU comparison without an adapter |
+
+Phase-5 acceptance is a demonstrated bounded research architecture, not universal engineering intelligence or field certification. Random search outperformed the incremental/guided microgrid search in the declared exploratory ablation; no guided-search superiority is claimed. None of the preserved historical shortfalls is erased. Phase 6 has not begun.
+
+Final Phase-5 validation: 119 Python, 15 frontend and eight complete browser tests pass; production build and seven replay checks pass. Researcher Mode launches both registered domains through existing process workers, streams explicit scientific results and opens the resulting evidence. Rejected-only runs remain untested rather than displaying fabricated physical states. Bounded Phase-5 acceptance gates are met; Phase 6 has not begun.

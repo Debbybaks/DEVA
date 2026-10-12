@@ -1,0 +1,48 @@
+{
+  "scientific_implementation_revision": "4519765d1b43540cf31aa99459c0e65290b53b0d",
+  "python": {
+    "tests": 119,
+    "result": "PASS",
+    "seconds": 80.787
+  },
+  "frontend": {
+    "tests": 15,
+    "result": "PASS",
+    "final_validation": "15-test complete suite PASS; final rejected-state test added"
+  },
+  "browser": {
+    "tests": 8,
+    "result": "PASS",
+    "duration": "1.8 min",
+    "final_targeted": "Both affected Worlds flows PASS after rejected-state presentation fix"
+  },
+  "production_build": "PASS; pre-existing large lazy Three.js chunk warning retained",
+  "exact_replay_checks": [
+    "original capacity",
+    "capacity evolution",
+    "hydraulic experiment",
+    "calibrated twin including 4/40/cascade",
+    "cross-domain 30-trial study",
+    "validation extension",
+    "larger search collection (two domain payloads)"
+  ],
+  "historical_evidence": "All four locked artifact byte hashes unchanged",
+  "startup": "Unchanged five-second hydraulic assertion PASS",
+  "preserved_results": [
+    "38/200",
+    "44/200 -> 13/200 at higher cost",
+    "4/40; 2% target unestablished"
+  ],
+  "retained_development_failures": [
+    "Interrupted Worlds API/index and frontend state-loader mismatch recovered",
+    "Demo parent comparison persisted across domain switch; reset fixed, original new test retained",
+    "Added navigation link caused old mobile width assertion 439 > 391; flex wrap fixed without changing test"
+  ],
+  "limitations": [
+    "Field calibration incomplete",
+    "Rupture remains uncalibrated research hazard",
+    "No universal engineering intelligence or guided-search superiority established",
+    "No AC microgrid dynamics or field certification",
+    "Software 3D slow, WebGPU adapter unavailable"
+  ]
+}

@@ -32,3 +32,11 @@ POST `/api/hydraulic/lab` accepts SI diameters, closed pipe IDs, demand multipli
 Custom field ingestion, free-form agent code, arbitrary simulation plugins and authenticated multi-user operation are not exposed. Python APIs support explicit observation/parameter calibration separately; HTTP twin jobs currently use the reproducible synthetic benchmark, not uploaded field observations. Cooperative cancellation checkpoints occur between stages, not inside each nonlinear fit.
 
 Twin projections include `failed_cases` with stored validation indices, original scenarios, exact solved state and GPU values; `unknown_cases` remain separately identified. These independent scenarios are not a temporal trajectory. The frontend disables Play for this collection while allowing discrete inspection. No new hydraulic solver is introduced in the browser.
+
+Phase-5 progressive research views:
+- GET `/api/worlds/view`: hash-checked experiment index without physical frame arrays.
+- GET `/api/worlds/experiment/{id}`: one selected immutable experiment with actual states, verification objects and domain-scoped claims.
+
+These endpoints serve stored scientific evidence; they do not launch computation or execute generated code. Heavy studies run independently through the Python CLI. API caches are keyed by artifact metadata and validate canonical payload hashes.
+
+POST `/api/domain/jobs` admits only registered water/microgrid models and strict bounded search parameters. Existing `/api/jobs/{id}/events` streams actual parameters/results and cancellation checkpoints; `/api/domain/jobs/{id}/view` projects the completed worker evidence into the world. Recursive scientific source identity is part of the cache key. Unknown plugins/oversized budgets are rejected before execution.

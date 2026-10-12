@@ -33,3 +33,11 @@ Default twin rendering measures its own first 60 frames and degrades to exact nu
 ### Resumed Phase-4 rendering measurement
 
 Software SwiftShader pressure/flow modes averaged 99.85–106.66 ms/frame with p95 150–166.61 ms; 2D averaged 16.13–16.21 ms with p95 16.71–16.80 ms. The tested 2D frame budgets were met; hardware 3D remains unvalidated and software 3D is too slow for the interactive target. High flow mode represented 2694 tracers, standard 1349. Cached local view-fetch p95 was 57.61 ms (10 requests); this is not production latency or new-job latency. No browser page errors were observed. WebGPU returned no adapter, so no WGSL versus WebGL benchmark or speedup is claimed. Exact values and all samples remain in the artifact. Benchmarks preceded the additional failed-case projection; its larger payload has not yet been reprofiled.
+
+## Phase-5 measurements
+
+The frozen 512-case populations measured water 2.786 s (183.76 scenarios/s) and microgrid 2.573 s (198.99 scenarios/s) locally; these are different physical models, not an equal-workload speed contest. Full states, seeds and measurements are retained in the validation-study artifact. The larger bounded search evaluated 39 water candidates with 784 solver calls and 45 microgrid candidates with 850 calls, retaining 16/120 and 31/120 held-out failures respectively. A candidate/simulation ceiling is not proof of global optimum.
+
+Engineering Worlds uses numerical SVG because time/energy structure is meaningful without mandatory 3D. The API caches the full trusted projection, returns a frame-free experiment index, then fetches selected state data. Existing lazy WebGL/2D modes remain available in the reference laboratory. Software 3D remains slow; no WebGPU speedup is claimed. Tool-boundary wall-clock checks can overrun by one physical solve and are explicitly not hard real-time deadlines.
+
+Validation-study process peak RSS was 176.8 MiB; this is not combined API/worker/browser memory. Live researcher jobs emit result hashes and full scientific event evidence through the existing SQLite/SSE worker infrastructure. UI concurrency was exercised by live-browser tests, not assumed from a static demo.

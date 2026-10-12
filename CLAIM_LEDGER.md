@@ -19,3 +19,11 @@ The frozen investigation remains 4/40, with the requested 2% target unestablishe
 `artifacts/calibration-failure-uncertainty.json` retains all parameter draws and state results. Its claim is that all four fixed cases fail under every draw in the specified local covariance ensemble. This is a finite conditional uncertainty experiment, not posterior probability, field validation or structural-model robustness. Reproduce with `python -m deva.calibration_risk` and the recorded seed/sample count. Model version, scientific source revision/fingerprint and calibration-source hash identify the computation.
 
 Renderer and CPU claims refer directly to the full samples in `artifacts/twin-render-performance.json` and `artifacts/twin-science-performance.json`. Software rendering and first-use variation remain explicit. No hardware WebGPU acceleration or universal service-latency claim has been earned.
+
+## Phase-5 domain-aware claims
+
+`artifacts/phase5-search-evidence.json.gz` contains thirty domain-scoped investigator packages and claim ledgers. Domain/model IDs are checked at simulation and memory boundaries; cross-domain evidence is rejected. Selection is training-only, with validation/held-out streams sealed until after selection. The same function operating two different solvers is evidence of bounded architectural generality, not general engineering intelligence.
+
+`artifacts/phase5-validation-study.json.gz` preserves the fresh 512-case populations, efficiency assumptions, local sensor-layout comparison and a rational necessary-energy proof. Its hypothesis history records the microgrid guidance claim as WEAKENED by the exploratory comparison. Numerical validation and empirical confidence remain distinct from the narrow Z3 certificate. `RESEARCH_REPORT_PHASE5.md` derives statements from these hashes; it makes no publication or algorithmic-novelty claim.
+
+Current negative results include water 93/512 and microgrid 300/512 in the fixed hybrid population test, and historical 38/200, 44/200 → 13/200 at higher cost and 4/40 hospital failures. The historical 2% target remains unestablished. Costs and service semantics are not averaged across domains.

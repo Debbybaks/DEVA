@@ -1,0 +1,9 @@
+# Model validity and evidence boundaries
+
+Water remains the reference domain: numerically validated steady PDD/signed Darcy cases, independent conservation audits, synthetic calibration and bounded Boolean topology proof. Field calibration, leakage/fracture physics and transient propagation remain incomplete. Physical rupture validation option B is retained: no sufficient reference failure dataset was available, so the hazard model remains explicitly an uncalibrated research hypothesis.
+
+Microgrid covers chronological energy adequacy with fixed efficiency, prescribed demand/solar availability, generator outages and perfect-foresight linear dispatch. Analytical validation covers independently derived storage exhaustion, efficiency and converter-power cases. Eight-interval synthetic scenarios and larger seeded populations test the implemented formulation. General industrial operating ranges are not certified. No AC voltage/frequency, protection, thermal, degradation, tariff or closed-loop controller fidelity is claimed.
+
+Source descriptors expose validated cases, assumptions, unvalidated regimes, calibration and verification status. Claims carry domain/model/version, assumptions, evidence references and reproduction routes. A water proof cannot support a microgrid claim. A numerical LP optimum is not formal verification. The separate necessary-energy certificate proves only an explicit rational abstraction; SAT does not prove dispatch feasibility.
+
+Known research limits: capacity/catalogue mutations rather than arbitrary topology synthesis; three-seed exploratory ablation rather than publication-grade algorithm comparison; synthetic IID populations rather than rare-event importance-sampling probabilities; soft wall-clock checks at tool boundaries rather than hard preemption; trusted local scientific memory rather than authenticated multi-tenant storage. These are deliberate bounds, not hidden completed capabilities.

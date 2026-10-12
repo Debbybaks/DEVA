@@ -119,3 +119,7 @@ Historical exact replay uses an isolated recorded scientific revision because cu
 ### Resumed Phase-4 evidence
 
 [Checkpoint](PHASE4_CHECKPOINT.md) records current scopes and continuation. The frozen agent still fails 4/40 hospital scenarios; its 2% target is unestablished. [Failure diagnosis](AGENT_REMAINING_FAILURE_ANALYSIS.md) and [calibration uncertainty](CALIBRATION_FAILURE_UNCERTAINTY.md) expose computed mechanisms and diagnostic costs. `python scripts/replay_twin.py` replays the complete stored synthetic package at its recorded source revision. Failure-world inspection uses actual held-out states, not fabricated animation.
+
+### Phase 5 — Engineering Worlds
+
+Open `/?model=worlds` for Water Resilience and Microgrid Energy Adequacy, driven by one bounded domain-neutral investigator. See [Domain Contract](DOMAIN_CONTRACT.md), [microgrid model](MICROGRID_MODEL.md), [research report](RESEARCH_REPORT_PHASE5.md) and [validity scope](PHASE5_VALIDITY_AND_SCOPE.md). Run `python scripts/replay_phase5.py` for the exact stored cross-domain study. Negative results and field limitations remain visible; this is research software, not certified infrastructure design.
