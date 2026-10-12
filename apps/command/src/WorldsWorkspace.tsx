@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { useEffect, useState } from "react";
 import { request } from "./contracts";
 import {
@@ -21,7 +22,8 @@ function PhysicalWorld({
   time: number;
   onSelect: (id: string) => void;
 }) {
-  if (!frame?.outcome.state)
+  if (!frame) return <p role="status">Loading stored physical states…</p>;
+  if (!frame.outcome.state)
     return (
       <p role="status">UNKNOWN SOLVER STATE / inspect preserved evidence</p>
     );
@@ -66,16 +68,34 @@ function PhysicalWorld({
             refY="5"
             markerWidth="5"
             markerHeight="5"
-            orient="auto"
+            orient="auto-start-reverse"
           >
             <path d="M0 0L10 5L0 10" fill="currentColor" />
           </marker>
         </defs>
-        <path
-          d="M160 110H390V150H610M160 300H280V150H610M440 300H530V150H610"
-          className="energy-path"
-          markerEnd="url(#world-arrow)"
-        />
+        {[
+          { id: "solar", path: "M160 110H390V150H610", power: s.solar_W[t] },
+          {
+            id: "generator",
+            path: "M160 300H280V150H610",
+            power: s.generator_W[t],
+          },
+          {
+            id: "battery",
+            path: "M440 300H530V150H610",
+            power: s.discharge_W[t] - s.charge_W[t],
+          },
+        ].map((link) => (
+          <path
+            key={link.id}
+            d={link.path}
+            className="energy-path"
+            strokeWidth={Math.max(1, Math.min(7, Math.abs(link.power) / 2000))}
+            opacity={Math.abs(link.power) > 0.001 ? 1 : 0.25}
+            markerEnd={link.power > 0.001 ? "url(#world-arrow)" : undefined}
+            markerStart={link.power < -0.001 ? "url(#world-arrow)" : undefined}
+          />
+        ))}
         {components.map((c) => (
           <g
             key={c.id}
@@ -214,6 +234,17 @@ function PhysicalWorld({
   );
 }
 export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
+  const [job, setJob] = useState<string | null>(null),
+    [liveStatus, setLiveStatus] = useState("");
+  const [researchSeed, setResearchSeed] = useState(20261220),
+    [costLimit, setCostLimit] = useState(300),
+    [simulationLimit, setSimulationLimit] = useState(400),
+    [candidateLimit, setCandidateLimit] = useState(16),
+    [generationLimit, setGenerationLimit] = useState(4),
+    [trainCount, setTrainCount] = useState(8),
+    [validationCount, setValidationCount] = useState(12),
+    [heldCount, setHeldCount] = useState(40),
+    [failureTarget, setFailureTarget] = useState(0.02);
   const [view, setView] = useState<WorldView | null>(null),
     [error, setError] = useState("");
   const [domain, setDomain] = useState<"water" | "microgrid">("microgrid"),
@@ -251,9 +282,13 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
     if (!summary) return;
     const controller = new AbortController();
     setLoaded(null);
-    request(`/api/worlds/experiment/${summary.id}`, worldSchema, {
-      signal: controller.signal,
-    })
+    request(
+      summary.view_url ?? `/api/worlds/experiment/${summary.id}`,
+      worldSchema,
+      {
+        signal: controller.signal,
+      },
+    )
       .then((r) => {
         setLoaded(r.science.experiments[0]);
         setError("");
@@ -263,6 +298,91 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
       });
     return () => controller.abort();
   }, [summary?.id]);
+  async function runResearch() {
+    if (!experiment || job) return;
+    try {
+      const result = await request(
+        "/api/domain/jobs",
+        z.object({ job_id: z.string(), cached: z.boolean() }),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            domain,
+            raw: experiment.configuration,
+            seed: researchSeed,
+            strategy,
+            maximum_cost: costLimit,
+            maximum_simulations: simulationLimit,
+            maximum_candidates: candidateLimit,
+            maximum_generations: generationLimit,
+            training_samples: trainCount,
+            validation_samples: validationCount,
+            heldout_samples: heldCount,
+            target_failure_probability: failureTarget,
+          }),
+        },
+      );
+      setJob(result.job_id);
+      setLiveStatus("Queued registered scientific investigation");
+      setError("");
+    } catch (e) {
+      setError(String(e));
+    }
+  }
+  useEffect(() => {
+    if (!job) return;
+    const stream = new EventSource(`/api/jobs/${job}/events`);
+    stream.onmessage = (event) => {
+      const data = JSON.parse(event.data) as {
+        stage: string;
+        domain?: string;
+        phase?: string;
+        simulations?: number;
+        error?: string;
+      };
+      setLiveStatus(
+        `${data.stage} / ${data.phase ?? ""} / ${data.simulations ?? 0} solver calls`,
+      );
+      if (data.stage === "completed") {
+        stream.close();
+        request(`/api/domain/jobs/${job}/view`, worldSchema)
+          .then((r) => {
+            const e = r.science.experiments[0];
+            e.view_url = `/api/domain/jobs/${job}/view`;
+            setView((v) =>
+              v
+                ? {
+                    ...v,
+                    experiments: [
+                      e,
+                      ...v.experiments.filter((old) => old.id !== e.id),
+                    ],
+                  }
+                : r.science,
+            );
+            setDomain(e.domain);
+            setStrategy(e.strategy);
+            setSeedIndex(0);
+            setCandidateId(e.selection ?? "");
+            setScenario(0);
+            setTime(0);
+            setJob(null);
+            setLoaded(e);
+          })
+          .catch((e) => {
+            setError(String(e));
+            setJob(null);
+          });
+      }
+      if (data.stage === "failed" || data.stage === "cancelled") {
+        setError(data.error ?? data.stage);
+        setJob(null);
+        stream.close();
+      }
+    };
+    return () => stream.close();
+  }, [job]);
   const candidate =
     experiment?.candidates.find(
       (c) => c.id === (candidateId || experiment.selection),
@@ -277,6 +397,7 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
     setTime(0);
     setSelected("");
     setCompare(false);
+    setCostLimit(d === "water" ? 500 : 300);
   }
   function counterexample() {
     const witness = [candidate, ...(experiment?.candidates ?? [])].find((c) =>
@@ -299,16 +420,22 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
       switchWorld("water");
       setStrategy("hybrid");
       setSeedIndex(0);
-      const first = view?.experiments.find(
-        (e) => e.domain === "water" && e.strategy === "hybrid",
+      const archived =
+        view?.experiments.filter(
+          (e) => e.domain === "water" && e.strategy === "hybrid",
+        ) ?? [];
+      const archiveIndex = Math.max(
+        0,
+        archived.findIndex((e) => !e.view_url),
       );
+      setSeedIndex(archiveIndex);
+      const first = archived[archiveIndex];
       setCandidateId(first?.candidates[0]?.id ?? "");
     }
     if (n === 2) counterexample();
     if (n === 3) setLens("xray");
     if (n === 4) {
       setCandidateId(experiment?.selection ?? "");
-      setScenario(0);
     }
     if (n === 5) setCompare(true);
     if (n === 7) setLens("evidence");
@@ -437,13 +564,119 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
           </p>
         </section>
       )}
+      {audience === "researcher" && (
+        <details className="world-depth">
+          <summary>Run a registered scientific investigation</summary>
+          <p>
+            Explicit Python tools; separate training/validation/held-out
+            streams. No generated code. Field validity remains unestablished.
+          </p>
+          <div className="world-toolbar">
+            {[
+              {
+                label: "Research seed",
+                value: researchSeed,
+                set: setResearchSeed,
+                min: 0,
+                max: 4294967295,
+              },
+              {
+                label: "Engineering cost limit",
+                value: costLimit,
+                set: setCostLimit,
+                min: 1,
+                max: 100000,
+              },
+              {
+                label: "Simulation budget",
+                value: simulationLimit,
+                set: setSimulationLimit,
+                min: 1,
+                max: 1500,
+              },
+              {
+                label: "Candidate budget",
+                value: candidateLimit,
+                set: setCandidateLimit,
+                min: 1,
+                max: 64,
+              },
+              {
+                label: "Generation budget",
+                value: generationLimit,
+                set: setGenerationLimit,
+                min: 0,
+                max: 8,
+              },
+              {
+                label: "Training samples",
+                value: trainCount,
+                set: setTrainCount,
+                min: 2,
+                max: 32,
+              },
+              {
+                label: "Validation samples",
+                value: validationCount,
+                set: setValidationCount,
+                min: 2,
+                max: 64,
+              },
+              {
+                label: "Held-out samples",
+                value: heldCount,
+                set: setHeldCount,
+                min: 2,
+                max: 256,
+              },
+            ].map((c) => (
+              <label key={c.label}>
+                {c.label}
+                <input
+                  type="number"
+                  aria-label={c.label}
+                  value={c.value}
+                  min={c.min}
+                  max={c.max}
+                  onChange={(e) => c.set(Number(e.target.value))}
+                />
+              </label>
+            ))}
+            <label>
+              Failure probability target
+              <input
+                aria-label="Failure probability target"
+                type="number"
+                min="0"
+                max="1"
+                step=".01"
+                value={failureTarget}
+                onChange={(e) => setFailureTarget(Number(e.target.value))}
+              />
+            </label>
+            <button onClick={runResearch} disabled={!!job}>
+              Run domain investigation
+            </button>
+            {job && (
+              <button
+                onClick={() => fetch(`/api/jobs/${job}`, { method: "DELETE" })}
+              >
+                Cancel domain investigation
+              </button>
+            )}
+          </div>
+          <p role="status">{liveStatus}</p>
+        </details>
+      )}
       <section className="engineering-world">
         <div className="world-annotation">
           <span>
             {domain.toUpperCase()} /{" "}
-            {frame?.outcome.passes
-              ? "REQUIREMENTS SATISFIED IN THIS STATE"
-              : "REQUIREMENT FAILURE / INSPECT EVIDENCE"}
+            {!frame
+              ? "LOADING / NO REQUIREMENT CLAIM"
+              : frame.outcome.passes
+                ? "REQUIREMENTS SATISFIED IN THIS STATE"
+                : "REQUIREMENT FAILURE / INSPECT EVIDENCE"}
           </span>
           <span>
             {frame?.scenario.id as string} · service{" "}
@@ -641,7 +874,8 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
           and rupture validation incomplete. Numerical evidence is not formal
           proof. Scientific 2D retains exact stored values.
         </p>
-        <code>{view.source_sha256}</code>
+        <p>Selected investigation: {experiment.id}</p>
+        <code>{experiment.scientific_sha256 ?? view.source_sha256}</code>
       </footer>
     </main>
   );

@@ -55,7 +55,13 @@ def execute(directory, job_id, configuration):
         emit(directory, job_id, event)
 
     try:
-        if configuration.get("engine") == "twin":
+        if configuration.get("engine") == "domain":
+            from .domain_registry import construct
+            from .general_engineer import investigate
+
+            domain = construct(configuration["domain"], configuration["raw"])
+            result = investigate(domain, **configuration["search"], progress=progress)
+        elif configuration.get("engine") == "twin":
             from .digital_twin import experiment
 
             result = experiment(

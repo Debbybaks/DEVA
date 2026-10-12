@@ -97,6 +97,25 @@ class TwinRequest(BaseModel):
     seed: int = Field(default=20261030, ge=0, lt=2**32 - 21)
 
 
+class DomainRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    domain: str
+    raw: dict
+    seed: int = Field(default=20261220, ge=0, lt=2**32)
+    strategy: str = "hybrid"
+    target_failure_probability: float = Field(
+        default=0.02, ge=0, le=1, allow_inf_nan=False
+    )
+    maximum_cost: float = Field(default=300, gt=0, le=100000, allow_inf_nan=False)
+    maximum_simulations: int = Field(default=400, ge=1, le=1500)
+    maximum_candidates: int = Field(default=16, ge=1, le=64)
+    maximum_generations: int = Field(default=4, ge=0, le=8)
+    maximum_seconds: float = Field(default=120, gt=0, le=120, allow_inf_nan=False)
+    training_samples: int = Field(default=8, ge=2, le=32)
+    validation_samples: int = Field(default=12, ge=2, le=64)
+    heldout_samples: int = Field(default=40, ge=2, le=256)
+
+
 class HydraulicLabRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     raw: dict
@@ -537,6 +556,48 @@ def create_app(directory=None):
         record = json.loads(Path(path).read_text())
         verify_hash(record)
         return record
+
+    @app.post("/api/domain/jobs", status_code=202)
+    def domain_job(request: DomainRequest):
+        from .domain_registry import construct
+        from .general_engineer import STRATEGIES
+        from .provenance import source_revision
+
+        try:
+            domain = construct(request.domain, request.raw)
+            if request.strategy not in STRATEGIES:
+                raise ValueError("Unknown registered search strategy")
+            if request.domain == "microgrid" and len(domain.demand) > 24:
+                raise ValueError("Interactive dispatch horizon limited to 24 intervals")
+            search = {
+                k: v
+                for k, v in request.model_dump().items()
+                if k not in ("domain", "raw")
+            }
+            row, cached = app.state.jobs.submit(
+                dict(
+                    engine="domain",
+                    domain=request.domain,
+                    raw=request.raw,
+                    search=search,
+                    source=source_revision()["scientific_source_sha256"],
+                )
+            )
+            return dict(job_id=row["id"], cached=cached)
+        except ValueError as error:
+            raise HTTPException(422, str(error))
+
+    @app.get("/api/domain/jobs/{jid}/view")
+    def domain_job_view(jid: str):
+        from .world_view import project_job
+
+        row = job(jid)
+        if row["status"] != "completed":
+            raise HTTPException(409, "Scientific investigation incomplete")
+        record = json.loads((app.state.jobs.directory / f"{jid}.json").read_text())
+        if record["science"].get("schema_version") != "5.0":
+            raise HTTPException(422, "Job is not a domain investigation")
+        return JSONResponse(project_job(record))
 
     @app.get("/api/worlds/view")
     @app.get("/api/worlds/experiment/{experiment_id}")

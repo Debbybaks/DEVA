@@ -112,6 +112,7 @@ def investigate(
     heldout_samples=60,
     target_failure_probability=0.02,
     memory=None,
+    progress=None,
 ):
     validate_domain(domain)
     if strategy not in STRATEGIES:
@@ -157,6 +158,17 @@ def investigate(
 
     def solve(design, scenario, phase):
         nonlocal calls, hits
+        if progress:
+            progress(
+                dict(
+                    stage="simulate",
+                    domain=domain.descriptor["id"],
+                    phase=phase,
+                    simulations=calls,
+                    design=list(design),
+                    scenario=scenario,
+                )
+            )
         if time.monotonic() - started > maximum_seconds:
             raise BudgetExhausted("WALL CLOCK BUDGET EXHAUSTED")
         key = memory.key(domain, design, scenario, source["scientific_source_sha256"])
@@ -204,6 +216,17 @@ def investigate(
                 output_sha256=hashlib.sha256(canonical(out).encode()).hexdigest(),
             )
         )
+        if progress:
+            progress(
+                dict(
+                    stage="scientific_result",
+                    domain=domain.descriptor["id"],
+                    phase=phase,
+                    simulations=calls,
+                    result=out,
+                    output_sha256=invocations[-1]["output_sha256"],
+                )
+            )
         return out
 
     def measure(design, scenarios, phase):
@@ -368,6 +391,7 @@ def investigate(
         code=source,
         seeds=seeds,
         strategy=strategy,
+        seed=seed,
         plan=dict(
             objective="Minimise critical-service failures within engineering cost; preserve cost/performance frontier",
             maximum_cost=maximum_cost,

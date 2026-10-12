@@ -59,6 +59,8 @@ export const worldSchema = z
       experiments: z.array(
         z.object({
           id: z.string(),
+          view_url: z.string().optional(),
+          scientific_sha256: z.string().optional(),
           domain: z.enum(["water", "microgrid"]),
           strategy: z.string(),
           seed: number,
