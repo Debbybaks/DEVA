@@ -1,0 +1,70 @@
+
+> deva-command@1.0.0-rc.1 test:e2e
+> playwright test
+
+[WebServer] INFO:     Started server process [12582]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[WebServer] (node:12591) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:12604) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:12622) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/command.spec.ts:4:1 › Python → API → WebGL command environment → Failure Lab → evidence (23.0s)
+  ✓  2 tests/command.spec.ts:49:1 › preserved baseline and mobile layout remain inspectable (5.2s)
+  ✘  3 tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results (1.0m)
+(node:13107) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 tests/command.spec.ts:94:1 › coupled hydraulics → pressure inspection → intervention → storage → scoped proof (19.1s)
+  ✓  5 tests/twin.spec.ts:3:1 › synthetic observations → held-out calibration → emergent cascade → bounded proof (7.8s)
+  ✓  6 tests/twin.spec.ts:108:1 › scientific GLSL particle world and a new background twin investigation (15.2s)
+  ✓  7 tests/worlds.spec.ts:2:1 › cross-domain stored worlds → scoped evidence → reproducible demonstration (7.8s)
+  ✓  8 tests/worlds.spec.ts:41:1 › registered domain investigation streams scientific actions and opens real worker output (5.8s)
+
+
+  1) tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Evidence dataset')
+    Expected: "job"
+    Received: "evolution"
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Evidence dataset') with timeout 60000ms
+      - waiting for getByLabel('Evidence dataset')
+        79 × locator resolved to <select aria-label="Evidence dataset">…</select>
+           - unexpected value "evolution"
+      - Test timeout of 60000ms exceeded.
+
+
+      83 |     page.getByRole("button", { name: "risk", exact: true }),
+      84 |   ).toHaveAttribute("aria-pressed", "true");
+    > 85 |   await expect(page.getByLabel("Evidence dataset")).toHaveValue("job", {
+         |                                                     ^
+      86 |     timeout: 60000,
+      87 |   });
+      88 |   await page.getByRole("button", { name: "evidence", exact: true }).click();
+        at /workspace/deva/apps/command/tests/command.spec.ts:85:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/command-background-evoluti-70283--and-loads-computed-results/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/command-background-evoluti-70283--and-loads-computed-results/error-context.md
+
+  1 failed
+    tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results 
+  7 passed (2.6m)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

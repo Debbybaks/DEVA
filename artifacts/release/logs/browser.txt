@@ -1,0 +1,32 @@
+
+> deva-command@1.0.0-rc.1 test:e2e
+> playwright test
+
+[WebServer] INFO:     Started server process [13647]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[WebServer] (node:13656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:13669) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:13687) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/command.spec.ts:4:1 › Python → API → WebGL command environment → Failure Lab → evidence (21.6s)
+  ✓  2 tests/command.spec.ts:49:1 › preserved baseline and mobile layout remain inspectable (5.8s)
+  ✓  3 tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results (41.5s)
+  ✓  4 tests/command.spec.ts:94:1 › coupled hydraulics → pressure inspection → intervention → storage → scoped proof (6.3s)
+  ✓  5 tests/twin.spec.ts:3:1 › synthetic observations → held-out calibration → emergent cascade → bounded proof (7.5s)
+  ✓  6 tests/twin.spec.ts:108:1 › scientific GLSL particle world and a new background twin investigation (17.8s)
+  ✓  7 tests/worlds.spec.ts:2:1 › cross-domain stored worlds → scoped evidence → reproducible demonstration (6.4s)
+  ✓  8 tests/worlds.spec.ts:41:1 › registered domain investigation streams scientific actions and opens real worker output (5.1s)
+
+  8 passed (2.0m)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

@@ -41,3 +41,9 @@ The frozen 512-case populations measured water 2.786 s (183.76 scenarios/s) and 
 Engineering Worlds uses numerical SVG because time/energy structure is meaningful without mandatory 3D. The API caches the full trusted projection, returns a frame-free experiment index, then fetches selected state data. Existing lazy WebGL/2D modes remain available in the reference laboratory. Software 3D remains slow; no WebGPU speedup is claimed. Tool-boundary wall-clock checks can overrun by one physical solve and are explicitly not hard real-time deadlines.
 
 Validation-study process peak RSS was 176.8 MiB; this is not combined API/worker/browser memory. Live researcher jobs emit result hashes and full scientific event evidence through the existing SQLite/SSE worker infrastructure. UI concurrency was exercised by live-browser tests, not assumed from a static demo.
+
+## v1.0 release qualification
+
+Native same-origin production-style world startup ~3.22 s in the shared managed environment. Five local loopback samples: health mean 11.3 ms / nearest-rank p95 28.5 ms; Worlds index mean 951 ms / p95 1294 ms; hydraulic projection mean 270 ms / p95 521 ms. Raw samples and byte counts: artifacts/release/api-performance.json. These are not public-network or universal hardware guarantees. Seven replay checks still reproduce exact science; their fresh population timing is retained in release/logs/replays.txt.
+
+Supported release experience: numerical 2D, semantic data and progressive evidence. Existing five-second startup regression test and all eight browser flows pass when validation loads are isolated. Heavy parallel builds/solver validation can exceed startup/job deadlines; recorded failed attempts remain in RELEASE_EVIDENCE.md. Run performance qualification without competing build/validation workloads. Software 3D remains limited; WebGPU remains unestablished.

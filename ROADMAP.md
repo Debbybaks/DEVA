@@ -61,3 +61,13 @@ Resumed uncertainty milestone: COMPLETE — local calibration covariance propaga
 Phase-5 acceptance is a demonstrated bounded research architecture, not universal engineering intelligence or field certification. Random search outperformed the incremental/guided microgrid search in the declared exploratory ablation; no guided-search superiority is claimed. None of the preserved historical shortfalls is erased. Phase 6 has not begun.
 
 Final Phase-5 validation: 119 Python, 15 frontend and eight complete browser tests pass; production build and seven replay checks pass. Researcher Mode launches both registered domains through existing process workers, streams explicit scientific results and opens the resulting evidence. Rejected-only runs remain untested rather than displaying fabricated physical states. Bounded Phase-5 acceptance gates are met; Phase 6 has not begun.
+
+## Phase 6 — frozen release qualification
+
+COMPLETE: v1.0 scope and acceptance-gate definition; production read-only boundary and same-origin packaging; scope/claim/security audit; release notes, replay manifest and future-research boundary.
+PARTIAL: current full release validation, native production smoke, clean-room install, dependency/attribution review, release evidence archive and documentation qualification.
+BLOCKED: authorised public hosting/credentials and actual public deployment smoke; Docker daemon execution in this sandbox.
+NOT STARTED: final immutable v1.0 tag and PROJECT_COMPLETE.md. These must wait for required public release gates.
+No third domain or research expansion will be added in Phase 6.
+
+Phase-6 RC qualification COMPLETE: 121 Python, 15 frontend, eight browser, seven exact replays, build, clean installation/build, public-boundary tests and native production smoke. PARTIAL: container build execution (sandbox blocked). BLOCKED: authorised public deployment and public smoke. Final release is NOT COMPLETE; no final tag/completion marker. Research scope remains frozen.

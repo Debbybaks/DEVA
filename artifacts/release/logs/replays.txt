@@ -1,0 +1,21 @@
+Preparing worktree (detached HEAD 118b712)
+{"experiment_id": "deva-9a473107d6fcb70f", "winner": "robust-lp", "evidence": "/tmp/deva-history-6uy1qh55/emergency-water-evidence.json"}
+{"experiment_id": "deva-evolution-415e051c31e3bded", "recommendation": "g2-c012", "candidates": 26}
+{"experiment_id": "deva-hydraulic-065f46bd63838ed5", "recommendation": "h1-c008"}
+emergency-water-evidence deva-9a473107d6fcb70f EXACT
+evolution-evidence deva-evolution-415e051c31e3bded EXACT
+hydraulic-evidence deva-hydraulic-065f46bd63838ed5 EXACT
+Preparing worktree (detached HEAD b780be4)
+HEAD is now at b780be4 performance: cache hydraulic projection and compress JSON without buffering scientific progress
+deva-twin-882834fc7dd2ec29 EXACT 4/40 failures target established: False
+Preparing worktree (detached HEAD 48f5181)
+HEAD is now at 48f5181 search: run domain-blind budgeted investigations with Pareto ancestry, interventions and scientific memory
+deva-cross-domain-82054fcee8506f21
+deva-cross-domain-82054fcee8506f21 EXACT / 30 search trials, curves and decision analysis
+Preparing worktree (detached HEAD 67c8c77)
+HEAD is now at 67c8c77 research: preserve experiment memory, scoped hypotheses and bounded scenario populations
+deva-phase5-validation-f94b6b05592d6d12 [('water', 93, 512), ('microgrid', 300, 512)] {'water': {'seconds': 2.53282807100004, 'scenarios_per_second': 202.14558021612828}, 'microgrid': {'seconds': 2.4130954920001386, 'scenarios_per_second': 212.17560668335565}}
+water 39 784 16 NO NOVEL CATALOGUE MUTATION
+microgrid 45 850 31 GENERATION BUDGET EXHAUSTED
+phase5-validation-study.json.gz EXACT
+phase5-scale-search.json.gz EXACT

@@ -1,0 +1,31 @@
+
+> deva-command@1.0.0-rc.1 test
+> vitest run
+
+
+ RUN  v3.2.7 /workspace/deva/apps/command
+
+ ✓ src/command.test.tsx (5 tests) 3230ms
+   ✓ Typed scientific contract and command state > keeps baseline visible, switches layers and inspects equations  1711ms
+   ✓ Typed scientific contract and command state > opens paired views, explores rejected ancestry and traces evidence  1216ms
+ ✓ src/hydraulic.test.tsx (3 tests) 2124ms
+   ✓ validates real Python hydraulic projection and rejects unsupported formal/shape claims  501ms
+   ✓ inspects exact pressure, replays computed tank states and preserves fallback values  1112ms
+   ✓ links matched comparison and real-data demonstration without inventing a simulation  507ms
+ ✓ src/twin.test.tsx (4 tests) 2084ms
+   ✓ keeps observed and estimated values separate across residual comparison  902ms
+   ✓ replays stored cascade events and reveals real agent stopping and bounded proof  821ms
+ ✓ src/worlds.test.tsx (3 tests) 2123ms
+   ✓ validates domain isolation and chronological dimensions  883ms
+   ✓ opens different physical worlds and preserves local evidence  957ms
+
+ Test Files  4 passed (4)
+      Tests  15 passed (15)
+   Start at  11:57:42
+   Duration  25.06s (transform 984ms, setup 548ms, collect 10.05s, tests 9.56s, environment 2.90s, prepare 641ms)
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

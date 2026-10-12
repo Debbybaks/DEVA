@@ -1,0 +1,63 @@
+npm warn deprecated whatwg-encoding@3.1.1: Use @exodus/bytes instead for a more spec-conformant and faster implementation
+
+added 232 packages in 27s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+
+> deva-command@1.0.0-rc.1 build
+> tsc -b && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 705 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              0.58 kB │ gzip:   0.38 kB
+dist/assets/ibm-plex-mono-latin-400-normal-CvHOgSBP.woff    13.14 kB
+dist/assets/ibm-plex-mono-latin-500-normal-CB9ihrfo.woff    13.16 kB
+dist/assets/manrope-latin-800-normal-BfWYOv1c.woff2         13.65 kB
+dist/assets/manrope-latin-500-normal-BYYD-dBL.woff2         14.04 kB
+dist/assets/manrope-latin-400-normal-PaqtzbVb.woff2         14.11 kB
+dist/assets/manrope-latin-600-normal-4f0koTD-.woff2         14.17 kB
+dist/assets/manrope-latin-700-normal-BZp_XxE4.woff2         14.21 kB
+dist/assets/ibm-plex-mono-latin-400-normal-DMJ8VG8y.woff2   14.71 kB
+dist/assets/ibm-plex-mono-latin-500-normal-DSY6xOcd.woff2   14.89 kB
+dist/assets/manrope-latin-800-normal-uHUdIJgA.woff          17.91 kB
+dist/assets/manrope-latin-500-normal-DMZssgOp.woff          18.24 kB
+dist/assets/manrope-latin-400-normal-8tf8FM3T.woff          18.29 kB
+dist/assets/manrope-latin-600-normal-BqgrALkZ.woff          18.38 kB
+dist/assets/manrope-latin-700-normal-DGRFkw-m.woff          18.41 kB
+dist/assets/WorldsWorkspace-BXUEZHd_.css                     3.57 kB │ gzip:   1.31 kB
+dist/assets/index-DuAboE7m.css                              26.20 kB │ gzip:   6.31 kB
+dist/assets/hydraulicContracts-6FdY2gtM.js                   3.02 kB │ gzip:   1.29 kB
+dist/assets/HydraulicWorkspace-o-vLpC0u.js                  17.19 kB │ gzip:   6.15 kB
+dist/assets/WorldsWorkspace-B7xoD3b9.js                     19.54 kB │ gzip:   7.12 kB
+dist/assets/TwinWorkspace-BoZUtpCO.js                       29.82 kB │ gzip:  10.01 kB
+dist/assets/index-KhvTXtFt.js                              354.09 kB │ gzip: 107.81 kB
+dist/assets/NetworkCanvas-DfwWI1Cd.js                      916.06 kB │ gzip: 248.93 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 23.92s
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

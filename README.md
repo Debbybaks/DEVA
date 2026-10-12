@@ -123,3 +123,22 @@ Historical exact replay uses an isolated recorded scientific revision because cu
 ### Phase 5 — Engineering Worlds
 
 Open `/?model=worlds` for Water Resilience and Microgrid Energy Adequacy, driven by one bounded domain-neutral investigator. See [Domain Contract](DOMAIN_CONTRACT.md), [microgrid model](MICROGRID_MODEL.md), [research report](RESEARCH_REPORT_PHASE5.md) and [validity scope](PHASE5_VALIDITY_AND_SCOPE.md). Run `python scripts/replay_phase5.py` for the exact stored cross-domain study. Negative results and field limitations remain visible; this is research software, not certified infrastructure design.
+
+## DEVA v1.0 release candidate
+
+Autonomous Engineering Research Laboratory. Frozen scope: [V1_SCOPE.md](V1_SCOPE.md). Release status: [V1_RELEASE_GATES.md](V1_RELEASE_GATES.md). Engineering Worlds: water resilience and microgrid energy adequacy; same investigator, different physics. Negative results are evidence, not errors to erase.
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements-release-lock.txt -r requirements-build-lock.txt
+.venv/bin/pip install --no-deps --no-build-isolation -e .
+cd apps/command
+npm ci
+npm run build
+cd ../..
+.venv/bin/python -m uvicorn deva.release_app:app --host 127.0.0.1 --port 8000
+```
+
+Open http://localhost:8000 for the read-only public-style research archive. For trusted local new investigations run `deva.api:app` instead. Testing: `.venv/bin/python -m unittest discover -s tests -q`; frontend `npm test`; browser `npm run test:e2e` from apps/command (requires Chromium). Exact replay commands and immutable hashes: [REPLAY_MANIFEST.json](REPLAY_MANIFEST.json). Replay requires Git history, not a shallow snapshot.
+
+Deployment: [DEPLOYMENT.md](DEPLOYMENT.md). Technical report: [DEVA_V1_TECHNICAL_REPORT.md](DEVA_V1_TECHNICAL_REPORT.md). Privacy/security/limitations: [RELEASE_AUDIT.md](RELEASE_AUDIT.md). Public deployment has not yet been claimed. No field certification, universal optimum or 2% target achievement is implied.

@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-rc.1",
+  "validated_source_commit": "f0f876c",
+  "release_commit_resolution": "git rev-parse v1.0.0-rc.1^{commit}",
+  "release_tag": "v1.0.0-rc.1",
+  "deployment_identifier": null,
+  "canonical_url": null,
+  "status": "LOCAL_RELEASE_CANDIDATE; PUBLIC_DEPLOYMENT_PENDING",
+  "domains": ["water", "microgrid"],
+  "tests": {"python": 121, "frontend": 15, "browser": 8},
+  "exact_replay_checks": 7,
+  "production_build": "PASS",
+  "local_production_smoke": "PASS; not a public smoke test",
+  "release_timestamp": "2026-10-12",
+  "evidence_package": "artifacts/release/validation.json",
+  "limitations": ["field calibration incomplete", "rupture hazard uncalibrated", "AC dynamics unmodelled", "general topology synthesis incomplete", "rare-event probability guarantees incomplete", "publication-grade algorithm comparisons incomplete", "software 3D slow", "WebGPU unestablished", "2% target unestablished"],
+  "blocking_gates": ["L: public deployment", "M: public smoke"]
+}

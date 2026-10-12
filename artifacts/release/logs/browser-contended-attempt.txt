@@ -1,0 +1,122 @@
+
+> deva-command@1.0.0-rc.1 test:e2e
+> playwright test
+
+[WebServer] INFO:     Started server process [10717]
+[WebServer] INFO:     Waiting for application startup.
+[WebServer] INFO:     Application startup complete.
+[WebServer] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[WebServer] (node:10734) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:10747) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:10771) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/command.spec.ts:4:1 › Python → API → WebGL command environment → Failure Lab → evidence (16.3s)
+(node:11039) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 tests/command.spec.ts:49:1 › preserved baseline and mobile layout remain inspectable (16.9s)
+(node:11212) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results (16.3s)
+(node:11375) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 tests/command.spec.ts:94:1 › coupled hydraulics → pressure inspection → intervention → storage → scoped proof (33.3s)
+  ✓  5 tests/twin.spec.ts:3:1 › synthetic observations → held-out calibration → emergent cascade → bounded proof (22.4s)
+  ✓  6 tests/twin.spec.ts:108:1 › scientific GLSL particle world and a new background twin investigation (34.3s)
+  ✓  7 tests/worlds.spec.ts:2:1 › cross-domain stored worlds → scoped evidence → reproducible demonstration (8.6s)
+  ✓  8 tests/worlds.spec.ts:41:1 › registered domain investigation streams scientific actions and opens real worker output (6.8s)
+
+
+  1) tests/command.spec.ts:4:1 › Python → API → WebGL command environment → Failure Lab → evidence ─
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Try to break it.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Try to break it.') with timeout 5000ms
+      - waiting for getByText('Try to break it.')
+
+
+       8 |   page.on("pageerror", (e) => errors.push(e.message));
+       9 |   await page.goto("/");
+    > 10 |   await expect(page.getByText("Try to break it.")).toBeVisible();
+         |                                                    ^
+      11 |   await expect(page.getByText("38 / 200 held-out failures")).toBeVisible();
+      12 |   await expect(page.locator("canvas")).toHaveCount(1);
+      13 |   await page.getByRole("button", { name: "capacity", exact: true }).click();
+        at /workspace/deva/apps/command/tests/command.spec.ts:10:52
+
+    Error Context: test-results/command-Python-→-API-→-Web-ab85a-nt-→-Failure-Lab-→-evidence/error-context.md
+
+  2) tests/command.spec.ts:49:1 › preserved baseline and mobile layout remain inspectable ──────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Try to break it.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Try to break it.') with timeout 5000ms
+      - waiting for getByText('Try to break it.')
+
+
+      51 | }) => {
+      52 |   await page.goto("/");
+    > 53 |   await expect(page.getByText("Try to break it.")).toBeVisible();
+         |                                                    ^
+      54 |   await page.getByLabel("Evidence dataset").selectOption("baseline");
+      55 |   await expect(page.getByLabel("Selected candidate")).toHaveValue("robust-lp");
+      56 |   await expect(
+        at /workspace/deva/apps/command/tests/command.spec.ts:53:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/command-preserved-baseline-0120d-e-layout-remain-inspectable/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/command-preserved-baseline-0120d-e-layout-remain-inspectable/error-context.md
+
+  3) tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Try to break it.')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Try to break it.') with timeout 5000ms
+      - waiting for getByText('Try to break it.')
+
+
+      72 | }) => {
+      73 |   await page.goto("/");
+    > 74 |   await expect(page.getByText("Try to break it.")).toBeVisible();
+         |                                                    ^
+      75 |   await page.getByLabel("Experiment seed").fill(String(20261014 + process.pid));
+      76 |   await page.getByLabel("Generation budget").fill("1");
+      77 |   await page.getByRole("button", { name: "Run design evolution" }).click();
+        at /workspace/deva/apps/command/tests/command.spec.ts:74:52
+
+    Error Context: test-results/command-background-evoluti-70283--and-loads-computed-results/error-context.md
+
+  3 failed
+    tests/command.spec.ts:4:1 › Python → API → WebGL command environment → Failure Lab → evidence ──
+    tests/command.spec.ts:49:1 › preserved baseline and mobile layout remain inspectable ───────────
+    tests/command.spec.ts:70:1 › background evolution streams actual progress and loads computed results 
+  5 passed (3.2m)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

@@ -1,0 +1,45 @@
+{
+  "environment": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "scope": "Local loopback cached read-only release, five samples; not public network performance",
+  "routes": {
+    "/api/health": {
+      "samples_ms": [
+        28.459694999583007,
+        13.011883999752172,
+        7.544365000285325,
+        2.600552999865613,
+        4.844388000492472
+      ],
+      "mean_ms": 11.292176999995718,
+      "p95_ms": 28.459694999583007,
+      "p95_method": "nearest-rank, five local samples",
+      "response_bytes": 112
+    },
+    "/api/worlds/view": {
+      "samples_ms": [
+        1115.3907210000398,
+        930.4955329998847,
+        733.7290929999654,
+        683.5515559996566,
+        1293.8421249991734
+      ],
+      "mean_ms": 951.401805599744,
+      "p95_ms": 1293.8421249991734,
+      "p95_method": "nearest-rank, five local samples",
+      "response_bytes": 292407
+    },
+    "/api/hydraulic/view": {
+      "samples_ms": [
+        244.79787799918995,
+        521.4208079996752,
+        200.74170600037178,
+        175.51110599924868,
+        205.53982499950507
+      ],
+      "mean_ms": 269.60226459959813,
+      "p95_ms": 521.4208079996752,
+      "p95_method": "nearest-rank, five local samples",
+      "response_bytes": 6399525
+    }
+  }
+}

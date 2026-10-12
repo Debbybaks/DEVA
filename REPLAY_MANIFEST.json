@@ -1,0 +1,203 @@
+{
+  "version": "1.0.0-rc.1",
+  "checks": [
+    {
+      "evidence_location": "artifacts/emergency-water-evidence.json",
+      "sha256": "14e632693c8f4b9549bb326310715f719b068da373a2feeae1c9d641378ecd5e",
+      "expected_result": "38/200",
+      "reproduction_command": ".venv/bin/python scripts/replay_history.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-9a473107d6fcb70f"
+      ],
+      "seeds": [
+        20261011
+      ],
+      "model_versions": [
+        "1.0",
+        "capacity-network-0.1.0"
+      ],
+      "domain": "water"
+    },
+    {
+      "evidence_location": "artifacts/evolution-evidence.json",
+      "sha256": "f8c54a3a240b9071ec12e444713cb1228e39cbe6c8fb1ca40742965203514bc1",
+      "expected_result": "44/200 -> 13/200, increased cost",
+      "reproduction_command": ".venv/bin/python scripts/replay_history.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-evolution-415e051c31e3bded"
+      ],
+      "seeds": [
+        20261013,
+        1065127607
+      ],
+      "model_versions": [
+        "2.0",
+        "capacity-evolution-0.2.1"
+      ],
+      "domain": "water"
+    },
+    {
+      "evidence_location": "artifacts/hydraulic-evidence.json",
+      "sha256": "00bb0a8f11280527182c5388bcb3d2f181645ee42c699b5eef0223f7f187628c",
+      "expected_result": "numerically validated hydraulic service",
+      "reproduction_command": ".venv/bin/python scripts/replay_history.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-hydraulic-065f46bd63838ed5"
+      ],
+      "seeds": [
+        20261020
+      ],
+      "model_versions": [
+        "3.0",
+        "hydraulic-pdd-darcy-0.3.0"
+      ],
+      "domain": "water"
+    },
+    {
+      "evidence_location": "artifacts/digital-twin-evidence.json",
+      "sha256": "7086b3bb8e519c66a306af1b60b4693904e4243635543aa69884aea6e3b32a26",
+      "expected_result": "4/40; 2% target unestablished",
+      "reproduction_command": ".venv/bin/python scripts/replay_twin.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-agent-359465b4c9334b19",
+        "deva-twin-882834fc7dd2ec29"
+      ],
+      "seeds": [
+        20261030,
+        20261040,
+        20261041,
+        20261050,
+        176123989,
+        184819571,
+        255149673,
+        705924142,
+        834472947,
+        1123222757,
+        1173630518,
+        1892957937,
+        2812962367,
+        2955615173,
+        3462520819,
+        3995412235
+      ],
+      "model_versions": [
+        "4.0",
+        "4.1",
+        "bounded-engineering-agent-0.4.0",
+        "hydraulic-calibration-0.4.0",
+        "hydraulic-hazard-cascade-0.4.0",
+        "hydraulic-pdd-darcy-0.3.0"
+      ],
+      "domain": "water"
+    },
+    {
+      "evidence_location": "artifacts/phase5-search-evidence.json.gz",
+      "sha256": "3f9bd0a1d0580e48c7b4b1a18ac0b58707469819c67d873b48693f7c9286e1ac",
+      "expected_result": "30 ablation trials; fresh water 22/7/5 of 120; +8.47 known relaxation",
+      "reproduction_command": ".venv/bin/python scripts/replay_phase5.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-cross-domain-82054fcee8506f21",
+        "deva-domain-01fa6a1444ff7b4e",
+        "deva-domain-02347ca16647530c",
+        "deva-domain-157f4d74b03c81bc",
+        "deva-domain-15a30f5ba6710831",
+        "deva-domain-15aabc52a246ce5b",
+        "deva-domain-29abf49142034b76",
+        "deva-domain-2f68f89263faa3f6",
+        "deva-domain-359de135464e1e53",
+        "deva-domain-370294db00155f7c",
+        "deva-domain-3bba8161c080f266",
+        "deva-domain-40534191859a60e1",
+        "deva-domain-4ec52f0589bd51cc",
+        "deva-domain-5165c753de40da94",
+        "deva-domain-523845a968066be3",
+        "deva-domain-5369cd657d4f2dbd",
+        "deva-domain-5579e4bb0bfc93fd",
+        "deva-domain-577a6fd56285b4f6",
+        "deva-domain-5b79bcf405fb0581",
+        "deva-domain-5e27952a079997a4",
+        "deva-domain-72c9ffbcdce72bb6",
+        "deva-domain-7abcb16738857e7b",
+        "deva-domain-7d456d3bf3cc13aa",
+        "deva-domain-9198268564f39aee",
+        "deva-domain-a385de4a1eaa8c57",
+        "deva-domain-b8d482669293eeca",
+        "deva-domain-bb8fa485954809dc",
+        "deva-domain-c0df2cc00e418e7c",
+        "deva-domain-c89bf82439408371",
+        "deva-domain-dc46bf6d7c85457b",
+        "deva-domain-e8c434fea0341795"
+      ],
+      "seeds": [
+        20261120,
+        20261130,
+        145124728,
+        345291294,
+        354273337,
+        493096760,
+        680797401,
+        1735219501,
+        1893000931,
+        2920361991,
+        3088465637,
+        3365421365,
+        3637668853,
+        4190222682
+      ],
+      "model_versions": [
+        "5.0",
+        "hydraulic-pdd-darcy-0.3.0",
+        "microgrid-energy-lp-0.5.0"
+      ],
+      "domain": "water and microgrid"
+    },
+    {
+      "evidence_location": "artifacts/phase5-validation-study.json.gz",
+      "sha256": "e0bdc63890e3e6f4f43a60903f5b893fa2b5fc62d42d62d2b767c001381c17c4",
+      "expected_result": "water 93/512; microgrid 300/512; bounded energy certificate",
+      "reproduction_command": ".venv/bin/python scripts/replay_phase5_extensions.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-phase5-validation-f94b6b05592d6d12"
+      ],
+      "seeds": [
+        20261201,
+        20261202,
+        20261203
+      ],
+      "model_versions": [
+        "hydraulic-pdd-darcy-0.3.0",
+        "microgrid-energy-lp-0.5.0"
+      ],
+      "domain": "water and microgrid"
+    },
+    {
+      "evidence_location": "artifacts/phase5-scale-search.json.gz",
+      "sha256": "0095c8e2813d11cf0de4d0c54645e71220ca5891a175715cde878d263b045f1d",
+      "expected_result": "water 16/120; microgrid 31/120",
+      "reproduction_command": ".venv/bin/python scripts/replay_phase5_extensions.py",
+      "metadata_source": "Full experiment IDs, model versions and seeds are preserved in this immutable evidence envelope.",
+      "experiment_ids": [
+        "deva-domain-3e9328eb8fbf0629",
+        "deva-domain-c309ddace1c4ecff"
+      ],
+      "seeds": [
+        873760359,
+        1810836943,
+        2501869074,
+        2728318675
+      ],
+      "model_versions": [
+        "5.0",
+        "hydraulic-pdd-darcy-0.3.0",
+        "microgrid-energy-lp-0.5.0"
+      ],
+      "domain": "water and microgrid"
+    }
+  ]
+}

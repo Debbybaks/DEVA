@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0-rc.1",
+  "validated_source_revision": "f0f876c0ac5400e370bb9fc94b8a6931c7cc19a0",
+  "python": {
+    "tests": 121,
+    "status": "PASS",
+    "full_suite_seconds": 230.95,
+    "final_affected_release_tests": 2
+  },
+  "frontend": {
+    "tests": 15,
+    "status": "PASS"
+  },
+  "browser": {
+    "tests": 8,
+    "status": "PASS",
+    "seconds_approx": 120,
+    "startup_assertion_seconds": 5,
+    "assertion_unchanged": true
+  },
+  "build": "PASS",
+  "exact_replay_checks": 7,
+  "immutable_evidence_hashes": "PASS",
+  "production_dependency_audit": {
+    "known_vulnerabilities": 0
+  },
+  "clean_room": {
+    "python_install": "PASS",
+    "analytical_domain_tests": 7,
+    "release_boundary_tests": 2,
+    "frontend_npm_ci": "PASS",
+    "frontend_build": "PASS"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "cpu_count_visible": 3,
+    "benchmark_scope": "managed shared environment, not universal performance"
+  },
+  "retained_failed_attempts": [
+    "3 startup timeouts while full Python/replay solvers competed for CPU",
+    "Background-job run 63.5 s exceeded unchanged 60 s deadline while clean build ran; isolated suite passes"
+  ],
+  "deployment": {
+    "status": "PENDING authorised suitable hosting target",
+    "canonical_url": null
+  },
+  "limitations": [
+    "field calibration incomplete",
+    "uncalibrated research rupture hazard",
+    "no AC dynamics",
+    "software 3D limited",
+    "WebGPU unestablished",
+    "2% target unestablished"
+  ]
+}
