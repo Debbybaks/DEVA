@@ -1,9 +1,10 @@
 """Same-origin, read-only public research release. Local scientific API is unchanged."""
+import os
 from pathlib import Path
 from fastapi.responses import JSONResponse, FileResponse, RedirectResponse
 from .api import create_app, ROOT
 
-app = create_app()
+app = create_app(directory=Path(os.getenv("DEVA_RUNTIME_DIR", str(ROOT / ".runtime"))) / "public-archive")
 app.version = "1.0.0-rc.1"
 
 @app.middleware("http")

@@ -8,6 +8,7 @@ class ReleaseTests(unittest.TestCase):
             for route in ["/api/domain/jobs", "/api/jobs", "/api/hydraulic/lab", "/api/twin/jobs"]:
                 self.assertEqual(c.post(route, json={}).status_code, 403)
             self.assertEqual(c.delete("/api/jobs/test").status_code, 403)
+            self.assertEqual(app.state.jobs.directory.name, "public-archive")
             response = c.get("/api/health")
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.headers["x-content-type-options"], "nosniff")
