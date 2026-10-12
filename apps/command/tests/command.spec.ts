@@ -6,7 +6,7 @@ test("Python → API → WebGL command environment → Failure Lab → evidence"
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  await page.goto("/archive");
   await expect(page.getByText("Try to break it.")).toBeVisible();
   await expect(page.getByText("38 / 200 held-out failures")).toBeVisible();
   await expect(page.locator("canvas")).toHaveCount(1);
@@ -49,7 +49,7 @@ test("Python → API → WebGL command environment → Failure Lab → evidence"
 test("preserved baseline and mobile layout remain inspectable", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/archive");
   await expect(page.getByText("Try to break it.")).toBeVisible();
   await page.getByLabel("Evidence dataset").selectOption("baseline");
   await expect(page.getByLabel("Selected candidate")).toHaveValue("robust-lp");
@@ -70,7 +70,7 @@ test("preserved baseline and mobile layout remain inspectable", async ({
 test("background evolution streams actual progress and loads computed results", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/archive");
   await expect(page.getByText("Try to break it.")).toBeVisible();
   await page.getByLabel("Experiment seed").fill(String(20261014 + process.pid));
   await page.getByLabel("Generation budget").fill("1");

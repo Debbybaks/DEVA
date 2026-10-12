@@ -22,6 +22,7 @@ vi.mock("./NetworkCanvas", () => ({
 }));
 beforeEach(() => {
   cleanup();
+  window.history.replaceState({}, "", "/archive");
   vi.stubGlobal("matchMedia", () => ({
     matches: false,
     addEventListener: vi.fn(),

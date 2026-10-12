@@ -481,6 +481,7 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
     <main className="worlds-shell">
       <header className="worlds-header">
         <a href="/">DEVA</a>
+        <a href="/archive">Research archive</a>
         <span>DEVA v1.0 · RESEARCH LABORATORY · DESIGN. SIMULATE. BREAK. EVOLVE. VERIFY.</span>
         <button onClick={onBack}>Water reference laboratory</button>
       </header>

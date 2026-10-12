@@ -36,13 +36,14 @@ const progressSchema = z.object({
 const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
 
 export default function App() {
-  const [twin, setTwin] = useState(
-    new URLSearchParams(window.location.search).get("model") === "twin",
-  );
+  const model =
+    new URLSearchParams(window.location.search).get("model") ??
+    (window.location.pathname.replace(/\/$/, "") === "/archive"
+      ? "capacity"
+      : "worlds");
+  const [twin, setTwin] = useState(model === "twin");
   const [physics, setPhysics] = useState(
-    new URLSearchParams(window.location.search).get("model") === "hydraulic" ||
-      new URLSearchParams(window.location.search).get("model") === "twin" ||
-      new URLSearchParams(window.location.search).get("model") === "worlds",
+    model === "hydraulic" || model === "twin" || model === "worlds",
   );
   const [state, dispatch] = useCommandState();
   const [view, setView] = useState<View | null>(null);
@@ -317,7 +318,7 @@ export default function App() {
     : dataUrl.includes("baseline")
       ? "/api/evidence/baseline"
       : "/api/evidence/evolution";
-  if (new URLSearchParams(window.location.search).get("model") === "worlds")
+  if (model === "worlds")
     return (
       <Suspense fallback={<p>Loading engineering worlds…</p>}>
         <WorldsWorkspace

@@ -7,7 +7,7 @@ docker build -t deva:1.0.0-rc.1 .
 docker run --rm -p 8000:8000 deva:1.0.0-rc.1
 ```
 
-Open `http://localhost:8000/` for Engineering Worlds. Legacy capacity research remains at `/?model=capacity`; hydraulic and twin routes remain available. API and frontend are same-origin; no cross-origin credential requirement.
+Open `http://localhost:8000/` for Engineering Worlds. Legacy capacity research remains at `/archive` and `/?model=capacity`; hydraulic and twin routes remain available. API and frontend are same-origin; no cross-origin credential requirement.
 
 The public container is read-only: POST/PUT/PATCH/DELETE scientific requests receive 403. Stored experiments and their registered autonomous traces are available. Run new investigations in the trusted local research API using the documented development command; public multi-tenant live compute is outside v1.0. No infrastructure observations are bundled as field measurements. Runtime jobs remain local and are not a shared public data store.
 

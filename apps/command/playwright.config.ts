@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 60000,
   workers: 1,
   use: {
-    baseURL: "http://127.0.0.1:5173",
+    baseURL: process.env.DEVA_TEST_URL ?? "http://127.0.0.1:5173",
     viewport: { width: 1600, height: 1000 },
     launchOptions: {
       executablePath: process.env.DEVA_CHROMIUM_PATH ?? "/usr/bin/chromium",
@@ -18,7 +18,7 @@ export default defineConfig({
     },
     screenshot: "only-on-failure",
   },
-  webServer: [
+  webServer: process.env.DEVA_TEST_URL ? [] : [
     {
       command:
         ".venv/bin/python -m uvicorn deva.api:app --host 127.0.0.1 --port 8000",

@@ -3,6 +3,14 @@ from fastapi.testclient import TestClient
 from deva.release_app import app
 
 class ReleaseTests(unittest.TestCase):
+    def test_visual_root_and_explicit_archive(self):
+        with TestClient(app) as c:
+            for route in ["/", "/?utm_source=chatgpt.com", "/archive", "/archive/"]:
+                response = c.get(route, follow_redirects=False)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn('id="root"', response.text)
+                self.assertEqual(response.headers["content-type"], "text/html; charset=utf-8")
+                self.assertEqual(c.post(route, json={}).status_code, 403)
     def test_public_mutations_denied(self):
         with TestClient(app) as c:
             for route in ["/api/domain/jobs", "/api/jobs", "/api/hydraulic/lab", "/api/twin/jobs"]:
