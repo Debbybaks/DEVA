@@ -1,0 +1,21 @@
+FROM node:24-bookworm-slim AS frontend
+WORKDIR /build
+COPY apps/command/package*.json ./
+RUN npm ci
+COPY apps/command/ ./
+RUN npm run build
+FROM python:3.12.14-slim-bookworm
+WORKDIR /app
+COPY requirements*.txt ./
+RUN pip install --no-cache-dir -r requirements-release-lock.txt -r requirements-build-lock.txt
+COPY pyproject.toml ./
+COPY src ./src
+RUN pip install --no-deps --no-build-isolation -e .
+COPY artifacts ./artifacts
+COPY examples ./examples
+COPY --from=frontend /build/dist ./apps/command/dist
+RUN useradd --uid 10001 --create-home deva && mkdir /app/.runtime && chown deva /app/.runtime
+USER deva
+ENV DEVA_RUNTIME_DIR=/app/.runtime
+EXPOSE 8000
+CMD ["python", "-m", "uvicorn", "deva.release_app:app", "--host", "0.0.0.0", "--port", "8000"]

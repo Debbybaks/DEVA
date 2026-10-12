@@ -241,6 +241,15 @@ function PhysicalWorld({
   );
 }
 export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
+  const [publicArchive, setPublicArchive] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/health", { signal: controller.signal })
+      .then((r) => r.json())
+      .then((r) => setPublicArchive(r.public_read_only === true))
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   const [job, setJob] = useState<string | null>(null),
     [liveStatus, setLiveStatus] = useState("");
   const [researchSeed, setResearchSeed] = useState(20261220),
@@ -472,7 +481,7 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
     <main className="worlds-shell">
       <header className="worlds-header">
         <a href="/">DEVA</a>
-        <span>DESIGN. SIMULATE. BREAK. EVOLVE. VERIFY.</span>
+        <span>DEVA v1.0 · RESEARCH LABORATORY · DESIGN. SIMULATE. BREAK. EVOLVE. VERIFY.</span>
         <button onClick={onBack}>Water reference laboratory</button>
       </header>
       <section className="worlds-title">
@@ -571,7 +580,8 @@ export default function WorldsWorkspace({ onBack }: { onBack: () => void }) {
           </p>
         </section>
       )}
-      {audience === "researcher" && (
+      {publicArchive && <p role="status">Public research archive · stored reproducible investigations. Run new scientific jobs in the trusted local research environment.</p>}
+      {audience === "researcher" && !publicArchive && (
         <details className="world-depth">
           <summary>Run a registered scientific investigation</summary>
           <p>
